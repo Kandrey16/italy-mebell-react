@@ -1,0 +1,18 @@
+header {
+  @apply w-full mx-auto my-0 flex items-center justify-center space-x-7 p-3;
+}
+header a {
+  @apply text-4xl flex-shrink-0;
+}
+header .header_info {
+  @apply flex-shrink-0 text-right flex flex-col items-end;
+}
+header .header_info h4 {
+  @apply text-xl leading-tight;
+}
+header .header_info span {
+  @apply text-sm leading-tight;
+}
+header .svg_icons {
+  @apply flex space-x-4 flex-shrink-0;
+}/*# sourceMappingURL=Header.module.css.map */

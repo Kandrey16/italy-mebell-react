@@ -1,0 +1,23 @@
+.form_search {
+  @apply max-w-sm w-full;
+
+  label {
+    @apply mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white;
+  }
+
+  .search {
+    @apply relative;
+
+    input {
+      @apply block w-full p-4  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
+    }
+
+    .search_svg {
+      @apply absolute inset-y-0 end-0 flex items-center ps-3 pr-4 pointer-events-none;
+
+      svg {
+        @apply w-4 h-4 text-gray-500 dark:text-gray-400;
+      }
+    }
+  }
+}

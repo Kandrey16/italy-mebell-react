@@ -1,0 +1,9 @@
+.catalog {
+  @apply w-36 h-12 bg-indigo-800 hover:bg-indigo-900 flex p-1 items-center justify-center space-x-2 rounded-xl;
+}
+.catalog svg {
+  @apply fill-blue-gray-50;
+}
+.catalog p {
+  @apply text-white text-base;
+}/*# sourceMappingURL=Catalog.module.css.map */

@@ -1,0 +1,9 @@
+nav {
+  @apply w-full bg-indigo-800 mx-auto my-0;
+}
+nav ul {
+  @apply max-w-7xl mx-auto flex items-center justify-center space-x-7 p-3;
+}
+nav ul li {
+  @apply text-white text-lg;
+}/*# sourceMappingURL=Navbar.module.css.map */

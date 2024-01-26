@@ -1,0 +1,23 @@
+header {
+  @apply w-full mx-auto my-0 flex items-center justify-center space-x-7 p-3;
+
+  a {
+    @apply text-4xl flex-shrink-0;
+  }
+
+  .header_info {
+    @apply flex-shrink-0 text-right flex flex-col items-end;
+
+    h4 {
+      @apply text-xl leading-tight;
+    }
+
+    span {
+      @apply text-sm leading-tight;
+    }
+  }
+
+  .svg_icons {
+    @apply flex space-x-4 flex-shrink-0;
+  }
+}
