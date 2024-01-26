@@ -1,0 +1,7 @@
+.card {
+    @apply aspect-square rounded-lg bg-light-green-600;
+
+    img {
+        @apply size-full;
+    }
+}
