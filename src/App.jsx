@@ -1,7 +1,6 @@
-import './App.css';
+import '../src/assets/styles/App.css';
 import Header from "./components/Header/Header";
 import Navbar from "./components/Navbar/Navbar";
-import Example from "./components/Example";
 import { CarouselDefault } from './components/TailwindComponents/Carousel/Carousel';
 import CatalogSection from './components/CatalogSection/CatalogSection';
 function App() {
@@ -11,7 +10,6 @@ function App() {
       <Header/>
       <Navbar/>
       <CarouselDefault/>
-      {/* <Example></Example> */}
       <CatalogSection/>
     </>
   );

@@ -1,26 +1,18 @@
 export const image = [
   {
-    url: "https://avatars.mds.yandex.net/i?id=819bd26b76ed3adddab3a0e355f2a2d0983c0149-10371233-images-thumbs&n=13",
+    url: "https://static.tildacdn.com/tild3466-3962-4933-b935-303361323633/e13fc24bd82d344e7a21.jpg",
     alt: "image 1",
   },
   {
-    url: "https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2560&q=80",
+    url: "https://мебельклассика.рф/wp-content/uploads/2020/04/Kanon_P561-20c-P561-18c-R561-09s-R561-12-R56103-2-P561-06_Dyb-kanon-chernii5df78c1d6e6b35df89d54719ec.jpg",
     alt: "image 2",
   },
   {
-    url: "https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2560&q=80",
+    url: "https://mkmgroup.ru/d/stenka_sloter_5.jpg",
     alt: "image 3",
   },
   {
-    url: "https://avatars.mds.yandex.net/i?id=819bd26b76ed3adddab3a0e355f2a2d0983c0149-10371233-images-thumbs&n=13",
+    url: "https://mebel-rnd.ru/upload/iblock/330/330c9a4c42252ccabca74bfa6932e497.jpg",
     alt: "image 4",
-  },
-  {
-    url: "https://avatars.mds.yandex.net/i?id=819bd26b76ed3adddab3a0e355f2a2d0983c0149-10371233-images-thumbs&n=13",
-    alt: "image 1",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2560&q=80",
-    alt: "image 2",
   },
 ];
