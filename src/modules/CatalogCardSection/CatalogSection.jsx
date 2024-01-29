@@ -1,5 +1,5 @@
-import CatalogCard from "./CatalogCard/CatalogCard";
-import { images } from "../../Data/dataCatalogCard";
+import CatalogCard from "../../components/UI/CatalogCard/CatalogCard";
+import { images } from "../../data/dataCatalogCard";
 
 export default function CatalogSection() {
   return (

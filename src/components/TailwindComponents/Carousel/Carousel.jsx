@@ -1,6 +1,6 @@
 import { Carousel } from "@material-tailwind/react";
 import styles from "./Carousel.module.scss";
-import { image } from "../../Data/data-carousel";
+import { image } from "../../../data/data-carousel";
 
 export function CarouselDefault() {
   return (

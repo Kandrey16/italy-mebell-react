@@ -5,9 +5,11 @@
       "@/*": ["./src/*"],
       "assets/*": ["./src/assets/*"],
       "components/*": ["./src/components/*"],
+      "data/*": ["./src/data/*"],
+      "modules/*": ["./src/modules/*"],
       "public/*": ["./public/*"],
-      "pages/*": ["./src/pages/*"]
-    }
+      "pages/*": ["./src/pages/*"],
+    },
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }

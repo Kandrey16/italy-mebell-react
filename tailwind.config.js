@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 import withMT from "@material-tailwind/react/utils/withMT";
 
-module.exports = withMT({
+export default withMT({
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -11,9 +11,8 @@ module.exports = withMT({
   theme: {
     extend: {
       colors: {
-        'colorPrimary': '#3730a3',
-        'colorPrimaryHover': '#312e81',
-
+        'colorPrimary': '#1e40af',
+        'colorPrimaryHover': '#1e40af',
         'colorBackground': '#F0F0F9',
         // purple: {
         //   950: '#24226D',
@@ -26,4 +25,3 @@ module.exports = withMT({
   },
   plugins: [],
 });
-
