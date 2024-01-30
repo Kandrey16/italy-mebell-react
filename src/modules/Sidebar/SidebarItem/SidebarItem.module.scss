@@ -1,0 +1,15 @@
+.accordionOpenIncon {
+  @apply mx-auto h-4 w-4 transition-transform;
+}
+
+.accordionHeader {
+  @apply border-b-0 p-3;
+}
+
+.listItem {  
+  @apply p-0;
+}
+
+.typography {
+  @apply mr-auto font-normal;
+}

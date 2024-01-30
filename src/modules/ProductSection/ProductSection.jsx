@@ -1,11 +1,13 @@
-// import Sidebar from "@/modules/Sidebar/Sidebar";
+import ProductCard from "@/components/UI/ProductCard/ProductCard";
 
 export default function ProductSection() {
   return (
     <>
-      <div className="grid grid-cols-4">
-          <div className='col-span-1 bg-cyan-500'>1</div>
-          <div className="col-span-3 bg-gray-600">2</div>
+      <div className="w-full h-full grid grid-cols-3
+      bg-white rounded-xl shadow-xl shadow-blue-gray-900/5">
+        <div className="col">1</div>
+        <div className="col">2</div>
+        <div className="col">3</div>
       </div>
     </>
   );

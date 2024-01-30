@@ -5,7 +5,7 @@ import { image } from "../../../data/data-carousel";
 export function CarouselDefault() {
   return (
     <Carousel
-      className="container mx-auto w-full rounded-xl my-2"
+      className="container w-full rounded-xl my-2"
       transition={{ type: "tween", duration: 0.75 }}
       autoplay
       loop

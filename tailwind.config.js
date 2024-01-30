@@ -9,6 +9,9 @@ export default withMT({
     "path-to-your-node_modules/@material-tailwind/react/theme/components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    container: {
+      center: true,
+    },
     extend: {
       colors: {
         'colorPrimary': '#1e40af',
