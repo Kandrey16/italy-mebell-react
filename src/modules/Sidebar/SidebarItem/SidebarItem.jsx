@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from "./SidebarItem.module.scss";
-
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import {
   ListItem,
   ListItemPrefix,
@@ -11,7 +11,6 @@ import {
   List,
   Checkbox,
 } from "@material-tailwind/react";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
 
 export default function SidebarItem({ title, items }) {
   const [open, setOpen] = useState(false);
@@ -36,9 +35,7 @@ export default function SidebarItem({ title, items }) {
             onClick={handleOpen}
             className={styles.accordionHeader}
           >
-            <Typography className={styles.typography}>
-              {title}
-            </Typography>
+            <Typography className={styles.typography}>{title}</Typography>
           </AccordionHeader>
         </ListItem>
         {items && (
@@ -48,7 +45,6 @@ export default function SidebarItem({ title, items }) {
                 <ListItem key={index}>
                   <ListItemPrefix>
                     <Checkbox
-                      color="blue"
                       id="vertical-list-react"
                       ripple={false}
                       className="hover:before:opacity-0"
