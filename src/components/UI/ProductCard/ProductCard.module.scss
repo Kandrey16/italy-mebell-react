@@ -1,0 +1,7 @@
+.product_card {
+    @apply bg-green-100 rounded-xl;
+
+    img {
+        @apply w-full aspect-square;
+    }
+}
