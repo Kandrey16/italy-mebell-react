@@ -1,7 +1,27 @@
 .product_card {
-    @apply bg-green-100 rounded-xl;
+  @apply w-full bg-white rounded-xl shadow-xl shadow-blue-gray-50;
+  
+  .img_place {
+    @apply aspect-square relative;
 
     img {
-        @apply w-full aspect-square;
+      @apply size-full rounded-xl;
     }
+  }
+  
+  .product_info {
+    @apply p-4;
+
+    .product_name {
+      @apply text-lg font-semibold uppercase;
+    }
+
+    .product_price {
+      @apply text-xl font-semibold;
+    }
+
+    .product_link {
+      @apply text-sm;
+    }
+  }
 }
