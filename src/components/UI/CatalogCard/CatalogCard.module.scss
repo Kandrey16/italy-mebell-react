@@ -3,7 +3,6 @@
 
   img {
     @apply size-full transition duration-300 ease-in-out;
-    // border-image: fill 0 linear-gradient(#0003, #000);
   }
 
   .title {
@@ -11,7 +10,7 @@
       left-0 bottom-0 w-full h-full 
       text-5xl text-gray-50 uppercase font-medium
       translate-y-full transition duration-300 ease-in-out;
-      
+
     border-image: fill 0 linear-gradient(#0003, #000);
   }
 
