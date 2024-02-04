@@ -1,31 +1,27 @@
 export const SidebarItems = [
   {
-    "title": "Пиво",
+    "title": "Гарабиты",
     "icon": "PresentationChartBarIcon",
     "subItems": ["Светлое", "Темное", "Санино"]
   },
   {
-    "title": "E-Commerce",
+    "title": "Цвет",
     "icon": "ShoppingBagIcon",
     "subItems": ["Orders", "Products"]
   },
   {
-    "title": "Inbox",
+    "title": "Коллекция",
     "icon": "InboxIcon",
     "chipValue": "14"
   },
   {
-    "title": "Profile",
+    "title": "Год выпуска",
     "icon": "UserCircleIcon"
   },
   {
-    "title": "Settings",
+    "title": "Страна",
     "icon": "Cog6ToothIcon"
   },
-  {
-    "title": "Log Out",
-    "icon": "PowerIcon"
-  }
 ];
 
   

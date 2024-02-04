@@ -54,7 +54,7 @@
     }
 
     .product_button {
-      @apply relative flex items-center justify-center w-full h-8 mt-4 rounded-lg bg-colorPrimary;
+      @apply relative flex items-center justify-center w-full h-10 mt-4 rounded-lg bg-colorPrimary;
 
       img {
         @apply size-auto p-1;

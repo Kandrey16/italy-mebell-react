@@ -4,16 +4,16 @@ import arrow_logo from "@/assets/Arrow.svg";
 import favourite_logo from "@/assets/favourite.svg";
 import cart_logo from "@/assets/cart_2.svg";
 
-export default function ProductCard() {
+export default function ProductCard({ product }) {
   return (
     <>
       <div className={styles.product_card}>
         <div className={styles.img_place}>
-          <img src={image} alt="" />
+          <img src={product.image } alt="" />
         </div>
         <div className={styles.product_info}>
-          <h2 className={styles.product_name}>Стул Marokko</h2>
-          <p className={styles.product_price}>5000$</p>
+          <h2 className={styles.product_name}>{product.name_product}</h2>
+          <p className={styles.product_price}>{product.price_product}$</p>
           <div className={styles.product_options}>
             <div className={styles.product_link}>
               <a>Подробнее</a>
@@ -24,8 +24,8 @@ export default function ProductCard() {
             </button>
           </div>
           <button className={styles.product_button}>
-              <img src={cart_logo}></img>
-              <p>В корзину</p>
+            <img src={cart_logo}></img>
+            <p>В корзину</p>
           </button>
         </div>
       </div>

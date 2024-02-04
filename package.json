@@ -12,6 +12,7 @@
   "dependencies": {
     "@heroicons/react": "^2.1.1",
     "@material-tailwind/react": "^2.1.8",
+    "axios": "^1.6.7",
     "node-sass": "^9.0.0",
     "path": "^0.12.7",
     "react": "^18.2.0",
@@ -34,5 +35,6 @@
     "sass": "^1.70.0",
     "tailwindcss": "^3.4.1",
     "vite": "^5.0.8"
-  }
+  },
+  "proxy": "http://localhost:5000"
 }
