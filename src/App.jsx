@@ -6,8 +6,7 @@ import Navbar from "@/components/UI/Navbar/Navbar";
 
 import MainPage from "./pages/mainPage";
 import CatalogPage from "./pages/CatalogPage";
-
-
+import AdminPage from "./pages/AdminPage";
 
 function App() {
   return (
@@ -18,8 +17,8 @@ function App() {
         <Routes>
           <Route path="/main" element={<MainPage />} />
           <Route path="/catalog" element={<CatalogPage />} />
+          <Route path="/admin" element={<AdminPage />} />
         </Routes>
-
       </Router>
     </>
   );

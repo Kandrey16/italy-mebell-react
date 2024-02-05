@@ -12,10 +12,9 @@ export default function Navbar() {
           <li>
             <Link to="/catalog">Catalog</Link>
           </li>
-          <li>Стул</li>
-          <li>Кровать</li>
-          <li>Стол</li>
-          <li>Шкаф</li>
+          <li>
+            <Link to="/admin">Admin</Link>
+          </li>
         </ul>
       </nav>
     </>

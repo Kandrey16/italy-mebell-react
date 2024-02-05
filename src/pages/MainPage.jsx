@@ -1,4 +1,4 @@
-import { CarouselDefault } from "@/components/TailwindComponents/Carousel/Carousel";
+import { CarouselDefault } from "@/components/UI/Carousel/Carousel";
 import CatalogSection from "@/modules/CatalogCardSection/CatalogSection";
 
 export default function MainPage() {
