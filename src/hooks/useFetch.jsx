@@ -4,7 +4,7 @@ import axios from "axios";
 export function useFetch(url) {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
-
+  
   useEffect(() => {
     axios
       .get(url)
@@ -17,5 +17,5 @@ export function useFetch(url) {
       });
   }, [url]);
 
-  return [ data, error ];
+  return [data, error];
 }

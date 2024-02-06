@@ -1,21 +1,18 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ProductCard from "@/components/UI/ProductCard/ProductCard";
-import { getProducts, getProductImages } from "@/API/requests";
-import { dataProduct } from "@/data/dataProduct";
-import { useProductData } from "@/hooks/useProductData";
 import { useFetch } from "@/hooks/useFetch";
 
 export default function ProductSection() {
   // const [products, error] = useProductData();
-  const [products, error ] = useFetch("http://localhost:5000/api/product");
-
-  if (error) {
-    return <div>Ошибка: {error.message}</div>;
-  }
+  const [products, error] = useFetch("http://localhost:5000/api/product");
 
   if (!products) {
     return <div>Загрузка...</div>;
+  }
+
+  if (error) {
+    return <div>Ошибка: {error.message}</div>;
   }
 
   return (

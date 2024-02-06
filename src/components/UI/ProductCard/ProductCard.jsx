@@ -1,5 +1,4 @@
 import styles from "./ProductCard.module.scss";
-import image from "images/chair.jpg";
 import arrow_logo from "@/assets/Arrow.svg";
 import favourite_logo from "@/assets/favourite.svg";
 import cart_logo from "@/assets/cart_2.svg";

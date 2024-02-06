@@ -1,0 +1,7 @@
+.card {
+    @apply h-full w-full overflow-scroll;
+
+    table {
+        @apply w-full min-w-max table-auto text-left;
+    }
+}
