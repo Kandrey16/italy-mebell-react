@@ -1,142 +1,106 @@
-import {
-  Card,
-  Typography,
-  List,
-  ListItem,
-  ListItemPrefix,
-  ListItemSuffix,
-  Chip,
-  Accordion,
-  AccordionBody,
-  AccordionHeader,
-} from "@material-tailwind/react";
-import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import { Card } from "@material-tailwind/react";
+import { TableRow } from "./TableRow/TableRow";
+import { TableHead } from "./TableHead/TableHead";
+import { useFetch } from "@/hooks/useFetch";
+import styles from './DataTable.module.scss';
 
-import { useState } from "react";
+export default function DataTable() {
+  const [products, error] = useFetch("http://localhost:5000/api/product");
 
-export default function Sidebar() {
-  const [open, setOpen] = useState(0);
+  if (error) {
+    return <div>Ошибка: {error.message}</div>;
+  }
 
-  const handleOpen = (value) => {
-    setOpen(open === value ? 0 : value);
-  };
+  if (!products) {
+    return <div>Загрузка...</div>;
+  }
+
+  const TABLE_HEAD = [
+    "ID",
+    "Артикул",
+    "Название",
+    "Цена",
+    "Описание",
+    "Количество",
+    "Доступность",
+    "Дата создания",
+    "Дата изменения",
+    "Действия",
+  ];
+
+  // const tableHead = Object.keys(columnNames);
 
   return (
     <>
-      <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
-        <div className="mb-2 p-4">
-          <Typography variant="h5" color="black">
-            Фильтры
-          </Typography>
-        </div>
-        <List className="bg-white">
-          <Accordion
-            open={open === 1}
-            icon={
-              <ChevronDownIcon
-                strokeWidth={2.5}
-                className={`mx-auto h-4 w-4 transition-transform ${open === 1 ? "rotate-180" : ""}`}
-              />
-            }
-          >
-            <ListItem className="p-0" selected={open === 1}>
-              <AccordionHeader
-                onClick={() => handleOpen(1)}
-                className="border-b-0 p-3"
-              >
-                <ListItemPrefix>
-                  {/* <PresentationChartBarIcon className="h-5 w-5" /> */}
-                </ListItemPrefix>
-                <Typography color="blue-gray" className="mr-auto font-normal">
-                  Dashboard
-                </Typography>
-              </AccordionHeader>
-            </ListItem>
-            <AccordionBody className="py-1">
-              <List className="p-0 bg-white">
-                <ListItem>
-                  <ListItemPrefix>
-                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                  </ListItemPrefix>
-                  Analytics
-                </ListItem>
-                <ListItem>
-                  <ListItemPrefix>
-                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                  </ListItemPrefix>
-                  Reporting
-                </ListItem>
-                <ListItem>
-                  <ListItemPrefix>
-                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                  </ListItemPrefix>
-                  Projects
-                </ListItem>
-              </List>
-            </AccordionBody>
-          </Accordion>
-          <Accordion
-            open={open === 2}
-            icon={
-              <ChevronDownIcon
-                strokeWidth={2.5}
-                className={`mx-auto h-4 w-4 transition-transform ${open === 2 ? "rotate-180" : ""}`}
-              />
-            }
-          >
-            <ListItem className="p-0" selected={open === 2}>
-              <AccordionHeader
-                onClick={() => handleOpen(2)}
-                className="border-b-0 p-3"
-              >
-                <ListItemPrefix>
-                  {/* <ShoppingBagIcon className="h-5 w-5" /> */}
-                </ListItemPrefix>
-                <Typography color="blue-gray" className="mr-auto font-normal">
-                  E-Commerce
-                </Typography>
-              </AccordionHeader>
-            </ListItem>
-            <AccordionBody className="py-1">
-              <List className="p-0 bg-white">
-                <ListItem>
-                  <ListItemPrefix>
-                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                  </ListItemPrefix>
-                  Orders
-                </ListItem>
-                <ListItem>
-                  <ListItemPrefix>
-                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                  </ListItemPrefix>
-                  Products
-                </ListItem>
-              </List>
-            </AccordionBody>
-          </Accordion>
-          <ListItem>
-            <ListItemPrefix>
-              {/* <InboxIcon className="h-5 w-5" /> */}
-            </ListItemPrefix>
-            Inbox
-            <ListItemSuffix>
-              <Chip
-                value="14"
-                size="sm"
-                variant="ghost"
-                color="blue-gray"
-                className="rounded-full"
-              />
-            </ListItemSuffix>
-          </ListItem>
-          <ListItem>
-            <ListItemPrefix>
-              {/* <PowerIcon className="h-5 w-5" /> */}
-            </ListItemPrefix>
-            Log Out
-          </ListItem>
-        </List>
-      </Card>
+      <div className="container">
+        <Card className={styles.card}>
+          <table>
+            <thead>
+              <TableHead headers={TABLE_HEAD} />
+            </thead>
+            <tbody>
+              {products.map((data, index) => {
+                const isLast = index === products.length - 1;
+                return <TableRow data={data} isLast={isLast} key={index} />;
+              })}
+            </tbody>
+          </table>
+        </Card>
+      </div>
     </>
+  );
+}
+
+import { Typography } from "@material-tailwind/react";
+
+export function TableHead({headers}) {
+  return (
+    <tr>
+      {headers.map((head) => (
+        <th
+          key={head}
+          className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
+        >
+          <Typography
+            variant="small"
+            color="blue-gray"
+            className="font-normal leading-none opacity-70"
+          >
+            {head}
+            
+          </Typography>
+        </th>
+      ))}
+    </tr>
+  );
+}
+
+
+import { Typography } from "@material-tailwind/react";
+
+export function TableRow({ data, isLast }) {
+  const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
+
+  return (
+    <tr className="even:bg-blue-gray-50/50">
+      {Object.values(data).map((value, index) => (
+        <td key={index} className={classes}>
+          <Typography variant="small" color="blue-gray" className="font-normal">
+            {value}
+          </Typography>
+        </td>
+      ))}
+      <td className={classes}>
+        <Typography
+          as="a"
+          href="#"
+          variant="small"
+          color="blue-gray"
+          className="font-medium"
+        >
+          Edit
+        </Typography>
+      </td>
+    </tr>
   );
 }

@@ -1,52 +1,55 @@
-import { Card } from "@material-tailwind/react";
+//DataTable.jsx
+import { Card, CardBody } from "@material-tailwind/react";
 import { TableRow } from "./TableRow/TableRow";
 import { TableHead } from "./TableHead/TableHead";
 import { useFetch } from "@/hooks/useFetch";
-import styles from './DataTable.module.scss';
+import { getProducts } from "@/API/requests";
+// import styles from "./DataTable.module.scss";
 
-export default function DataTable() {
-  const [products, error] = useFetch("http://localhost:5000/api/product");
+const TABLE_HEAD = [
+  "ID",
+  "Артикул",
+  "Название",
+  "Цена",
+  "Описание",
+  "Количество",
+  "Доступность",
+  "Дата создания",
+  "Дата изменения",
+];
+
+//NOTE: Компонент для инверсального вывода данных из API в таблицу
+export default function DataTable({request}) {
+  const [data, error] = useFetch(request);
 
   if (error) {
     return <div>Ошибка: {error.message}</div>;
   }
 
-  if (!products) {
+  if (!data) {
     return <div>Загрузка...</div>;
   }
 
-  const TABLE_HEAD = [
-    "ID",
-    "Артикул",
-    "Название",
-    "Цена",
-    "Описание",
-    "Количество",
-    "Доступность",
-    "Дата создания",
-    "Дата изменения",
-    "Действия",
-  ];
-
-  // const tableHead = Object.keys(columnNames);
+  //Использует поля таблицы в качестве название столбцов
+  const tableHead = Object.keys(data[0]);
 
   return (
     <>
-      <div className="container">
-        <Card className={styles.card}>
-          <table>
+      <Card className="m-4">
+        <CardBody className="overflow-scroll px-0">
+          <table className="p-8 w-full min-w-max table-auto text-left rounded-xl">
             <thead>
-              <TableHead headers={TABLE_HEAD} />
+              {/* Здесь меняется переменная в header */}
+              <TableHead headers={tableHead} />
             </thead>
             <tbody>
-              {products.map((data, index) => {
-                const isLast = index === products.length - 1;
-                return <TableRow data={data} isLast={isLast} key={index} />;
+              {data.map((data, index) => {
+                return <TableRow data={data} key={index} />;
               })}
             </tbody>
           </table>
-        </Card>
-      </div>
+        </CardBody>
+      </Card>
     </>
   );
 }

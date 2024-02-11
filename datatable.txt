@@ -1,0 +1,116 @@
+import {
+  MagnifyingGlassIcon,
+  ChevronUpDownIcon,
+} from "@heroicons/react/24/outline";
+import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import {
+  Card,
+  CardHeader,
+  Input,
+  Typography,
+  Button,
+  CardBody,
+  Chip,
+  CardFooter,
+  Tabs,
+  TabsHeader,
+  Tab,
+  Avatar,
+  IconButton,
+  Tooltip,
+} from "@material-tailwind/react";
+import { TableRow } from "./TableRow/TableRow";
+import { TableHead } from "./TableHead/TableHead";
+import { useFetch } from "@/hooks/useFetch";
+// import styles from "./DataTable.module.scss";
+
+const TABS = [
+  {
+    label: "All",
+    value: "all",
+  },
+  {
+    label: "Monitored",
+    value: "monitored",
+  },
+  {
+    label: "Unmonitored",
+    value: "unmonitored",
+  },
+];
+
+const TABLE_HEAD = [
+  "ID",
+  "Артикул",
+  "Название",
+  "Цена",
+  "Описание",
+  "Количество",
+  "Доступность",
+  "Дата создания",
+  "Дата изменения",
+];
+
+const url = "http://localhost:5000/api/product";
+
+export default function DataTable() {
+  const [data, error] = useFetch("http://localhost:5000/api/product");
+
+  if (error) {
+    return <div>Ошибка: {error.message}</div>;
+  }
+
+  if (!data) {
+    return <div>Загрузка...</div>;
+  }
+
+  // const tableHead = Object.keys(columnNames);
+
+  return (
+    <>
+      <Card>
+        <CardHeader floated={false} shadow={false} className="rounded-none">
+          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+            {/* вынести как отдельные компоненты поиск и кнопки */}
+            <Tabs value="all" className="w-full md:w-max">
+              <TabsHeader>
+                {TABS.map(({ label, value }) => (
+                  <Tab key={value} value={value}>
+                    &nbsp;&nbsp;{label}&nbsp;&nbsp;
+                  </Tab>
+                ))}
+              </TabsHeader>
+            </Tabs>
+            <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+              <div className="w-full md:w-72">
+                <Input
+                  label="Search"
+                  icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                />
+              </div>
+              <Button variant="outlined" size="sm">
+                view all
+              </Button>
+              <Button className="flex items-center gap-3" size="sm">
+                <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member
+              </Button>
+            </div>
+          </div>
+        </CardHeader>
+
+        <CardBody className="overflow-scroll px-0">
+          <table className="mt-4 w-full min-w-max table-auto text-left">
+            <thead>
+              <TableHead headers={TABLE_HEAD} />
+            </thead>
+            <tbody>
+              {data.map((data, index) => {
+                return <TableRow data={data} key={index} />;
+              })}
+            </tbody>
+          </table>
+        </CardBody>
+      </Card>
+    </>
+  );
+}
