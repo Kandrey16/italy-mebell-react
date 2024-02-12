@@ -2,7 +2,7 @@ import { Typography } from "@material-tailwind/react";
 export default function TableHead({ data }) {
   return (
     <>
-      <th
+      <th // Вывод заголовков таблицы
         key={data}
         className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
       >
