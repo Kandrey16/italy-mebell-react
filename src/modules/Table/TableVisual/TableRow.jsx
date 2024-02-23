@@ -12,7 +12,7 @@ export default function TableRow({ product, handleDelete, setEditProduct }) {
         <TableCell key={key} data={value} />
       ))}
       {/* Редатирование */}
-      <td> 
+      <td>
         <button className="relative" onClick={() => setEditProduct(product)}>
           <img className="size-auto" src={EditIcon}></img>
         </button>

@@ -1,9 +1,9 @@
 import { Card, Typography, List } from "@material-tailwind/react";
-import SidebarItem from "./SidebarItem/SidebarItem";
+import SidebarItem from "./SidebarItem/SidebarItemWithCheckBox";
 import { SidebarItems } from "@/data/dataSidebar";
 import styles from "./Sidebar.module.scss";
 
-export default function Sidebar() {
+export default function SidebarFilter() {
   return (
     <>
       <Card className={styles.card}>

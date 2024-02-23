@@ -2,12 +2,23 @@
 import axios from "axios";
 import { API_URL } from "./config";
 
-export function getProducts() {
+export async function getProducts() {
     return axios({
-        url: `${API_URL}/product`, 
+        url: `${API_URL}/product`,
         method: 'GET'
     });
 }
+    // const products = response.data;
+    // const imagePromises = products.map(async product => {
+    //     const res = await axios({
+    //         url: `${API_URL}/productImage/${product.id}`,
+    //         method: 'GET'
+    //     });
+    //     product.images = res.data;
+    // });
+    // await Promise.all(imagePromises);
+    // return products; 
+    // }
 
 export function createProduct(data) {
     return axios({
@@ -37,4 +48,27 @@ export function getProductImages() {
         url: `${API_URL}/product_image`, 
         method: 'GET'
     });
+}
+
+export async function getProductsAndImages() {
+    try {
+        const [productsResponse, imagesResponse] = await Promise.all([
+            axios({ url: `${API_URL}/product`, method: 'GET' }),
+            axios({ url: `${API_URL}/product_image`, method: 'GET' })
+        ]);
+
+        const products = productsResponse.data;
+        const images = imagesResponse.data;
+
+        // Объедините данные по вашему усмотрению
+        // Например, если у каждого продукта есть поле id и каждое изображение имеет поле productId
+        const productsWithImages = products.map(product => ({
+            ...product,
+            images: images.filter(image => image.id_product === product.id_product)
+        }));
+
+        return productsWithImages;
+    } catch (error) {
+        console.error(error);
+    }
 }

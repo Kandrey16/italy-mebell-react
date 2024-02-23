@@ -12,7 +12,7 @@ import {
   Checkbox,
 } from "@material-tailwind/react";
 
-export default function SidebarItem({ title, items }) {
+export default function SidebarItemWithCheckBox({ title, items }) {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -42,7 +42,19 @@ export default function SidebarItem({ title, items }) {
           <AccordionBody className="py-1">
             <List className="p-0">
               {items.map((item, index) => (
-                <ListItem key={index}>{item}</ListItem>
+                <ListItem key={index}>
+                  <ListItemPrefix>
+                    <Checkbox
+                      id="vertical-list-react"
+                      ripple={false}
+                      className="hover:before:opacity-0"
+                      containerProps={{
+                        className: "p-0",
+                      }}
+                    />
+                  </ListItemPrefix>
+                  {item}
+                </ListItem>
               ))}
             </List>
           </AccordionBody>

@@ -6,15 +6,15 @@ export default function Navbar() {
     <>
       <nav className={styles.navbar}>
         <ul>
-          <li>
+        <li>
             <Link to="/main">Main</Link>
           </li>
           <li>
             <Link to="/catalog">Catalog</Link>
           </li>
           <li>
-            <Link to="/admin">Admin</Link>
-          </li>
+              <Link to="/admin">Admin</Link>
+            </li>
         </ul>
       </nav>
     </>

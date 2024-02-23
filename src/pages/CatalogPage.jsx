@@ -1,4 +1,4 @@
-import Sidebar from "@/modules/Sidebar/Sidebar";
+import Sidebar from "@/modules/Sidebar/SidebarFilter";
 import ProductSection from "@/modules/ProductSection/ProductSection";
 export default function CatalogPage() {
   return (

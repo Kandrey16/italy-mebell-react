@@ -6,12 +6,15 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
+  getProductImages,
+  getProductsAndImages
 } from "@/API/requests.js";
 import TableHead from "./TableVisual/TableHead";
 import TableRow from "./TableVisual/TableRow";
 import TableEditRow from "./TableFunction/TableEditRow";
 import TableEditCard from "./TableFunction/TableEditCard";
 import PlusIcon from "@/assets/plus.svg";
+import { DialogWithForm } from "./TableFunction/TableDialog";
 
 // Заголовки страницы
 const TABLE_HEAD = [
@@ -48,7 +51,7 @@ export default function ProductTable() {
   const [product, setProduct] = useState([]); // Список продуктов
   const [newProduct, setNewProduct] = useState({}); // Новый продукт для добавления
   const [editProduct, setEditProduct] = useState(null); // Продукт для редактирования
-  const [isActiveRow, setIsActiveRow] = useState(false); // Состояние активной строки для редактировани
+  const [isActiveRow, setIsActiveRow] = useState(false); // Состояние активной строки для редактирования
 
   // Загрузка продуктов при монтировании компонента
   useEffect(() => {
@@ -93,22 +96,26 @@ export default function ProductTable() {
   return (
     <>
       {/* Тело товара */}
-      <Card className="m-8 rounded-xl transition-al overflow-auto">
+      <Card
+        className="m-8 rounded-xl transition-al overflow-auto"
+        // style={{ width: "clamp(20rem, 50vw, 100rem)" }}
+      >
         <table className="table-auto text-left">
           {/* Вывод заголовков таблицы */}
           <thead>
             <tr>
-              {TABLE_HEAD.map((head) => (
-                <TableHead data={head} />
+              {TABLE_HEAD.map((head, index) => (
+                <TableHead key={index} data={head} />
               ))}
             </tr>
           </thead>
           <tbody>
-            {product.map((product) => {
-              // Вывод данных таблицы
+            {/* Вывод строк таблицы */}
+
+            {product.map((product, index) => {
               return (
-                // Вывод строк таблицы
                 <TableRow
+                  key={index}
                   product={product} // данные товаров
                   setEditProduct={setEditProduct} // метод изменения
                   handleDelete={handleDelete} // метод удаления
