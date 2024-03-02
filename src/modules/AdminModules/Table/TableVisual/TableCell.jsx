@@ -12,7 +12,7 @@ export default function TableCell({ data }) {
         border border-gray-200"
       >
         <Typography variant="small" color="blue-gray" className="font-normal">
-          {data}
+          {data || "No data available"}
         </Typography>
       </td>
     </>

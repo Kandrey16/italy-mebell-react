@@ -11,6 +11,7 @@ import {
   AccordionBody,
   Alert,
   Input,
+  Button,
 } from "@material-tailwind/react";
 import {
   ChevronRightIcon,
@@ -20,10 +21,10 @@ import {
   PresentationChartBarIcon,
 } from "@heroicons/react/24/outline";
 
-import SidebarItem from "./SidebarItem/SidebarItem";
+import SidebarItem from "../../ClientModules/Sidebar/SidebarItem/SidebarItem";
 import { SidebarItems } from "@/data/dataSidebar";
 import styles from "./Sidebar.module.scss";
-import { Route, Routes } from "react-router-dom";
+import { NavLink, Route, Routes } from "react-router-dom";
 import { useState } from "react";
 
 export default function SidebarNavigation() {
@@ -33,6 +34,7 @@ export default function SidebarNavigation() {
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
+
   return (
     <>
       <Card className={styles.card}>
@@ -41,8 +43,16 @@ export default function SidebarNavigation() {
             ItalyMebell
           </Typography>
         </div>
-        <List className={styles.list}>
-          <Accordion
+        <List>
+          <ListItem>
+            <NavLink>Товары</NavLink>
+          </ListItem>
+          <ListItem>
+            <NavLink>Категории</NavLink>
+          </ListItem>
+        </List>
+      </Card>
+      {/* <Accordion
             open={open === 1}
             icon={
               <ChevronDownIcon
@@ -86,9 +96,7 @@ export default function SidebarNavigation() {
                 </ListItem>
               </List>
             </AccordionBody>
-          </Accordion>
-        </List>
-      </Card>
+          </Accordion> */}
     </>
   );
 }

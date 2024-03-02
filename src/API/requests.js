@@ -2,7 +2,7 @@
 import axios from "axios";
 import { API_URL } from "./config";
 
-export async function getProducts() {
+export async function fetchProducts() {
     return axios({
         url: `${API_URL}/product`,
         method: 'GET'
@@ -20,7 +20,7 @@ export async function getProducts() {
     // return products; 
     // }
 
-export function createProduct(data) {
+export async function createProduct(data) {
     return axios({
         url: `${API_URL}/product`, 
         method: 'POST',
@@ -28,7 +28,7 @@ export function createProduct(data) {
     });
 }
 
-export function updateProduct(id, data) {
+export async function editProduct(data) {
     return axios({
         url: `${API_URL}/product/${id}`, 
         method: 'PUT',
@@ -36,7 +36,7 @@ export function updateProduct(id, data) {
     });
 }
 
-export function deleteProduct(id) {
+export async function deleteProduct(id) {
     return axios({
         url: `${API_URL}/product/${id}`, 
         method: 'DELETE',

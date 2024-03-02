@@ -7,8 +7,6 @@ import {
   Dialog,
   CardBody,
   CardFooter,
-  Typography,
-  Checkbox,
 } from "@material-tailwind/react";
 
 export default function TableEditCard({

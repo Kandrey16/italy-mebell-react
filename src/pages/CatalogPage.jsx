@@ -1,9 +1,8 @@
-import Sidebar from "@/modules/Sidebar/SidebarFilter";
-import ProductSection from "@/modules/ProductSection/ProductSection";
+import Sidebar from "@/modules/ClientModules/Sidebar/SidebarFilter";
+import ProductSection from "@/modules/ClientModules/ProductSection/ProductSection";
 export default function CatalogPage() {
   return (
     <>
-      <h1>Каталог</h1>
       <div className="container">
         <div className="grid grid-cols-4">
           <div className="col">
