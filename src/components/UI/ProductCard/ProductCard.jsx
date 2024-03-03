@@ -22,7 +22,7 @@ export default function ProductCard({ product }) {
         </div>
         <div className={styles.product_info}>
           <h2 className={styles.product_name}>{product.name_product}</h2>
-          <p className={styles.product_price}>{product.price_product}$</p>
+          <p className={styles.product_price}>{product.price_product}₽</p>
           <div className={styles.product_options}>
             <div className={styles.product_link}>
               <a>Подробнее</a>

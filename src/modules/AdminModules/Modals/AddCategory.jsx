@@ -7,8 +7,18 @@ import {
   Input,
   Typography,
 } from "@material-tailwind/react";
+import { createCategory } from "@/API/ProductAPI";
 
 export default function CategoryAddForm({ show, onHide }) {
+  const [value, setValue] = useState("");
+
+  const addCategory = () => {
+    createCategory({ name_category: value }).then((data) => {
+      setValue("");
+      onHide()
+    });
+  };
+
   return (
     <Dialog
       open={show}
@@ -22,14 +32,17 @@ export default function CategoryAddForm({ show, onHide }) {
           <form>
             <div>
               <Typography>Категория</Typography>
-              <Input size="lg"/>
+              <Input
+                size="lg"
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+              />
             </div>
             <Button
               className="my-2"
               color="blue"
               size="md"
-              type="submit"
-              onClick={onHide}
+              onClick={addCategory}
             >
               Создать
             </Button>

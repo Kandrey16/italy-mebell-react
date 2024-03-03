@@ -10,21 +10,51 @@ import {
   Option,
 } from "@material-tailwind/react";
 import { Context } from "@/main";
+import { fetchCategories, fetchProducts, createProduct } from "@/API/ProductAPI";
+import { observer } from "mobx-react";
 
-export default function ProductAddForm({ show, onHide }) {
+const ProductAddForm = observer(({ show, onHide }) => {
   const { product } = useContext(Context);
+  const [name, setName] = useState("");
+  const [article, setArticle] = useState("");
+  const [price, setPrice] = useState(0);
+  const [file, setFile] = useState(null);
+  const [description, setDescription] = useState("");
+  const [count, setCount] = useState("");
   const [specification, setSpecification] = useState([]);
+
+  useEffect(() => {
+    fetchCategories().then((data) => product.setCategories(data));
+    fetchProducts().then((data) => product.setProducts(data));
+  }, []);
 
   function addSpecification() {
     setSpecification([
       ...specification,
-      {id: Date.now() ,name_atribute: "", value_specification: "" },
+      { id: Date.now(), name_atribute: "", value_specification: "" },
     ]);
   }
 
   function removeSpecification(id) {
-    setSpecification(specification.filter(i => i.id !== id))
+    setSpecification(specification.filter((i) => i.id !== id));
   }
+
+  const selectFile = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const addProduct = () => {
+    const formData = new FormData();
+    formData.append("name_product", name);
+    formData.append("article_product", article);
+    formData.append("price_product", `${price}`);
+    formData.append("url_main_image_product", file);
+    formData.append("description_product", description);
+    formData.append("count_product", `${count}`);
+    formData.append("category_id", product.selectedCategory.id);
+    createProduct(formData).then((data) => onHide());
+  };
+
   return (
     <Dialog
       open={show}
@@ -37,40 +67,71 @@ export default function ProductAddForm({ show, onHide }) {
         <CardBody>
           <form>
             <div className="flex flex-col gap-4">
-              <Input size="lg" label="Название" />
-              <Input size="lg" label="Артикул" />
+              <Input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                size="lg"
+                label="Название"
+              />
+              <Input
+                value={article}
+                onChange={(e) => setArticle(e.target.value)}
+                size="lg"
+                label="Артикул"
+              />
               <Select color="blue" label="Категория">
-                {product.categories.map((cat) => (
-                  <Option key={cat.id}>{cat.name_category}</Option>
+                {product.categories.map((category) => (
+                  <Option
+                    onClick={() => product.setSelectedCategory(category)}
+                    key={category.id_category}
+                  >
+                    {category.name_category}
+                  </Option>
                 ))}
               </Select>
-              <Input size="lg" label="Цена" />
-              <Input size="lg" label="Количество" />
-              <Input size="lg" label="Описание" />
-              <input type="file" />
+              <Input
+                value={price}
+                onChange={(e) => setPrice(Number(e.target.value))}
+                size="lg"
+                type="number"
+                label="Цена"
+              />
+              <Input
+                value={count}
+                onChange={(e) => setCount(Number(e.target.value))}
+                size="lg"
+                type="number"
+                label="Количество"
+              />
+              <Input
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                size="lg"
+                label="Описание"
+              />
+              <input type="file" onChange={selectFile} />
               <Button variant="outlined" onClick={addSpecification}>
                 Добавить новую характеристику
               </Button>
-              {specification.map((i) => (
+              {/* {specification.map((i) => (
                 <div className="grid grid-cols-3 gap-3">
-                    <Select
-                      className="col"
-                      placeholder="Выберите характеристику"
-                    >
-                      <Option>Ширина</Option>
-                    </Select>
-                    <Input
-                      className="col"
-                      label="Значение"
-                    ></Input>
-                    <Button className="col" variant="outlined" color="red" onClick={() => removeSpecification(i.id)}>
-                      Удалить
-                    </Button>
+                  <Select className="col" placeholder="Выберите характеристику">
+                    <Option>Ширина</Option>
+                  </Select>
+                  <Input className="col" label="Значение"></Input>
+                  <Button
+                    className="col"
+                    variant="outlined"
+                    color="red"
+                    onClick={() => removeSpecification(i.id)}
+                  >
+                    Удалить
+                  </Button>
                 </div>
-              ))}
+              ))} */}
             </div>
             <hr />
-            <Button className="m-2" color="blue" size="md" onClick={onHide}>
+            <Button className="m-2" color="blue" size="md" onClick={addProduct}>
               Создать
             </Button>
             <Button
@@ -87,4 +148,6 @@ export default function ProductAddForm({ show, onHide }) {
       </Card>
     </Dialog>
   );
-}
+});
+
+export default ProductAddForm;
