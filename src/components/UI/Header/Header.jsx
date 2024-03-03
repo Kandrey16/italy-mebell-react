@@ -2,14 +2,21 @@ import styles from "./Header.module.scss";
 import Search from "./Search/Search";
 import Catalog from "./Catalog/Catalog";
 import { Button } from "@material-tailwind/react";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Context } from "@/main";
 import { observer } from "mobx-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { ADMIN_ROUTE, LOGIN_ROUTE } from "@/routes/utils/consts";
 
 export const Header = observer(() => {
   const { user } = useContext(Context);
+  const navigate = useNavigate();
+
+  const logOut = () => {
+    user.setUser({});
+    user.setIsAuth(false);
+  };
+
   return (
     <>
       <header>
@@ -37,7 +44,7 @@ export const Header = observer(() => {
                 variant="outlined"
                 size="sm"
                 color="black"
-                onClick={() => user.setIsAuth(false)}
+                onClick={() => logOut()}
               >
                 Выйти
               </Button>
@@ -45,17 +52,17 @@ export const Header = observer(() => {
           </div>
         ) : (
           <div>
-            <NavLink to={LOGIN_ROUTE}>
-              <Button
-                className="relative"
-                variant="outlined"
-                size="sm"
-                color="blue"
-                onClick={() => user.setIsAuth(true)}
-              >
-                Войти
-              </Button>
-            </NavLink>
+            {/* <NavLink to={LOGIN_ROUTE}> */}
+            <Button
+              className="relative"
+              variant="outlined"
+              size="sm"
+              color="blue"
+              onClick={() => navigate(LOGIN_ROUTE)}
+            >
+              Войти
+            </Button>
+            {/* </NavLink> */}
           </div>
         )}
       </header>

@@ -1,7 +1,6 @@
 import AdminPage from "@/pages/AdminPage"
 import { ADMIN_ROUTE, BASKET_ROUTE, CATALOG_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, PRODUCT_ROUTE, REGISTRATION_ROUTE } from "./utils/consts"
 import LoginPage from "@/pages/LoginPage"
-import RegistrationPage from "@/pages/RegistrationPage"
 import CatalogPage from "@/pages/CatalogPage"
 import MainPage from "@/pages/MainPage"
 import BasketPage from "@/pages/BasketPage"
@@ -28,9 +27,9 @@ export const publicRoutes = [
         Component: CatalogPage
     },
     {
-    //     // path: PRODUCT_ROUTE + '/:id',
-         path: PRODUCT_ROUTE,
-         Component: ProductPage
+        path: PRODUCT_ROUTE + '/:id',
+        //  path: PRODUCT_ROUTE,
+        Component: ProductPage
     },
     {
         path: BASKET_ROUTE,
@@ -42,6 +41,6 @@ export const publicRoutes = [
     },
     {
         path: REGISTRATION_ROUTE,
-        Component: RegistrationPage
+        Component: LoginPage
     },
 ]

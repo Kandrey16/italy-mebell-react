@@ -1,3 +1,5 @@
+import { login, registration } from "@/API/UserAPI";
+import { Context } from "@/main";
 import {
   LOGIN_ROUTE,
   MAIN_ROUTE,
@@ -10,13 +12,33 @@ import {
   Button,
   Checkbox,
 } from "@material-tailwind/react";
-import { NavLink, useLocation } from "react-router-dom";
+import { observer } from "mobx-react";
+import { useContext, useState } from "react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
-export default function LoginPage() {
+const LoginPage = observer(() => {
+  const { user } = useContext(Context);
+  const navigate = useNavigate();
   const location = useLocation();
   const isLogin = location.pathname === LOGIN_ROUTE;
-  console.log(location);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
+  const signIn = async () => {
+    try {
+      let data;
+      if (isLogin) {
+        data = await login(email, password);
+      } else {
+        data = await registration(email, password);
+      }
+      user.setUser(user);
+      user.setIsAuth(true);
+      navigate(MAIN_ROUTE);
+    } catch (error) {
+      alert(e.response.data.message);
+    }
+  };
   return (
     <>
       <div className="container flex flex-col items-center justify-center">
@@ -33,8 +55,9 @@ export default function LoginPage() {
                 Почта
               </Typography>
               <Input
-                placeholder="name@mail.com"
                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="my-3">
@@ -42,8 +65,10 @@ export default function LoginPage() {
                 Пароль
               </Typography>
               <Input
-                placeholder="name@mail.com"
                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <div className="flex items-center justify-between">
@@ -53,7 +78,7 @@ export default function LoginPage() {
               </div>
               <NavLink>Забыли пароль?</NavLink>
             </div>
-            <Button className="mt-6" color="blue" fullWidth>
+            <Button className="mt-6" color="blue" onClick={signIn}>
               {isLogin ? "Вход" : "Регистрация"}
             </Button>
             {isLogin ? (
@@ -82,4 +107,6 @@ export default function LoginPage() {
       </div>
     </>
   );
-}
+});
+
+export default LoginPage;

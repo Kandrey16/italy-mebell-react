@@ -3,14 +3,20 @@ import arrow_logo from "@/assets/Arrow.svg";
 import favourite_logo from "@/assets/favourite.svg";
 import cart_logo from "@/assets/cart_2.svg";
 import noProduct from "images/noPicture.jpg";
+import { useNavigate } from "react-router-dom";
+import { PRODUCT_ROUTE } from "@/routes/utils/consts";
 
 export default function ProductCard({ product }) {
-  
-  const imageUrl = product.images && product.images.length > 0 ? product.images[0].url_image : noProduct;
-
+  const navigate = useNavigate();
+  const imageUrl = product.url_main_image_product
+    ? `${import.meta.env.VITE_APP_API_URL}/${product.url_main_image_product}`
+    : noProduct;
   return (
     <>
-      <div className={styles.product_card}>
+      <div
+        className={styles.product_card}
+        onClick={() => navigate(PRODUCT_ROUTE + "/" + product.id_product)}
+      >
         <div className={styles.img_place}>
           <img src={imageUrl} alt="" />
         </div>

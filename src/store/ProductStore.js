@@ -3,23 +3,12 @@ import { makeAutoObservable } from "mobx"
 export default class ProductStore {
     constructor() {
         this._categories = [
-            {id:1, name_category: 'Стулья'},
-            {id:2, name_category: 'Столы'},
-            {id:3, name_category: 'Спальни'},
+            
         ]
         this._products = [
-            {
-                id_product: 64,
-                article_product: "ART345678",
-                name_product: "Шкаф для книг",
-                price_product: "15000.00",
-                url_main_image_product: "ffde0ce7-f2da-4b5e-a54e-ba97e6356974.jpg",
-                description_product: "Прочный шкаф для книг с полками из массива дерева",
-                count_product: 12,
-                is_enabled: false,
-                id_category: "1"
-            },
+            
         ]
+        this._selectedCategory = {}
         makeAutoObservable(this)
     } 
 
@@ -27,7 +16,11 @@ export default class ProductStore {
         this._categories = categories
     }
 
-    setProduct(products) {
+    setSelectedCategory(category) {
+        this._selectedCategory = category
+    }
+
+    setProducts(products) {
         this._products = products
     }
 
@@ -35,6 +28,9 @@ export default class ProductStore {
         return this._categories
     }
 
+    get selectedCategory() {
+        return this._selectedCategory
+    }
     get products() {
         return this._products
     }

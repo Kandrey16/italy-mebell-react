@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 export default function RegistrationPage() {
   return (
     <>
-      <div className="container flex flex-col items-center justify-center">
+      {/* <div className="container flex flex-col items-center justify-center">
         <Typography variant="h3" className="my-10">
           Регистрация
         </Typography>
@@ -63,7 +63,7 @@ export default function RegistrationPage() {
             </Typography>
           </form>
         </Card>
-      </div>
+      </div> */}
     </>
   );
 }
