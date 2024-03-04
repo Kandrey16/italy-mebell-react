@@ -113,7 +113,7 @@ export default function ProductTable() {
         </table>
       </Card>
       <div>
-        <Button color="blue" onClick={() => setIsActiveRow(true)}>
+        {/* <Button color="blue" onClick={() => setIsActiveRow(true)}>
           Добавить товар
         </Button>
         {isActiveRow && <ProductAddForm />}
@@ -123,7 +123,7 @@ export default function ProductTable() {
             onCancel={handleCancelEdit}
             onSave={handleUpdateProduct}
           />
-        )}
+        )} */}
       </div>
     </>
   );

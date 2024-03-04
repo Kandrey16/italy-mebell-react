@@ -1,4 +1,5 @@
-import { makeAutoObservable } from "mobx"
+import { makeAutoObservable, action } from "mobx"
+import { editProduct, deleteProduct } from "@/API/ProductAPI"
 
 export default class ProductStore {
     constructor() {
@@ -11,6 +12,18 @@ export default class ProductStore {
         this._selectedCategory = {}
         makeAutoObservable(this)
     } 
+
+    editProduct = async (id, editedProduct) => {
+        const data = await editProduct(id, editedProduct);
+        this.products = this.products.map(product => product.id_product === id ? data : product);
+    };
+
+    deleteProduct = async (id) => {
+        await deleteProduct(id);
+        action(() => {
+            this._products = this._products.filter(product => product.id_product !== id);
+        })();
+    };
 
     setCategories(categories) {
         this._categories = categories

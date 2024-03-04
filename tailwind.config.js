@@ -18,6 +18,7 @@ export default withMT({
     },
     container: {
       center: true,
+      
     },
     extend: {
       colors: {

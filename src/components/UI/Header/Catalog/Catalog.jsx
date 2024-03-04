@@ -1,8 +1,10 @@
+import { NavLink } from "react-router-dom";
 import styles from "./Catalog.module.scss";
+import { CATALOG_ROUTE } from "@/routes/utils/consts";
 
 export default function Catalog() {
   return (
-    <div className={styles.catalog}>
+    <NavLink className={styles.catalog} to={CATALOG_ROUTE}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="25"
@@ -19,6 +21,6 @@ export default function Catalog() {
         />
       </svg>
       <p>Каталог</p>
-    </div>
+    </NavLink>
   );
 }

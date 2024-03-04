@@ -10,7 +10,11 @@ import {
   Option,
 } from "@material-tailwind/react";
 import { Context } from "@/main";
-import { fetchCategories, fetchProducts, createProduct } from "@/API/ProductAPI";
+import {
+  fetchCategories,
+  fetchProducts,
+  createProduct,
+} from "@/API/ProductAPI";
 import { observer } from "mobx-react";
 
 const ProductAddForm = observer(({ show, onHide }) => {
@@ -52,7 +56,10 @@ const ProductAddForm = observer(({ show, onHide }) => {
     formData.append("description_product", description);
     formData.append("count_product", `${count}`);
     formData.append("category_id", product.selectedCategory.id);
-    createProduct(formData).then((data) => onHide());
+    createProduct(formData).then((data) => {
+      fetchProducts().then((data) => product.setProducts(data)); // Обновление продуктов
+      onHide();
+    });
   };
 
   return (
@@ -91,14 +98,14 @@ const ProductAddForm = observer(({ show, onHide }) => {
               </Select>
               <Input
                 value={price}
-                onChange={(e) => setPrice(Number(e.target.value))}
+                onChange={(e) => setPrice(e.target.value)}
                 size="lg"
                 type="number"
                 label="Цена"
               />
               <Input
                 value={count}
-                onChange={(e) => setCount(Number(e.target.value))}
+                onChange={(e) => setCount(e.target.value)}
                 size="lg"
                 type="number"
                 label="Количество"

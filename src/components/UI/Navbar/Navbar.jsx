@@ -13,9 +13,6 @@ export default function Navbar() {
           <li>
             <NavLink to={CATALOG_ROUTE}>Catalog</NavLink>
           </li>
-          <li>
-            <NavLink to={PRODUCT_ROUTE}>Product</NavLink>
-          </li>
         </ul>
       </nav>
     </>

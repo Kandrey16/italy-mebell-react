@@ -28,7 +28,6 @@ export const publicRoutes = [
     },
     {
         path: PRODUCT_ROUTE + '/:id',
-        //  path: PRODUCT_ROUTE,
         Component: ProductPage
     },
     {

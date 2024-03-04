@@ -6,7 +6,10 @@ import { useContext, useEffect } from "react";
 import { Context } from "@/main";
 import { observer } from "mobx-react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { ADMIN_ROUTE, LOGIN_ROUTE } from "@/routes/utils/consts";
+import { ADMIN_ROUTE, LOGIN_ROUTE, MAIN_ROUTE } from "@/routes/utils/consts";
+import adminIcon from "@/assets/AdminIcon.svg";
+import logOutIcon from "@/assets/LogoutIcon.svg";
+import logInIcon from "@/assets/LoginIcon.svg";
 
 export const Header = observer(() => {
   const { user } = useContext(Context);
@@ -17,43 +20,34 @@ export const Header = observer(() => {
     user.setIsAuth(false);
   };
 
+  //TODO: растянуть весь header на всю ширину экрана
+  //Иконки в правый угол
   return (
     <>
       <header>
-        <a>ItalyMebell</a>
+        {/* <div className={styles.header_main}> */}
+        <a onClick={() => navigate(MAIN_ROUTE)}>ItalyMebell</a>
         <Catalog></Catalog>
         <Search></Search>
         <div className={styles.header_info}>
           <h4>+7(999)-888-77-66</h4>
           <span>Ежедневно 09:00-21:00</span>
         </div>
+        {/* </div> */}
+        {/* <div className={styles.header_icons}> */}
         {user.isAuth ? (
-          <div>
+          <div className={styles.header_icons}>
             <NavLink to={ADMIN_ROUTE}>
-              <Button
-                className="mx-2 text-base"
-                variant="gradient"
-                color="blue"
-              >
-                Admin
-              </Button>
+              <img src={adminIcon}></img>
             </NavLink>
             <NavLink to={LOGIN_ROUTE}>
-              <Button
-                className="mx-2 text-base"
-                variant="outlined"
-                size="sm"
-                color="black"
-                onClick={() => logOut()}
-              >
-                Выйти
-              </Button>
+              <img src={logOutIcon} onClick={() => logOut()} />
             </NavLink>
           </div>
         ) : (
-          <div>
-            {/* <NavLink to={LOGIN_ROUTE}> */}
-            <Button
+          <div className={styles.header_icons}>
+            <NavLink to={LOGIN_ROUTE}>
+              {/* <Button
               className="relative"
               variant="outlined"
               size="sm"
@@ -61,10 +55,12 @@ export const Header = observer(() => {
               onClick={() => navigate(LOGIN_ROUTE)}
             >
               Войти
-            </Button>
-            {/* </NavLink> */}
+            </Button> */}
+              <img src={logInIcon}></img>
+            </NavLink>
           </div>
         )}
+        {/* </div> */}
       </header>
     </>
   );

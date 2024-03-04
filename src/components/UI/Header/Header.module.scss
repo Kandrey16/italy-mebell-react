@@ -1,5 +1,5 @@
 header {
-  @apply w-full mx-auto my-0 flex items-center justify-center space-x-7 p-3;
+  @apply w-full bg-white mx-auto my-0 flex items-center justify-center space-x-7 p-3;
 
   a {
     @apply text-4xl flex-shrink-0;
@@ -16,8 +16,15 @@ header {
       @apply text-sm leading-tight;
     }
   }
+}
 
-  .svg_icons {
-    @apply flex space-x-4 flex-shrink-0;
+.header_icons {
+  @apply flex space-x-2;
+  img {
+    @apply w-10 h-10;
   }
+}
+
+.svg_icons {
+  @apply flex space-x-4 flex-shrink-0;
 }

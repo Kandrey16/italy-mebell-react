@@ -16,14 +16,12 @@ const CatalogPage = observer(() => {
 
   return (
     <>
-      <div className="container">
-        <div className="grid grid-cols-4">
-          <div className="col">
-            <CategoryBar />
-          </div>
-          <div className="col-span-3">
-            <ProductSection />
-          </div>
+      <div className="grid grid-cols-5">
+        <div className="col">
+          <CategoryBar />
+        </div>
+        <div className="col-span-4">
+          <ProductSection />
         </div>
       </div>
     </>
