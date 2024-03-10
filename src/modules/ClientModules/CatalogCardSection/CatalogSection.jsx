@@ -6,7 +6,10 @@ export default function CatalogSection() {
     <>
       <section className="container my-6">
         <h1 className="text-center text-6xl font-normal uppercase">Каталог</h1>
-        <div className="my-6 grid grid-cols-4 gap-4">
+        <div className="my-6 grid grid-cols-4 
+          
+          
+          gap-4">
           {images.map((image, index) => (
             <CatalogCard key={index} imageUrl={image.url} title={image.title} />
           ))}

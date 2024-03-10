@@ -5,7 +5,6 @@ import TableRow from "../TableVisual/TableRow";
 import { observer } from "mobx-react";
 import { useContext } from "react";
 import { Context } from "@/main";
-import CategoryEditForm from "../EditCategory";
 import ProductEditForm from "../EditProduct";
 
 const TABLE_HEAD = [
@@ -65,12 +64,7 @@ const ProductTable = observer(() => {
           </tbody>
         </table>
       </Card>
-
-      {/* <ProductEditForm
-        product={product}
-        show={productEditVisible}
-        onHide={() => setProductEditVisible(false)}
-      /> */}
+      
       {currentProduct && ( // добавлено
         <ProductEditForm
           product={currentProduct} // изменено

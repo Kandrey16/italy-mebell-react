@@ -21,7 +21,7 @@ const ProductEditForm = observer(({ show, onHide, product }) => {
   const [file, setFile] = useState(product.url_main_image_product);
   const [description, setDescription] = useState(product.description_product);
   const [count, setCount] = useState(product.count_product);
-  const [category, setCategory] = useState(product.category_id);
+  const [category, setCategory] = useState(product.id_category);
 
   //   useEffect(() => {
   //     fetchCategories().then((data) => product.setCategories(data));
@@ -34,9 +34,9 @@ const ProductEditForm = observer(({ show, onHide, product }) => {
       setPrice(product.price_product);
       setDescription(product.description_product);
       setCount(product.count_product);
-      setCategory(product.category_id);
+      setCategory(product.id_category);
     }
-  }, []);
+  }, [product]);
 
   const selectFile = (e) => {
     setFile(e.target.files[0]);
@@ -48,12 +48,11 @@ const ProductEditForm = observer(({ show, onHide, product }) => {
     formData.append("article_product", article);
     formData.append("price_product", price);
     if (file) {
-      // добавлено
       formData.append("url_main_image_product", file);
     }
     formData.append("description_product", description);
     formData.append("count_product", count);
-    formData.append("category_id", category);
+    formData.append("id_category", category);
 
     editProduct(product.id_product, formData).then(() => {
       fetchProducts().then((data) => product.setProducts(data)); // Обновление продуктов

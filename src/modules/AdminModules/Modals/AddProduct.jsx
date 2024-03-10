@@ -29,7 +29,7 @@ const ProductAddForm = observer(({ show, onHide }) => {
 
   useEffect(() => {
     fetchCategories().then((data) => product.setCategories(data));
-    fetchProducts().then((data) => product.setProducts(data));
+    // fetchProducts().then((data) => product.setProducts(data));
   }, []);
 
   function addSpecification() {
@@ -48,6 +48,10 @@ const ProductAddForm = observer(({ show, onHide }) => {
   };
 
   const addProduct = () => {
+    if (!product.selectedCategory || !product.selectedCategory.id_category) {
+      return;
+    }
+
     const formData = new FormData();
     formData.append("name_product", name);
     formData.append("article_product", article);
@@ -55,7 +59,8 @@ const ProductAddForm = observer(({ show, onHide }) => {
     formData.append("url_main_image_product", file);
     formData.append("description_product", description);
     formData.append("count_product", `${count}`);
-    formData.append("category_id", product.selectedCategory.id);
+    formData.append("id_category", product.selectedCategory.id_category);
+
     createProduct(formData).then((data) => {
       fetchProducts().then((data) => product.setProducts(data)); // Обновление продуктов
       onHide();
@@ -86,7 +91,10 @@ const ProductAddForm = observer(({ show, onHide }) => {
                 size="lg"
                 label="Артикул"
               />
-              <Select color="blue" label="Категория">
+              <Select
+                color="blue"
+                label="Категория"
+              >
                 {product.categories.map((category) => (
                   <Option
                     onClick={() => product.setSelectedCategory(category)}

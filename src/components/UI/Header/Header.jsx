@@ -1,15 +1,29 @@
 import styles from "./Header.module.scss";
 import Search from "./Search/Search";
 import Catalog from "./Catalog/Catalog";
-import { Button } from "@material-tailwind/react";
+import {
+  Button,
+  List,
+  ListItem,
+  Popover,
+  PopoverContent,
+  PopoverHandler,
+  Typography,
+} from "@material-tailwind/react";
 import { useContext, useEffect } from "react";
 import { Context } from "@/main";
 import { observer } from "mobx-react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { ADMIN_ROUTE, LOGIN_ROUTE, MAIN_ROUTE } from "@/routes/utils/consts";
+import {
+  ADMIN_ROUTE,
+  CART_ROUTE,
+  LOGIN_ROUTE,
+  MAIN_ROUTE,
+} from "@/routes/utils/consts";
 import adminIcon from "@/assets/AdminIcon.svg";
 import logOutIcon from "@/assets/LogoutIcon.svg";
 import logInIcon from "@/assets/LoginIcon.svg";
+import Cart from "@/components/Cart/Cart";
 
 export const Header = observer(() => {
   const { user } = useContext(Context);
@@ -42,6 +56,9 @@ export const Header = observer(() => {
             </NavLink>
             <NavLink to={LOGIN_ROUTE}>
               <img src={logOutIcon} onClick={() => logOut()} />
+            </NavLink>
+            <NavLink to={CART_ROUTE}>
+              <Cart />
             </NavLink>
           </div>
         ) : (

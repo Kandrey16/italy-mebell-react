@@ -34,12 +34,12 @@ const ProductSection = observer(() => {
            rounded-xl shadow-xl shadow-blue-gray-900/5"
       >
         {product.products.map((product) => {
-            return (
-              <div className="col" key={product.id_product}>
-                <ProductCard product={product} />
-              </div>
-            );
-          })}
+          return (
+            <div className="col" key={product.id_product}>
+              <ProductCard product={product} />
+            </div>
+          );
+        })}
       </div>
     </>
   );

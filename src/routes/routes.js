@@ -1,9 +1,9 @@
 import AdminPage from "@/pages/AdminPage"
-import { ADMIN_ROUTE, BASKET_ROUTE, CATALOG_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, PRODUCT_ROUTE, REGISTRATION_ROUTE } from "./utils/consts"
+import { ADMIN_ROUTE, CART_ROUTE, CATALOG_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, PRODUCT_ROUTE, REGISTRATION_ROUTE } from "./utils/consts"
 import LoginPage from "@/pages/LoginPage"
 import CatalogPage from "@/pages/CatalogPage"
 import MainPage from "@/pages/MainPage"
-import BasketPage from "@/pages/BasketPage"
+import CartPage from "@/pages/CartPage"
 import ProductPage from "@/pages/ProductPage"
 
 export const authRoutes = [
@@ -12,8 +12,8 @@ export const authRoutes = [
         Component: AdminPage
     },
     {
-        path: BASKET_ROUTE,
-        Component: BasketPage
+        path: CART_ROUTE,
+        Component: CartPage
     },
 ]
 
@@ -31,8 +31,8 @@ export const publicRoutes = [
         Component: ProductPage
     },
     {
-        path: BASKET_ROUTE,
-        Component: BasketPage
+        path: CART_ROUTE,
+        Component: CartPage
     },  
     {
         path: LOGIN_ROUTE,
