@@ -18,22 +18,16 @@ const Cart = observer(() => {
   const { product, user } = useContext(Context);
   const [openPopover, setOpenPopover] = useState(false);
 
-  const user_email = user.user.email_user;
-
   const triggers = {
     onMouseEnter: () => setOpenPopover(true),
     onMouseLeave: () => setOpenPopover(false),
   };
 
   useEffect(() => {
-    console.log("Getting cart for user: ", user_email);
+    console.log("Getting cart for user: ", user.user.email_user);
     console.log("Current cart: ", toJS(product.cart));
-    product.getCart(user_email);
+    product.getCart(user.user.email_user);
   }, []);
-
-  useEffect(() => {
-    console.log("Cart updated: ", toJS(product.cart));
-  }, [product.cart]);
 
   return (
     <>
@@ -42,22 +36,22 @@ const Cart = observer(() => {
           <img src={basketIcon} />
         </PopoverHandler>
         <PopoverContent {...triggers} className="z-50 max-w-[24rem]">
-          {/* <div className="mb-2 flex items-center justify-between gap-4"> */}
           <List>
             {product.cart.map((item) => {
-              const image = `${import.meta.env.VITE_APP_API_URL}/${item.product.url_main_image_product}`;
-              // console.log("Rendering item: ", item); // Логирование при рендеринге каждого товара
-              return (
-                <ListItem key={item.id_cart_product}>
-                  <Avatar
-                    size="md"
-                    variant="rounded"
-                    src={image}
-                    alt={item.name_product}
-                  />
-                  <Typography>{item.product.name_product}</Typography>
-                </ListItem>
-              );
+              if ((item, product)) {
+                const image = `${import.meta.env.VITE_APP_API_URL}/${item.product.url_main_image_product}`;
+                return (
+                  <ListItem key={item.id_cart_product}>
+                    <Avatar
+                      size="md"
+                      variant="rounded"
+                      src={image}
+                      alt={item.name_product}
+                    />
+                    <Typography>{item.product.name_product}</Typography>
+                  </ListItem>
+                );
+              }
             })}
           </List>
           <div className="mt-6 flex items-center border-t border-blue-gray-50 pt-4">

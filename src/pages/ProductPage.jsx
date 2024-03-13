@@ -7,6 +7,7 @@ import { Context } from "@/main";
 import { observer } from "mobx-react";
 import { toJS } from "mobx";
 
+//TODO:при добавлении в корзину менять кнопку
 const ProductPage = observer(() => {
   const { product, user } = useContext(Context);
   const [selectedProduct, setSelectedProduct] = useState({});
@@ -37,18 +38,6 @@ const ProductPage = observer(() => {
         </p>
         <hr />
         <p className="text-2xl font-semibold text-black py-3">Характеристики</p>
-        <div className="grid grid-cols-2 my-4">
-          <div className="col ">
-            <p className="text-2xl text-black">Размер</p>
-            <p className="text-2xl text-black">Цвет</p>
-            <p className="text-2xl text-black">Страна</p>
-          </div>
-          <div className="col justify-end">
-            <p className="text-2xl text-gray-600">54/32</p>
-            <p className="text-2xl text-gray-600">Черный</p>
-            <p className="text-2xl text-gray-600">Россия</p>
-          </div>
-        </div>
         <div className="flex justify-end">
           <Button
             className="w-2/4 h-10"
@@ -56,7 +45,7 @@ const ProductPage = observer(() => {
               e.stopPropagation();
               if (user.user && user.user.email_user) {
                 product
-                  .addToCart(id, user.user.email_user) // передайте user.user, а не user
+                  .addToCart(id, user.user.email_user)
                   .then(() => console.log("Product added to cart"))
                   .catch((error) =>
                     console.log("Error adding product to cart:", error)

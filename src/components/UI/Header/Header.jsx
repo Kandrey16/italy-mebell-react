@@ -23,7 +23,7 @@ import {
 import adminIcon from "@/assets/AdminIcon.svg";
 import logOutIcon from "@/assets/LogoutIcon.svg";
 import logInIcon from "@/assets/LoginIcon.svg";
-import Cart from "@/components/Cart/Cart";
+import Cart from "@/modules/ClientModules/Cart/Cart";
 
 export const Header = observer(() => {
   const { user } = useContext(Context);

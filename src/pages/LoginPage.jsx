@@ -1,4 +1,5 @@
 import { login, registration } from "@/API/UserAPI";
+import { createCart } from "@/API/ProductAPI";
 import { Context } from "@/main";
 import {
   LOGIN_ROUTE,
@@ -31,14 +32,16 @@ const LoginPage = observer(() => {
         data = await login(email, password);
       } else {
         data = await registration(email, password);
+        await createCart(email); // Вызываем функцию createCart после успешной регистрации
       }
       user.setUser(data);
       user.setIsAuth(true);
       navigate(MAIN_ROUTE);
     } catch (error) {
-      alert(e.response.data.message);
+      alert(error.response.data.message);
     }
   };
+
   return (
     <>
       <div className="container flex flex-col items-center justify-center">

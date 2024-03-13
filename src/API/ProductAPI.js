@@ -1,4 +1,4 @@
-//UserAPI.js
+//ProductAPI.js
 import { jwtDecode } from "jwt-decode"
 import { $authhost, $host } from "./index"
 
@@ -15,7 +15,7 @@ export const deleteProduct = async(id) => {
     return {data}
 }
 export const fetchProducts = async() => {
-    const {data} = await $authhost.get('api/product')
+    const {data} = await $host.get('api/product')
     return data
 }
 export const fetchOneProduct = async(id) => {
@@ -30,24 +30,29 @@ export const createCategory = async(category) => {
 }
 
 export const editCategory = async(id, category) => {
-    const {data} = await $authhost.put('api/category' + id, product)
+    const {data} = await $authhost.put('api/category' + id, category)
     return data
 }
 
 export const fetchCategories = async() => {
-    const {data} = await $authhost.get('api/category')
+    const {data} = await $host.get('api/category')
     return data
 }
 
 //cart
+export const createCart = async(email_user) => {
+    const {data} = await $host.post('api/cart/create', { email_user })
+    return data
+}
+
 export const addToCart = async(product) => {
     const {data} = await $authhost.post('api/cart', product)
     return data
 }
 
-export const removeFromCart = async(id) => {
-    const {data} = await $authhost.delete('api/cart/' + id)
-    return data
+export const removeFromCart = async (id) => {
+    const {data} = await $authhost.delete('api/cart/' + id);
+    return data;
 }
 
 export const getCart = async(email_user) => {

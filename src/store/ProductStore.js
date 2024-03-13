@@ -1,5 +1,5 @@
-import { makeAutoObservable, action } from "mobx"
-import { editProduct, deleteProduct, addToCart as apiAddToCart, removeFromCart, getCart } from "@/API/ProductAPI"
+import { makeAutoObservable, action, runInAction } from "mobx"
+import { editProduct, deleteProduct, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, getCart } from "@/API/ProductAPI"
 
 export default class ProductStore {
     constructor() {
@@ -60,25 +60,18 @@ export default class ProductStore {
         console.log("Adding product to cart..."); // Добавляем логирование
         const data = await apiAddToCart({id_product, email_user})
         console.log(data);
-        if (data.success) {
+        if (data && data.product) {
             action(() => {
                 this._cart.push(data.product)
             })();
-            console.log("Product added to cart. Current cart: ", this._cart); // Логируем состояние корзины после добавления товара
-        } else {
-            console.log("Failed to add product to cart. Response: ", data); // Логируем ответ сервера при неудаче
         }
     }
-    
-    removeFromCart = async (id) => {
-        console.log("Removing product from cart...");
-        const data = await removeFromCart(id)
-        if (data.success) {
-            this._cart = this._cart.filter(product => product.id_product !== id)
-            console.log("Product removed from cart. Current cart: ", this._cart);
-        } else {
-            console.log("Failed to remove product from cart. Response: ", data);
-        }
+
+    removeFromCart = async(id) => {
+        await apiRemoveFromCart(id);
+        action(() => {
+            this._cart = this._cart.filter(product => product.id_cart_product !== id); 
+        })();
     }
     
     getCart = async (email_user) => {
@@ -88,10 +81,7 @@ export default class ProductStore {
             action(() => {
                 this._cart = data.cart.cart_products.filter(product => product.id_product !== null)
             })();
-            console.log("Received cart from server. Current cart: ", this._cart); 
-        } else {
-            console.log("Failed to get cart from server. Response: ", data);
-        }
+        } 
     }
 
 }
