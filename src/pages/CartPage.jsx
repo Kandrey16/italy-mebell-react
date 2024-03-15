@@ -12,6 +12,16 @@ const CartPage = observer(() => {
     console.log("Current cart: ", toJS(product.cart));
   }, []);
 
+  // Проверка, есть ли товары в корзине
+  if (product.cart.length === 0) {
+    return (
+      <div className="container py-10">
+        <h1 className="text-4xl">Корзина</h1>
+        <div className="text-lg font-medium py-3">Ваша корзина пуста</div>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="container py-10">
@@ -51,10 +61,10 @@ const CartPage = observer(() => {
                     <span>{item.product.price_product}</span>
                   </div>
                   <div className="">
-                    <span>{item.product.count_product}</span>
+                    <span>{item.count_cart_product} шт</span>
                   </div>
                   <div className="">
-                    <span>20000</span>
+                    <span>{item.product.price_product * item.count_cart_product}</span>
                   </div>
                   <div className="">
                     <img

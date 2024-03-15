@@ -11,11 +11,16 @@ import { toJS } from "mobx";
 const ProductPage = observer(() => {
   const { product, user } = useContext(Context);
   const [selectedProduct, setSelectedProduct] = useState({});
+  const [isProductInCart, setIsProductInCart] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
     fetchOneProduct(id).then((data) => setSelectedProduct(data));
-  }, []);
+
+    // Проверяем, есть ли продукт в корзине
+    const productInCart = product.cart.some((item) => item.id_product === id);
+    setIsProductInCart(productInCart);
+  }, [id, product.cart]);
 
   return (
     <div className="container grid grid-cols-2 w-full p-6">
@@ -43,19 +48,23 @@ const ProductPage = observer(() => {
             className="w-2/4 h-10"
             onClick={(e) => {
               e.stopPropagation();
-              if (user.user && user.user.email_user) {
+              if (!isProductInCart && user.user && user.user.email_user) {
                 product
                   .addToCart(id, user.user.email_user)
-                  .then(() => console.log("Product added to cart"))
+                  .then(() => {
+                    console.log("Product added to cart");
+                    setIsProductInCart(true); // Обновляем состояние после добавления в корзину
+                    product.getCart(user.user.email_user); // Обновляем корзину сразу после добавления товара
+                  })
                   .catch((error) =>
                     console.log("Error adding product to cart:", error)
                   );
               } else {
-                console.log("User or user email is not defined");
+                console.log("Navigating to cart..."); // Здесь можно добавить логику для перехода в корзину
               }
             }}
           >
-            Добавить в корзину
+            {isProductInCart ? "В корзине" : "Добавить в корзину"}
           </Button>
         </div>
       </Card>

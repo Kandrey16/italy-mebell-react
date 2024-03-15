@@ -2,10 +2,10 @@ import { Carousel } from "@material-tailwind/react";
 import styles from "./Carousel.module.scss";
 import { image } from "../../../data/data-carousel";
 
-export function CarouselDefault() {
+export function ProductCarousel() {
   return (
     <Carousel
-      className="container w-full rounded-xl my-2"
+      className={styles.carousel}
       transition={{ type: "tween", duration: 0.75 }}
       autoplay
       loop

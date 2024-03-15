@@ -21,6 +21,7 @@ export default withMT({
     },
     container: {
       center: true,
+      padding: '2rem',
     },
     extend: {
       colors: {

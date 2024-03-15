@@ -12,6 +12,7 @@ export default class ProductStore {
         this._cart = [
             
         ]
+        this._productsInCartIds = {}
         this._selectedCategory = {}
         makeAutoObservable(this)
     } 
@@ -57,29 +58,50 @@ export default class ProductStore {
     };
 
     addToCart = async (id_product, email_user) => {
+        if(this._productsInCartIds.has(id_product)) {
+            console.log("Product in cart already");
+            return;
+        }
+
         console.log("Adding product to cart..."); // Добавляем логирование
         const data = await apiAddToCart({id_product, email_user})
         console.log(data);
         if (data && data.product) {
-            action(() => {
+            runInAction(() => {
                 this._cart.push(data.product)
+                this._productsInCartIds.add(id_product)
             })();
         }
     }
 
+    // removeFromCart = async(id) => {
+    //     await apiRemoveFromCart(id);
+    //     action(() => {
+    //         this._cart = this._cart.filter(product => product.id_cart_product !== id); 
+
+    //     })();
+    // }
     removeFromCart = async(id) => {
         await apiRemoveFromCart(id);
         action(() => {
-            this._cart = this._cart.filter(product => product.id_cart_product !== id); 
+            this._cart = this._cart.filter(product => {
+                const isProductToRemove = product.id_cart_product !== id;
+                if (!isProductToRemove) {
+                    this._productsInCartIds.delete(product.id_product); // Удаляем ID из списка
+                }
+                return isProductToRemove;
+            });
         })();
     }
-    
+
+
     getCart = async (email_user) => {
         console.log("Getting cart from server...");
-        const data = await getCart(email_user)
+        const data = await getCart(email_user);
         if (data.cart && data.cart.cart_products) {
             action(() => {
-                this._cart = data.cart.cart_products.filter(product => product.id_product !== null)
+                this._cart = data.cart.cart_products.filter(product => product.id_product !== null);
+                this._productsInCartIds = new Set(this._cart.map(product => product.id_product)); // Обновляем список ID
             })();
         } 
     }

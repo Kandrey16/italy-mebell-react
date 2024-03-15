@@ -3,3 +3,7 @@ img {
   width: 100%;
   object-fit: cover;
 }
+
+.carousel {
+  @apply w-full rounded-xl my-2;
+}
