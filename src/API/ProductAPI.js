@@ -59,3 +59,8 @@ export const getCart = async(email_user) => {
     const {data} = await $authhost.get('api/cart/' + email_user)
     return data
 }
+
+export const updateCartQuantity = async (id_cart_product, newQuantity) => {
+    const { data } = await $authhost.put(`api/cart/${id_cart_product}`, { count_cart_product: newQuantity });
+    return data;
+}

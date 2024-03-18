@@ -1,5 +1,5 @@
 import { makeAutoObservable, action, runInAction } from "mobx"
-import { editProduct, deleteProduct, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, getCart } from "@/API/ProductAPI"
+import { editProduct, deleteProduct, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, getCart, updateCartQuantity as apiUpdateCartQuantity } from "@/API/ProductAPI"
 
 export default class ProductStore {
     constructor() {
@@ -59,11 +59,9 @@ export default class ProductStore {
 
     addToCart = async (id_product, email_user) => {
         if(this._productsInCartIds.has(id_product)) {
-            console.log("Product in cart already");
             return;
         }
 
-        console.log("Adding product to cart..."); // Добавляем логирование
         const data = await apiAddToCart({id_product, email_user})
         console.log(data);
         if (data && data.product) {
@@ -74,13 +72,6 @@ export default class ProductStore {
         }
     }
 
-    // removeFromCart = async(id) => {
-    //     await apiRemoveFromCart(id);
-    //     action(() => {
-    //         this._cart = this._cart.filter(product => product.id_cart_product !== id); 
-
-    //     })();
-    // }
     removeFromCart = async(id) => {
         await apiRemoveFromCart(id);
         action(() => {
@@ -94,9 +85,7 @@ export default class ProductStore {
         })();
     }
 
-
     getCart = async (email_user) => {
-        console.log("Getting cart from server...");
         const data = await getCart(email_user);
         if (data.cart && data.cart.cart_products) {
             action(() => {
@@ -105,5 +94,23 @@ export default class ProductStore {
             })();
         } 
     }
+
+    updateCartQuantity = async (id_cart_product, newQuantity) => {
+        const data = await apiUpdateCartQuantity(id_cart_product, newQuantity);
+        if (data && data.success) {
+            runInAction(() => {
+                const updatedProductIndex = this._cart.findIndex(product => product.id_cart_product === id_cart_product);
+                if (updatedProductIndex !== -1) {
+                    const updatedCart = this._cart.map(product => {
+                        if (product.id_cart_product === id_cart_product) {
+                            return {...product, count_cart_product: newQuantity};
+                        }
+                        return product;
+                    });
+                    this._cart = updatedCart;
+                }
+            });
+        }
+    };
 
 }

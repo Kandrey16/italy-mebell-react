@@ -3,17 +3,20 @@ import { observer } from "mobx-react";
 import { toJS } from "mobx";
 import { useContext, useEffect } from "react";
 import deleteIcon from "@/assets/delete.svg";
+import { Button } from "@material-tailwind/react";
+import plusIcon from "@/assets/rounded-plus.svg";
+import minusIcon from "@/assets/round-minus.svg";
+import CartItemQuantity from "@/modules/ClientModules/Cart/ProductCounter";
 
 const CartPage = observer(() => {
   const { product, user } = useContext(Context);
+  const cart = toJS(product.cart);
 
   useEffect(() => {
     product.getCart(user.user.email_user);
-    console.log("Current cart: ", toJS(product.cart));
-  }, []);
+  }, [cart]);
 
-  // Проверка, есть ли товары в корзине
-  if (product.cart.length === 0) {
+  if (cart.length === 0) {
     return (
       <div className="container py-10">
         <h1 className="text-4xl">Корзина</h1>
@@ -37,7 +40,7 @@ const CartPage = observer(() => {
           </div>
           <hr />
           <div className="">
-            {product.cart.map((item) => {
+            {cart.map((item) => {
               const image = `${import.meta.env.VITE_APP_API_URL}/${item.product.url_main_image_product}`;
               return (
                 <div
@@ -60,11 +63,49 @@ const CartPage = observer(() => {
                   <div className="">
                     <span>{item.product.price_product}</span>
                   </div>
-                  <div className="">
-                    <span>{item.count_cart_product} шт</span>
+                  <div className="flex items-center justify-start rounded-full">
+                    <div className="p-1 rounded-xl">
+                      <Button
+                        className="rounded-full"
+                        color="white"
+                        size="sm"
+                        ripple={true}
+                        onClick={() =>
+                          product.updateCartQuantity(
+                            item.id_cart_product,
+                            item.count_cart_product - 1
+                          )
+                        }
+                        disabled={item.count_cart_product === 1}
+                      >
+                        <img className="w-4 h-4" src={minusIcon} alt="" />
+                      </Button>
+                      <span className="mx-2 text-lg">
+                        {item.count_cart_product}
+                      </span>
+                      <Button
+                        className="rounded-full"
+                        color="white"
+                        size="sm"
+                        ripple={true}
+                        onClick={() =>
+                          product.updateCartQuantity(
+                            item.id_cart_product,
+                            item.count_cart_product + 1
+                          )
+                        }
+                        disabled={
+                          item.count_cart_product >= item.product.count_product
+                        }
+                      >
+                        <img className="w-4 h-4" src={plusIcon} alt="" />
+                      </Button>
+                    </div>
                   </div>
                   <div className="">
-                    <span>{item.product.price_product * item.count_cart_product}</span>
+                    <span>
+                      {item.product.price_product * item.count_cart_product}
+                    </span>
                   </div>
                   <div className="">
                     <img

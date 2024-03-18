@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { fetchOneProduct } from "@/API/ProductAPI";
 import { Context } from "@/main";
 import { observer } from "mobx-react";
-import { toJS } from "mobx";
+import CartItemQuantity from "@/modules/ClientModules/Cart/ProductCounter";
 
 //TODO:при добавлении в корзину менять кнопку
 const ProductPage = observer(() => {
