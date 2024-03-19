@@ -3,8 +3,8 @@ import { ADMIN_ROUTE, CART_ROUTE, CATALOG_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, PRODUC
 import LoginPage from "@/pages/LoginPage"
 import CatalogPage from "@/pages/CatalogPage"
 import MainPage from "@/pages/MainPage"
-import CartPage from "@/pages/CartPage"
-import ProductPage from "@/pages/ProductPage"
+import CartPage from "@/pages/CartPage/CartPage"
+import ProductPage from "@/pages/ProductPage/ProductPage"
 
 export const authRoutes = [
     {

@@ -74,7 +74,7 @@ const Cart = observer(() => {
               }
             })}
           </List>
-          <Button className="w-full border-t border-blue-gray-50">
+          <Button className="w-full border-t border-blue-gray-50 bg-colorPrimary">
             Перейти в корзину
           </Button>
         </PopoverContent>

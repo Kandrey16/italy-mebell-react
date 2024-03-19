@@ -10,12 +10,6 @@ export function AppRouter() {
 
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (!user.isAuth) {
-  //     navigate(MAIN_ROUTE);
-  //   }
-  // }, [navigate]);
-
   return (
     <Routes>
       {user.isAuth &&
