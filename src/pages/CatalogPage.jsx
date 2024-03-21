@@ -8,11 +8,32 @@ import CategoryBar from "@/modules/ClientModules/CategoryBar/CategoryBar";
 
 const CatalogPage = observer(() => {
   const { product } = useContext(Context);
+  const pagination = 18;
+  const page = 1;
 
   useEffect(() => {
     fetchCategories().then((data) => product.setCategories(data));
-    fetchProducts().then((data) => product.setProducts(data));
+    fetchProducts(null, page, pagination)
+      .then((data) => {
+        product.setProducts(data.rows);
+        product.setTotalCount(data.count);
+      })
+      .catch((error) => {
+        console.error("Ошибка при загрузке продуктов:", error);
+      });
   }, []);
+
+  useEffect(() => {
+    const selectedCategoryId = product.selectedCategory.id_category;
+    fetchProducts(selectedCategoryId, page, pagination) // Загружаем продукты для выбранной категории
+      .then((data) => {
+        product.setProducts(data.rows);
+        product.setTotalCount(data.count);
+      })
+      .catch((error) => {
+        console.error("Ошибка при загрузке продуктов:", error);
+      });
+  }, [product.selectedCategory]);
 
   return (
     <>

@@ -5,29 +5,6 @@ import EditIcon from "@/assets/edit.svg";
 import DeleteIcon from "@/assets/delete.svg";
 
 export default function TableRow({ product, handleEdit, handleDelete }) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedProduct, setEditedProduct] = useState(product);
-
-  // const handleEditClick = () => {
-  //   setIsEditing(true);
-  // };
-
-  // const handleCancelEdit = () => {
-  //   setIsEditing(false);
-  // };
-
-  // const handleSaveEdit = () => {
-  //   handleEdit(editedProduct);
-  //   setIsEditing(false);
-  // };
-
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setEditedProduct((prevProduct) => ({
-  //     ...prevProduct,
-  //     [name]: value,
-  //   }));
-  // };
 
   return (
     <tr key={product.id_product} className="even:bg-blue-gray-50/50">

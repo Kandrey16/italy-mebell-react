@@ -11,12 +11,6 @@ import { observer } from "mobx-react";
 
 const ProductCard = observer(({ product }) => {
   const navigate = useNavigate();
-  // const { user } = useContext(Context); // используйте useContext для доступа к productStore
-
-  //TODO:перенсти логику в компонент страницы, там брать id
-  // console.log(toJS(user));
-  // console.log(toJS(user.user.email_user));
-  // console.log(toJS(product));
 
   const imageUrl = product.url_main_image_product
     ? `${import.meta.env.VITE_APP_API_URL}/${product.url_main_image_product}`

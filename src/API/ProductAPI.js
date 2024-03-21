@@ -6,6 +6,7 @@ export const createProduct = async(product) => {
     const {data} = await $authhost.post('api/product', product)
     return data
 }
+
 export const editProduct = async(id, product) => {
     const {data} = await $authhost.put('api/product/' + id, product)
     return data
@@ -14,12 +15,14 @@ export const deleteProduct = async(id) => {
     const {data} = await $authhost.delete('api/product/' + id)
     return {data}
 }
-export const fetchProducts = async() => {
-    const {data} = await $host.get('api/product')
+//пагинация
+export const fetchProducts = async(id_category, page, limit) => {
+    const {data} = await $host.get('api/product', {params: {id_category, page, limit}})
     return data
 }
+
 export const fetchOneProduct = async(id) => {
-    const {data} = await $authhost.get('api/product/' + id)
+    const {data} = await $host.get('api/product/' + id)
     return data
 }
 

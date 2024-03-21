@@ -5,6 +5,8 @@ import { Card, List, ListItem, Typography } from "@material-tailwind/react";
 
 const CategoryBar = observer(() => {
   const { product } = useContext(Context);
+
+  
   return (
     <>
       <Card>
@@ -20,7 +22,7 @@ const CategoryBar = observer(() => {
               active={
                 category.id === product.selectedCategory.id ? "true" : "false"
               }
-              onClick={() => product.setSelectedCategory(category)}
+              onClick={() => {product.setSelectedCategory(category)}}
               key={category.id_category}
             >
               {category.name_category}

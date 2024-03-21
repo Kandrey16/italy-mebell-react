@@ -12,35 +12,62 @@ export default class ProductStore {
         this._cart = [
             
         ]
+        this._isLoading = false
         this._productsInCartIds = {}
         this._selectedCategory = {}
+        this._page = 1
+        this._totalCount = 0
+        this._limit = 18
         makeAutoObservable(this)
     } 
+
+    // Setters
+    setIsLoading(value) {
+        this._isLoading = value;
+    }
 
     setCategories(categories) {
         this._categories = categories
     }
-
-    setSelectedCategory(category) {
-        this._selectedCategory = category
-    }
-
     setProducts(products) {
         this._products = products
     }
+    
+    setSelectedCategory(category) {
+        runInAction(() => {
+            this.setPage(1)
+            this._selectedCategory = category
+        })
+    }
+    setPage(page) {
+        this._page = page
+    }
+    setTotalCount(count) {
+        this._totalCount = count
+    }
 
+    // Getters
+    get isLoading() {
+        return this._isLoading
+    }
     get categories() {
         return this._categories
     }
-
     get selectedCategory() {
         return this._selectedCategory
     }
-
     get products() {
         return this._products
     }
-    
+    get totalCount() {
+        return this._totalCount
+    }
+    get page() {
+        return this._page
+    }
+    get limit() {
+        return this._limit
+    }
     get cart() {
         return this._cart
     }
@@ -112,5 +139,4 @@ export default class ProductStore {
             });
         }
     };
-
 }

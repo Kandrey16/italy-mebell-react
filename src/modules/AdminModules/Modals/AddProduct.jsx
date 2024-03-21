@@ -61,8 +61,10 @@ const ProductAddForm = observer(({ show, onHide }) => {
     formData.append("count_product", `${count}`);
     formData.append("id_category", product.selectedCategory.id_category);
 
-    createProduct(formData).then((data) => {
-      fetchProducts().then((data) => product.setProducts(data)); // Обновление продуктов
+    createProduct(formData).then(() => {
+      fetchProducts().then((data) => {
+        product.setProducts(data.rows);
+      });
       onHide();
     });
   };
@@ -91,10 +93,7 @@ const ProductAddForm = observer(({ show, onHide }) => {
                 size="lg"
                 label="Артикул"
               />
-              <Select
-                color="blue"
-                label="Категория"
-              >
+              <Select color="blue" label="Категория">
                 {product.categories.map((category) => (
                   <Option
                     onClick={() => product.setSelectedCategory(category)}

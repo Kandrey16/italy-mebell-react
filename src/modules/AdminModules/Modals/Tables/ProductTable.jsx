@@ -5,7 +5,9 @@ import TableRow from "../TableVisual/TableRow";
 import { observer } from "mobx-react";
 import { useContext } from "react";
 import { Context } from "@/main";
+import { fetchProducts } from "@/API/ProductAPI";
 import ProductEditForm from "../EditProduct";
+import { toJS } from "mobx";
 
 const TABLE_HEAD = [
   "ID",
@@ -26,17 +28,25 @@ const TABLE_HEAD = [
 const ProductTable = observer(() => {
   const { product } = useContext(Context);
   const [productEditVisible, setProductEditVisible] = useState(false);
-
   const [currentProduct, setCurrentProduct] = useState(null); // добавлено
+
+  useEffect(() => {
+    fetchProducts()
+  .then((data) => {
+    product.setProducts(data.rows);
+  })
+  .catch((error) => {
+    console.error('Ошибка при загрузке продуктов:', error);
+  });
+  }, []);
 
   const handleDelete = (id) => {
     product.deleteProduct(id);
   };
 
   const handleEdit = (product) => {
-    // изменено
-    setCurrentProduct(product); // добавлено
-    setProductEditVisible(true); // изменено
+    setCurrentProduct(product); 
+    setProductEditVisible(true); 
   };
 
   return (
@@ -51,7 +61,7 @@ const ProductTable = observer(() => {
             </tr>
           </thead>
           <tbody>
-            {product.products.map((product, index) => {
+            {product.products && product.products.map((product, index) => {
               return (
                 <TableRow
                   key={index}
@@ -64,7 +74,7 @@ const ProductTable = observer(() => {
           </tbody>
         </table>
       </Card>
-      
+
       {currentProduct && ( // добавлено
         <ProductEditForm
           product={currentProduct} // изменено
