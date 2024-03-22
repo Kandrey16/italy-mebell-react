@@ -1,5 +1,5 @@
 import { makeAutoObservable, action, runInAction } from "mobx"
-import { editProduct, deleteProduct, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, getCart, updateCartQuantity as apiUpdateCartQuantity } from "@/API/ProductAPI"
+import { editProduct, deleteProduct, searchProduct as apiSearchProduct, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, getCart, updateCartQuantity as apiUpdateCartQuantity } from "@/API/ProductAPI"
 
 export default class ProductStore {
     constructor() {
@@ -13,6 +13,7 @@ export default class ProductStore {
             
         ]
         this._isLoading = false
+        this._searchProduct = {}
         this._productsInCartIds = {}
         this._selectedCategory = {}
         this._page = 1
@@ -32,7 +33,14 @@ export default class ProductStore {
     setProducts(products) {
         this._products = products
     }
-    
+
+    setSearchProduct(product) {
+        runInAction(() => {
+            this._searchProduct = product
+            console.log(product);
+        })
+    }
+
     setSelectedCategory(category) {
         runInAction(() => {
             this.setPage(1)
@@ -52,6 +60,9 @@ export default class ProductStore {
     }
     get categories() {
         return this._categories
+    }
+    get searchedProduct() {
+        return this._searchProduct
     }
     get selectedCategory() {
         return this._selectedCategory
@@ -83,6 +94,18 @@ export default class ProductStore {
             this._products = this._products.filter(product => product.id_product !== id);
         })();
     };
+
+    searchProduct = async (keyword) => {
+        try {
+            const data = await apiSearchProduct(keyword)
+            runInAction(() => {
+                this._searchProduct = data.rows               
+                this._totalCount = data.length;
+            })
+        } catch (error) {
+            console.error('Ошибка при поиске товаров:', error)
+        }
+    }
 
     addToCart = async (id_product, email_user) => {
         if(this._productsInCartIds.has(id_product)) {

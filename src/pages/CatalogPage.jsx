@@ -1,9 +1,13 @@
-import Sidebar from "@/modules/ClientModules/Sidebar/SidebarFilter";
 import ProductSection from "@/modules/ClientModules/ProductSection/ProductSection";
-import { useContext, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Context } from "@/main";
 import { observer } from "mobx-react";
-import { fetchCategories, fetchProducts } from "@/API/ProductAPI";
+import { toJS } from "mobx";
+import {
+  fetchCategories,
+  fetchProducts,
+  searchProduct,
+} from "@/API/ProductAPI";
 import CategoryBar from "@/modules/ClientModules/CategoryBar/CategoryBar";
 
 const CatalogPage = observer(() => {
@@ -25,7 +29,7 @@ const CatalogPage = observer(() => {
 
   useEffect(() => {
     const selectedCategoryId = product.selectedCategory.id_category;
-    fetchProducts(selectedCategoryId, page, pagination) // Загружаем продукты для выбранной категории
+    fetchProducts(selectedCategoryId, page, pagination)
       .then((data) => {
         product.setProducts(data.rows);
         product.setTotalCount(data.count);

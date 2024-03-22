@@ -21,6 +21,11 @@ export const fetchProducts = async(id_category, page, limit) => {
     return data
 }
 
+export const searchProduct = async(keyword) => {
+    const {data} = await $host.get('api/product/search', {params: {keyword}})
+    return data
+}
+
 export const fetchOneProduct = async(id) => {
     const {data} = await $host.get('api/product/' + id)
     return data

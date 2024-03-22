@@ -6,40 +6,29 @@ import { observer } from "mobx-react";
 
 const ProductSection = observer(() => {
   const { product } = useContext(Context);
-  // const [error, setError] = useState(null);
-  // const [products, setProducts] = useState(null);
 
-  // useEffect(() => {
-  //   getProductsAndImages()
-  //     .then((productsWithImages) => {
-  //       setProducts(productsWithImages);
-  //     })
-  //     .catch((err) => {
-  //       setError(err);
-  //     });
-  // }, []);
-
-  // if (!product) {
-  //   return <div>Загрузка...</div>;
-  // }
-
-  // if (error) {
-  //   return <div>Ошибка: {error.message}</div>;
-  // }
+  const productsToShow =
+    product.searchedProduct.length > 0
+      ? product.searchedProduct
+      : product.products;
 
   return (
     <>
       <div
         className="w-full h-full grid grid-cols-4 gap-4 p-4
-           rounded-xl shadow-xl shadow-blue-gray-900/5"
+               rounded-xl shadow-xl shadow-blue-gray-900/5"
       >
-        {product.products.map((product) => {
-          return (
+        {productsToShow.length > 0 ? (
+          productsToShow.map((product) => (
             <div className="col" key={product.id_product}>
               <ProductCard product={product} />
             </div>
-          );
-        })}
+          ))
+        ) : (
+          <div className="col-span-4 text-3xl font-semibold ">
+            <p>Товары не найдены</p>
+          </div>
+        )}
       </div>
     </>
   );
