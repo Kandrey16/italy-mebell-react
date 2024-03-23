@@ -1,11 +1,15 @@
 import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react";
 import { Context } from "@/main";
-import deleteIcon from "@/assets/delete.svg";
 import QuantityToggle from "./QuantityToogle";
+import { PRODUCT_ROUTE } from "@/routes/utils/consts";
+import deleteIcon from "@/assets/delete.svg";
 
 const CartItem = observer(({ item }) => {
   const { product } = useContext(Context);
+  const navigate = useNavigate();
+
   const image = `${import.meta.env.VITE_APP_API_URL}/${item.product.url_main_image_product}`;
 
   const handleRemoveFromCart = () => {
@@ -18,7 +22,12 @@ const CartItem = observer(({ item }) => {
       className="grid grid-cols-[40%_20%_20%_15%_5%] py-3 items-center"
     >
       <div>
-        <div className="flex items-center">
+        <div
+          className="flex items-center"
+          onClick={() =>
+            navigate(PRODUCT_ROUTE + "/" + item.product.id_product)
+          }
+        >
           <img
             className="w-11 h-11 mx-4"
             src={image}
@@ -33,7 +42,7 @@ const CartItem = observer(({ item }) => {
       <div>
         <span>{item.product.price_product}</span>
       </div>
-      <div className="flex items-center justify-start rounded-full">
+      <div className="flex items-center justify-start rounded-full w-full">
         <QuantityToggle item={item} />
       </div>
       <div>

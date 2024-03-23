@@ -15,8 +15,7 @@ const ProductSection = observer(() => {
   return (
     <>
       <div
-        className="w-full h-full grid grid-cols-4 gap-4 p-4
-               rounded-xl shadow-xl shadow-blue-gray-900/5"
+        className="w-full h-full grid grid-cols-4 gap-4 p-4"
       >
         {productsToShow.length > 0 ? (
           productsToShow.map((product) => (
@@ -25,7 +24,7 @@ const ProductSection = observer(() => {
             </div>
           ))
         ) : (
-          <div className="col-span-4 text-3xl font-semibold ">
+          <div className="col-span-4 text-3xl font-bold ">
             <p>Товары не найдены</p>
           </div>
         )}

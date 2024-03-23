@@ -11,6 +11,7 @@ import {
   Drawer,
   Typography,
   IconButton,
+  Tooltip,
 } from "@material-tailwind/react";
 import { useContext, useEffect, useState } from "react";
 import { Context } from "@/main";
@@ -79,19 +80,23 @@ export const Header = observer(() => {
         {user.isAuth ? (
           <div className={styles.header_icons}>
             <NavLink to={ADMIN_ROUTE}>
-              <img src={adminIcon}></img>
+              <Tooltip content="Admin" placement="bottom">
+                <img src={adminIcon}></img>
+              </Tooltip>
             </NavLink>
             <NavLink to={LOGIN_ROUTE}>
-              <img src={logOutIcon} onClick={() => logOut()} />
+              <Tooltip content="Выход" placement="bottom">
+                <img src={logOutIcon} onClick={() => logOut()} />
+              </Tooltip>
             </NavLink>
-            <NavLink to={CART_ROUTE}>
-              <Cart />
-            </NavLink>
+            <Cart />
           </div>
         ) : (
           <div className={styles.header_icons}>
             <NavLink to={LOGIN_ROUTE}>
-              <img src={logInIcon}></img>
+              <Tooltip content="Вход" placement="bottom">
+                <img src={logInIcon}></img>
+              </Tooltip>
             </NavLink>
           </div>
         )}

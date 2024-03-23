@@ -1,5 +1,5 @@
 .product_card {
-  @apply w-full bg-white rounded-xl shadow-xl shadow-blue-gray-50
+  @apply w-full max-w-80 bg-white rounded-xl shadow-xl shadow-blue-gray-50
     transition-transform duration-[0.3s] ease-[ease-in-out];
 
   &:hover {

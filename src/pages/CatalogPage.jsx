@@ -2,51 +2,43 @@ import ProductSection from "@/modules/ClientModules/ProductSection/ProductSectio
 import { useState, useContext, useEffect } from "react";
 import { Context } from "@/main";
 import { observer } from "mobx-react";
-import { toJS } from "mobx";
-import {
-  fetchCategories,
-  fetchProducts,
-  searchProduct,
-} from "@/API/ProductAPI";
+import { fetchCategories, fetchProducts } from "@/API/ProductAPI";
 import CategoryBar from "@/modules/ClientModules/CategoryBar/CategoryBar";
+import Pagination from "@/components/UI/Pagination/Pagination";
 
 const CatalogPage = observer(() => {
   const { product } = useContext(Context);
-  const pagination = 18;
-  const page = 1;
+  const [showPagination, setShowPagination] = useState(true);
 
   useEffect(() => {
     fetchCategories().then((data) => product.setCategories(data));
-    fetchProducts(null, page, pagination)
-      .then((data) => {
-        product.setProducts(data.rows);
-        product.setTotalCount(data.count);
-      })
-      .catch((error) => {
-        console.error("Ошибка при загрузке продуктов:", error);
-      });
+    fetchProducts(null, product.page, product.limit).then((data) => {
+      product.setProducts(data.rows);
+      product.setTotalCount(data.count);
+      setShowPagination(data.count > 0);
+    });
   }, []);
 
   useEffect(() => {
     const selectedCategoryId = product.selectedCategory.id_category;
-    fetchProducts(selectedCategoryId, page, pagination)
-      .then((data) => {
+    fetchProducts(selectedCategoryId, product.page, product.limit).then(
+      (data) => {
         product.setProducts(data.rows);
         product.setTotalCount(data.count);
-      })
-      .catch((error) => {
-        console.error("Ошибка при загрузке продуктов:", error);
-      });
-  }, [product.selectedCategory]);
+        setShowPagination(data.count > 0);
+      }
+    );
+  }, [product.page, product.selectedCategory]);
 
   return (
     <>
-      <div className="grid grid-cols-5">
+      <div className="container grid grid-cols-5 gap-4">
         <div className="col">
           <CategoryBar />
         </div>
         <div className="col-span-4">
           <ProductSection />
+          {showPagination && <Pagination />}
         </div>
       </div>
     </>

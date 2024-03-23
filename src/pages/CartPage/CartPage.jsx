@@ -62,7 +62,7 @@ const CartPage = observer(() => {
             </div>
           </Card>
 
-          <Card className="col-span-1 p-4 flex flex-col justify-between">
+          <Card className="col-span-1 p-4 flex flex-col justify-between h-56">
             <div>
               <h1 className="text-3xl font-bold text-black py-2">Ваша корзина</h1>
               <div className="flex items-center mb-2">

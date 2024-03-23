@@ -6,19 +6,22 @@ import { useContext, useState } from "react";
 import { Context } from "@/main";
 import { toJS } from "mobx";
 import { searchProduct } from "@/API/ProductAPI";
+import { useNavigate } from "react-router-dom";
+import { CATALOG_ROUTE } from "@/routes/utils/consts";
 
 const Search = observer(() => {
   const { product } = useContext(Context);
   const [searchKeyword, setSearchKeyword] = useState("");
-
+  const navigate = useNavigate();
   const handleSearch = async (e) => {
     e.preventDefault();
     if (searchKeyword.trim() === "") return;
 
     try {
       const data = await searchProduct(searchKeyword.trim());
-      console.log(data); // Выводим результаты поиска в консоль
+      console.log(data);
       product.setSearchProduct(data);
+      navigate(CATALOG_ROUTE);
     } catch (error) {
       console.error("Ошибка при поиске товаров:", error);
     }

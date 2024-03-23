@@ -16,6 +16,8 @@ import {
 import basketIcon from "@/assets/BasketIcon.svg";
 import deleteIcon from "@/assets/delete.svg";
 import { observer } from "mobx-react";
+import { NavLink } from "react-router-dom";
+import { CART_ROUTE } from "@/routes/utils/consts";
 
 const Cart = observer(() => {
   const { product, user } = useContext(Context);
@@ -35,9 +37,11 @@ const Cart = observer(() => {
   return (
     <>
       <Popover open={openPopover} handler={setOpenPopover}>
-        <PopoverHandler {...triggers}>
-          <img src={basketIcon} />
-        </PopoverHandler>
+        <NavLink to={CART_ROUTE}>
+          <PopoverHandler {...triggers}>
+            <img src={basketIcon} />
+          </PopoverHandler>
+        </NavLink>
         <PopoverContent {...triggers} className="z-50 max-w-[32rem]">
           <List>
             {product.cart.map((item) => {
