@@ -23,7 +23,7 @@ const CartItem = observer(({ item }) => {
     >
       <div>
         <div
-          className="flex items-center"
+          className="flex items-center cursor-pointer"
           onClick={() =>
             navigate(PRODUCT_ROUTE + "/" + item.product.id_product)
           }

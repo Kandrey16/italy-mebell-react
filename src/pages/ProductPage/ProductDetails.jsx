@@ -9,7 +9,7 @@ const ProductDetails = ({ name, article, price }) => (
     <hr />
     <p className="text-3xl font-semibold text-black py-3">{price}₽</p>
     <hr />
-    <p className="text-2xl font-semibold text-black py-3">Характеристики</p>
+    
   </>
 );
 

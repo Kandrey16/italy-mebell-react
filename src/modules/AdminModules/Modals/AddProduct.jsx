@@ -12,6 +12,7 @@ import {
 import { Context } from "@/main";
 import {
   fetchCategories,
+  fetchAttributes,
   fetchProducts,
   createProduct,
 } from "@/API/ProductAPI";
@@ -26,22 +27,52 @@ const ProductAddForm = observer(({ show, onHide }) => {
   const [description, setDescription] = useState("");
   const [count, setCount] = useState("");
   const [specification, setSpecification] = useState([]);
+  const [attribute, setAttribute] = useState([]);
 
   useEffect(() => {
     fetchCategories().then((data) => product.setCategories(data));
-    // fetchProducts().then((data) => product.setProducts(data));
+    fetchAttributes().then((data) => {
+      setAttribute(data);
+      console.log("Attributes:", data);
+    });
   }, []);
 
   function addSpecification() {
     setSpecification([
       ...specification,
-      { id: Date.now(), name_atribute: "", value_specification: "" },
+      {
+        id_specification: Date.now(),
+        id_attribute: null,
+        value_specification: "",
+      },
     ]);
   }
 
   function removeSpecification(id) {
-    setSpecification(specification.filter((i) => i.id !== id));
+    setSpecification(specification.filter((i) => i.id_specification !== id));
   }
+
+  // function changeSpecification(key, value, id) {
+  //   console.log("Changing specification:", key, value, id);
+  //   console.log("Attributes:", attribute); // Добавим эту строку для отладки
+
+  //   setSpecification(
+  //     specification.map((i) =>
+  //       i.id_specification === id ? { ...i, [key]: value } : i
+  //     )
+  //   );
+  // }
+  const handleAttributeChange = (index, value) => {
+    const updatedSpecification = [...specification];
+    updatedSpecification[index].id_attribute = value;
+    setSpecification(updatedSpecification);
+  };
+
+  const handleValueChange = (index, value) => {
+    const updatedSpecification = [...specification];
+    updatedSpecification[index].value_specification = value;
+    setSpecification(updatedSpecification);
+  };
 
   const selectFile = (e) => {
     setFile(e.target.files[0]);
@@ -60,6 +91,8 @@ const ProductAddForm = observer(({ show, onHide }) => {
     formData.append("description_product", description);
     formData.append("count_product", `${count}`);
     formData.append("id_category", product.selectedCategory.id_category);
+    formData.append("specifications", JSON.stringify(specification));
+    console.log(specification);
 
     createProduct(formData).then(() => {
       fetchProducts().then((data) => {
@@ -127,22 +160,39 @@ const ProductAddForm = observer(({ show, onHide }) => {
               <Button variant="outlined" onClick={addSpecification}>
                 Добавить новую характеристику
               </Button>
-              {/* {specification.map((i) => (
-                <div className="grid grid-cols-3 gap-3">
-                  <Select className="col" placeholder="Выберите характеристику">
-                    <Option>Ширина</Option>
+              {specification.map((spec, index) => (
+                <div
+                  className="grid grid-cols-3 gap-4"
+                  key={spec.id_specification}
+                >
+                  <Select
+                    className="col"
+                    placeholder="Выберите характеристику"
+                    value={spec.id_attribute}
+                    onChange={(value) => handleAttributeChange(index, value)}
+                  >
+                    {attribute.map((attr) => (
+                      <Option key={attr.id_attribute} value={attr.id_attribute}>
+                        {attr.name_attribute}
+                      </Option>
+                    ))}
                   </Select>
-                  <Input className="col" label="Значение"></Input>
+                  <Input
+                    className="col"
+                    label="Значение"
+                    value={spec.value_specification}
+                    onChange={(e) => handleValueChange(index, e.target.value)}
+                  ></Input>
                   <Button
                     className="col"
                     variant="outlined"
                     color="red"
-                    onClick={() => removeSpecification(i.id)}
+                    onClick={() => removeSpecification(spec.id_specification)}
                   >
                     Удалить
                   </Button>
                 </div>
-              ))} */}
+              ))}
             </div>
             <hr />
             <Button className="m-2" color="blue" size="md" onClick={addProduct}>

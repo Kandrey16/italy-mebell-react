@@ -47,6 +47,12 @@ export const fetchCategories = async() => {
     return data
 }
 
+//attribute
+export const fetchAttributes = async() => {
+    const {data} = await $host.get('api/attribute')
+    return data
+}
+
 //cart
 export const createCart = async(email_user) => {
     const {data} = await $host.post('api/cart/create', { email_user })

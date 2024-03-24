@@ -1,0 +1,11 @@
+.product_button {
+  @apply relative flex items-center justify-center w-56 h-10 mt-4 rounded-lg bg-colorPrimary;
+
+  img {
+    @apply size-auto p-1;
+  }
+
+  p {
+    @apply text-white text-sm;
+  }
+}

@@ -1,39 +1,59 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams, NavLink } from "react-router-dom";
-import { Card, Button } from "@material-tailwind/react";
-import { fetchOneProduct } from "@/API/ProductAPI";
+import { useParams, useNavigate } from "react-router-dom";
+import { Card } from "@material-tailwind/react";
+import { fetchOneProduct, fetchAttributes } from "@/API/ProductAPI";
 import { Context } from "@/main";
 import { observer } from "mobx-react";
 import { CART_ROUTE } from "@/routes/utils/consts";
 import ProductImage from "./ProductImage";
 import ProductDetails from "./ProductDetails";
+import ProductSpecification from "./ProductSpecification";
+import styles from "./ProductPage.module.scss";
+import cart_logo from "@/assets/cart_2.svg";
 
 const ProductPage = observer(() => {
   const { product, user } = useContext(Context);
-  const [selectedProduct, setSelectedProduct] = useState({});
-  const [isProductInCart, setIsProductInCart] = useState(false);
+  const navigate = useNavigate();
   const { id } = useParams();
+  const [productData, setProductData] = useState({
+    selectedProduct: {},
+    isProductInCart: false,
+    specification: [],
+    attributes: [],
+  });
 
   useEffect(() => {
     fetchProductDetails(id);
+    fetchAttributesData();
   }, [id]);
 
   useEffect(() => {
     const productInCart = checkProductInCart(id);
-    setIsProductInCart(productInCart);
+    setProductData((prevData) => ({
+      ...prevData,
+      isProductInCart: productInCart,
+    }));
   }, [id, product.cart]);
 
-  const handleAddToCart = (productId, userEmail) => {
-    if (user.isAuth) {
-      product
-        .addToCart(productId, userEmail)
-        .then(() => {
-          setIsProductInCart(true);
-          product.getCart(userEmail);
-        })
-        .catch((error) => console.log("Error adding product to cart:", error));
-    } else {
-      console.log("User is not auth");
+  const fetchProductDetails = async (id) => {
+    try {
+      const data = await fetchOneProduct(id);
+      setProductData((prevData) => ({
+        ...prevData,
+        selectedProduct: data,
+        specification: data.specifications,
+      }));
+    } catch (error) {
+      console.error("Error fetching product details:", error);
+    }
+  };
+
+  const fetchAttributesData = async () => {
+    try {
+      const data = await fetchAttributes();
+      setProductData((prevData) => ({ ...prevData, attributes: data }));
+    } catch (error) {
+      console.error("Error fetching attributes:", error);
     }
   };
 
@@ -41,36 +61,53 @@ const ProductPage = observer(() => {
     return product.cart.some((item) => item.id_product === parseInt(id));
   };
 
-  const fetchProductDetails = async (id) => {
-    const data = await fetchOneProduct(id);
-    setSelectedProduct(data);
+  const handleAddToCart = (productId, userEmail) => {
+    if (user.isAuth) {
+      const productInCart = checkProductInCart(productId);
+      if (!productInCart) {
+        product
+          .addToCart(productId, userEmail)
+          .then(() => {
+            setProductData((prevData) => ({
+              ...prevData,
+              isProductInCart: true,
+            }));
+            product.getCart(userEmail);
+          })
+          .catch((error) =>
+            console.log("Error adding product to cart:", error)
+          );
+      } else {
+        navigate(CART_ROUTE);
+      }
+    } else {
+      console.log("User is not auth");
+    }
   };
 
   return (
     <div className="container grid grid-cols-2 w-full p-6">
       <ProductImage
-        imageUrl={`${import.meta.env.VITE_APP_API_URL}/${selectedProduct.url_main_image_product}`}
+        imageUrl={`${import.meta.env.VITE_APP_API_URL}/${productData.selectedProduct.url_main_image_product}`}
       />
       <Card className="col p-6">
         <ProductDetails
-          name={selectedProduct.name_product}
-          article={selectedProduct.article_product}
-          price={selectedProduct.price_product}
+          name={productData.selectedProduct.name_product}
+          article={productData.selectedProduct.article_product}
+          price={productData.selectedProduct.price_product}
+        />
+        <ProductSpecification
+          specification={productData.specification}
+          attributes={productData.attributes}
         />
         <div className="flex justify-end">
-          <NavLink to={isProductInCart ? CART_ROUTE : "#"}>
-            <Button
-              className="h-10 bg-colorPrimary"
-              onClick={(e) => {
-                e.stopPropagation();
-                if (!isProductInCart && user.user && user.user.email_user) {
-                  handleAddToCart(id, user.user.email_user);
-                }
-              }}
-            >
-              {isProductInCart ? "В корзине" : "Добавить в корзину"}
-            </Button>
-          </NavLink>
+          <button
+            className={styles.product_button}
+            onClick={() => handleAddToCart(id, user.user.email_user)}
+          >
+            <img src={cart_logo} alt="Cart Logo" />
+            <p>{productData.isProductInCart ? "Перейти" : "В корзину"}</p>
+          </button>
         </div>
       </Card>
     </div>

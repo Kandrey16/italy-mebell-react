@@ -16,11 +16,12 @@ import {
 import basketIcon from "@/assets/BasketIcon.svg";
 import deleteIcon from "@/assets/delete.svg";
 import { observer } from "mobx-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { CART_ROUTE } from "@/routes/utils/consts";
 
 const Cart = observer(() => {
   const { product, user } = useContext(Context);
+  const navigate = useNavigate();
   const [openPopover, setOpenPopover] = useState(false);
 
   const triggers = {
@@ -29,59 +30,62 @@ const Cart = observer(() => {
   };
 
   useEffect(() => {
-    console.log("Getting cart for user: ", user.user.email_user);
-    console.log("Current cart: ", toJS(product.cart));
     product.getCart(user.user.email_user);
   }, []);
+
+  const cartNotEmpty = product.cart.length > 0;
 
   return (
     <>
       <Popover open={openPopover} handler={setOpenPopover}>
-        <NavLink to={CART_ROUTE}>
-          <PopoverHandler {...triggers}>
-            <img src={basketIcon} />
-          </PopoverHandler>
-        </NavLink>
-        <PopoverContent {...triggers} className="z-50 max-w-[32rem]">
-          <List>
-            {product.cart.map((item) => {
-              if ((item, product)) {
-                const image = `${import.meta.env.VITE_APP_API_URL}/${item.product.url_main_image_product}`;
-                return (
-                  <ListItem
-                    className="flex justify-between p-2"
-                    key={item.id_cart_product}
-                  >
-                    <ListItemPrefix>
-                      <Avatar
-                        size="lg"
-                        variant="rounded"
-                        src={image}
-                        alt={item.name_product}
-                      />
-                    </ListItemPrefix>
-                    <div className="flex flex-col">
-                      <strong>{item.product.name_product}</strong>
-                      <span>Кол-во: {item.count_cart_product} шт</span>
-                    </div>
-                    <ListItemSuffix className="p-2">
-                      <img
-                        className="w-6 h-6"
-                        src={deleteIcon}
-                        onClick={() =>
-                          product.removeFromCart(item.id_cart_product)
-                        }
-                      />
-                    </ListItemSuffix>
-                  </ListItem>
-                );
-              }
-            })}
-          </List>
-          <Button className="w-full border-t border-blue-gray-50 bg-colorPrimary">
-            Перейти в корзину
-          </Button>
-        </PopoverContent>
+        <PopoverHandler {...triggers} onClick={() => navigate(CART_ROUTE)}>
+          <img src={basketIcon} />
+        </PopoverHandler>
+        {cartNotEmpty && (
+          <PopoverContent {...triggers} className="z-50 max-w-[32rem]">
+            <List>
+              {product.cart.map((item) => {
+                if ((item, product)) {
+                  const image = `${import.meta.env.VITE_APP_API_URL}/${item.product.url_main_image_product}`;
+                  return (
+                    <ListItem
+                      className="flex justify-between p-2"
+                      key={item.id_cart_product}
+                    >
+                      <ListItemPrefix>
+                        <Avatar
+                          size="lg"
+                          variant="rounded"
+                          src={image}
+                          alt={item.name_product}
+                        />
+                      </ListItemPrefix>
+                      <div className="flex flex-col">
+                        <strong>{item.product.name_product}</strong>
+                        <span>Кол-во: {item.count_cart_product} шт</span>
+                      </div>
+                      <ListItemSuffix className="p-2">
+                        <img
+                          className="w-6 h-6"
+                          src={deleteIcon}
+                          onClick={() =>
+                            product.removeFromCart(item.id_cart_product)
+                          }
+                        />
+                      </ListItemSuffix>
+                    </ListItem>
+                  );
+                }
+              })}
+            </List>
+            <Button
+              className="w-full border-t border-blue-gray-50 bg-colorPrimary"
+              onClick={() => navigate(CART_ROUTE)}
+            >
+              Перейти в корзину
+            </Button>
+          </PopoverContent>
+        )}
       </Popover>
     </>
   );

@@ -15,7 +15,7 @@ import {
   LOGIN_ROUTE,
   MAIN_ROUTE,
 } from "@/routes/utils/consts";
-import { NavLink, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 export default function BurgerMenu({ show, onHide }) {
   const navigate = useNavigate();
