@@ -61,6 +61,7 @@ const LoginPage = observer(() => {
                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </div>
             <div className="my-3">
@@ -72,6 +73,7 @@ const LoginPage = observer(() => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
               />
             </div>
             <div className="flex items-center justify-between">

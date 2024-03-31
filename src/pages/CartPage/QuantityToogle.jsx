@@ -5,17 +5,17 @@ import minusIcon from "@/assets/round-minus.svg";
 import plusIcon from "@/assets/rounded-plus.svg";
 
 const QuantityToggle = ({ item }) => {
-  const { product } = useContext(Context);
+  const { product, cart } = useContext(Context);
 
   const handleDecrement = () => {
-    product.updateCartQuantity(
+    cart.updateCartQuantity(
       item.id_cart_product,
       item.count_cart_product - 1
     );
   };
 
   const handleIncrement = () => {
-    product.updateCartQuantity(
+    cart.updateCartQuantity(
       item.id_cart_product,
       item.count_cart_product + 1
     );

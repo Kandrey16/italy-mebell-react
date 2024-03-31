@@ -12,7 +12,7 @@ import styles from "./ProductPage.module.scss";
 import cart_logo from "@/assets/cart_2.svg";
 
 const ProductPage = observer(() => {
-  const { product, user } = useContext(Context);
+  const { product, user, cart } = useContext(Context);
   const navigate = useNavigate();
   const { id } = useParams();
   const [productData, setProductData] = useState({
@@ -33,7 +33,7 @@ const ProductPage = observer(() => {
       ...prevData,
       isProductInCart: productInCart,
     }));
-  }, [id, product.cart]);
+  }, [id, cart.cart]);
 
   const fetchProductDetails = async (id) => {
     try {
@@ -58,21 +58,21 @@ const ProductPage = observer(() => {
   };
 
   const checkProductInCart = (id) => {
-    return product.cart.some((item) => item.id_product === parseInt(id));
+    return cart.cart.some((item) => item.id_product === parseInt(id));
   };
 
   const handleAddToCart = (productId, userEmail) => {
     if (user.isAuth) {
       const productInCart = checkProductInCart(productId);
       if (!productInCart) {
-        product
+        cart
           .addToCart(productId, userEmail)
           .then(() => {
             setProductData((prevData) => ({
               ...prevData,
               isProductInCart: true,
             }));
-            product.getCart(userEmail);
+            cart.getCart(userEmail);
           })
           .catch((error) =>
             console.log("Error adding product to cart:", error)

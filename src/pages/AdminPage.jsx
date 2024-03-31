@@ -1,5 +1,3 @@
-import Sidebar from "@/modules/ClientModules/Sidebar/SidebarFilter";
-import ProductList from "@/modules/AdminModules/Table/ProductTable";
 import SidebarNavigation from "@/modules/AdminModules/Sidebar/SidebarNavigation";
 import { useState, useEffect } from "react";
 import { Button } from "@material-tailwind/react";

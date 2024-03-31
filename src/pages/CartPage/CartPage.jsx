@@ -5,31 +5,35 @@ import { Context } from "@/main";
 import { Button, Card } from "@material-tailwind/react";
 import deleteIcon from "@/assets/delete.svg";
 import CartItem from "./CartItem";
+import { useNavigate } from "react-router-dom";
+import { ORDER_ROUTE } from "@/routes/utils/consts";
 
 const CartPage = observer(() => {
-  const { product, user } = useContext(Context);
-  const cart = toJS(product.cart);
+  const { product, user, cart } = useContext(Context);
+  const navigate = useNavigate();
+  // const cart = toJS(product.cart);
+
   const [totalItems, setTotalItems] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
-    product.getCart(user.user.email_user);
-  }, [cart]);
+    cart.getCart(user.user.email_user);
+  }, [cart.cart]);
 
   useEffect(() => {
     let items = 0;
     let price = 0;
 
-    cart.forEach((item) => {
+    cart.cart.forEach((item) => {
       items += item.count_cart_product;
       price += item.product.price_product * item.count_cart_product;
     });
 
     setTotalItems(items);
     setTotalPrice(price);
-  }, [cart]);
+  }, [cart.cart]);
 
-  if (cart.length === 0) {
+  if (cart.cart.length === 0) {
     return (
       <div className="container py-10">
         <h1 className="text-4xl">Корзина</h1>
@@ -55,8 +59,13 @@ const CartPage = observer(() => {
               </div>
               <hr />
               <div className="">
-                {cart.map((item) => (
-                  <CartItem key={item.id_cart_product} item={item} />
+                {cart.cart.map((item) => (
+                  <CartItem
+                    key={item.id_cart_product}
+                    item={item}
+                    canChangeQuantity={true}
+                    canRemove={true}
+                  />
                 ))}
               </div>
             </div>
@@ -64,7 +73,9 @@ const CartPage = observer(() => {
 
           <Card className="col-span-1 p-4 flex flex-col justify-between h-56">
             <div>
-              <h1 className="text-3xl font-bold text-black py-2">Ваша корзина</h1>
+              <h1 className="text-3xl font-bold text-black py-2">
+                Ваша корзина
+              </h1>
               <div className="flex items-center mb-2">
                 <span className="text-base font-medium mr-2">Количество:</span>
                 <p className="text-base text-black">{totalItems} шт.</p>
@@ -75,7 +86,9 @@ const CartPage = observer(() => {
               </div>
             </div>
             <div className="mt-auto">
-              <Button color="green">Перейти к оформлению</Button>
+              <Button onClick={() => navigate(ORDER_ROUTE)} color="green">
+                Перейти к оформлению
+              </Button>
             </div>
           </Card>
         </div>

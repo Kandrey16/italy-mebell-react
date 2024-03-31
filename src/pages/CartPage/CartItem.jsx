@@ -6,14 +6,14 @@ import QuantityToggle from "./QuantityToogle";
 import { PRODUCT_ROUTE } from "@/routes/utils/consts";
 import deleteIcon from "@/assets/delete.svg";
 
-const CartItem = observer(({ item }) => {
-  const { product } = useContext(Context);
+const CartItem = observer(({ item, canChangeQuantity, canRemove }) => {
+  const { product, cart } = useContext(Context);
   const navigate = useNavigate();
 
   const image = `${import.meta.env.VITE_APP_API_URL}/${item.product.url_main_image_product}`;
 
   const handleRemoveFromCart = () => {
-    product.removeFromCart(item.id_cart_product);
+    cart.removeFromCart(item.id_cart_product);
   };
 
   return (
@@ -42,19 +42,23 @@ const CartItem = observer(({ item }) => {
       <div>
         <span>{item.product.price_product}</span>
       </div>
-      <div className="flex items-center justify-start rounded-full w-full">
-        <QuantityToggle item={item} />
-      </div>
+      {canChangeQuantity && (
+        <div className="flex items-center justify-start rounded-full w-full">
+          <QuantityToggle item={item} />
+        </div>
+      )}
       <div>
         <span>{item.product.price_product * item.count_cart_product}</span>
       </div>
-      <div>
-        <img
-          className="w-6 h-6"
-          src={deleteIcon}
-          onClick={handleRemoveFromCart}
-        />
-      </div>
+      {canRemove && (
+        <div>
+          <img
+            className="w-6 h-6"
+            src={deleteIcon}
+            onClick={handleRemoveFromCart}
+          />
+        </div>
+      )}
     </div>
   );
 });

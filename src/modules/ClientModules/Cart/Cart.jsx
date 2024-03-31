@@ -20,7 +20,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { CART_ROUTE } from "@/routes/utils/consts";
 
 const Cart = observer(() => {
-  const { product, user } = useContext(Context);
+  const { product, user, cart } = useContext(Context);
   const navigate = useNavigate();
   const [openPopover, setOpenPopover] = useState(false);
 
@@ -30,10 +30,10 @@ const Cart = observer(() => {
   };
 
   useEffect(() => {
-    product.getCart(user.user.email_user);
+    cart.getCart(user.user.email_user);
   }, []);
 
-  const cartNotEmpty = product.cart.length > 0;
+  const cartNotEmpty = cart.cart.length > 0;
 
   return (
     <>
@@ -44,7 +44,7 @@ const Cart = observer(() => {
         {cartNotEmpty && (
           <PopoverContent {...triggers} className="z-50 max-w-[32rem]">
             <List>
-              {product.cart.map((item) => {
+              {cart.cart.map((item) => {
                 if ((item, product)) {
                   const image = `${import.meta.env.VITE_APP_API_URL}/${item.product.url_main_image_product}`;
                   return (
@@ -69,7 +69,7 @@ const Cart = observer(() => {
                           className="w-6 h-6"
                           src={deleteIcon}
                           onClick={() =>
-                            product.removeFromCart(item.id_cart_product)
+                            cart.removeFromCart(item.id_cart_product)
                           }
                         />
                       </ListItemSuffix>

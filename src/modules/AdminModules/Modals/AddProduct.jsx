@@ -52,16 +52,6 @@ const ProductAddForm = observer(({ show, onHide }) => {
     setSpecification(specification.filter((i) => i.id_specification !== id));
   }
 
-  // function changeSpecification(key, value, id) {
-  //   console.log("Changing specification:", key, value, id);
-  //   console.log("Attributes:", attribute); // Добавим эту строку для отладки
-
-  //   setSpecification(
-  //     specification.map((i) =>
-  //       i.id_specification === id ? { ...i, [key]: value } : i
-  //     )
-  //   );
-  // }
   const handleAttributeChange = (index, value) => {
     const updatedSpecification = [...specification];
     updatedSpecification[index].id_attribute = value;
