@@ -5,6 +5,7 @@ import App from "./App.jsx";
 import UserStore from "./store/UserStore.js";
 import ProductStore from "./store/ProductStore.js";
 import CartStore from "./store/CartStore.js";
+import OrderStore from "./store/OrderStore.js";
 
 export const Context = createContext(null);
 
@@ -15,6 +16,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         user: new UserStore(),
         product: new ProductStore(),
         cart: new CartStore(),
+        order: new OrderStore(),
       }}
     >
       <ThemeProvider>

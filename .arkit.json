@@ -1,0 +1,20 @@
+{
+    "excludePatterns": ["node_modules/*", "build/*", "__tests__/*", "**/*.test.js", "**/*.spec.js"],
+    "components": [
+        {
+            "type": "Component",
+            "patterns": ["src/**/*.jsx", "src/**/*.js"]
+        }
+    ],
+    "output": [
+        {
+            "path": "architecture.svg",
+            "groups": [
+                {
+                    "first": true,
+                    "components": ["Component"]
+                }
+            ]
+        }
+    ]
+}

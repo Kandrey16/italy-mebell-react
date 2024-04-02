@@ -5,7 +5,7 @@ import CatalogPage from "@/pages/CatalogPage"
 import MainPage from "@/pages/MainPage"
 import CartPage from "@/pages/CartPage/CartPage"
 import ProductPage from "@/pages/ProductPage/ProductPage"
-import OrderPage from '@/pages/OrderPage'
+import OrderPage from '@/pages/OrderPage/OrderPage'
 
 export const authRoutes = [
     {

@@ -44,7 +44,7 @@ const LoginPage = observer(() => {
 
   return (
     <>
-      <div className="container flex flex-col items-center justify-center">
+      {/* <div className="container flex flex-col items-center justify-center">
         <Typography variant="h3" className="my-10">
           {isLogin ? "Вход в аккаунт" : "Регистрация"}
         </Typography>
@@ -109,6 +109,88 @@ const LoginPage = observer(() => {
             )}
           </form>
         </Card>
+      </div> */}
+      <div className="container flex flex-col items-center justify-center h-screen">
+        <Typography variant="h3" className="mb-5">
+          {isLogin ? "Добро пожаловать!" : "Создать новый аккаунт"}
+        </Typography>
+        <div className="w-full max-w-md mx-auto">
+          <Card color="white" className="flex flex-col p-10 w-full shadow-lg">
+            <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); signIn(); }}>
+              <Input
+                type="email"
+                color="lightBlue"
+                size="lg"
+                outline={true}
+                placeholder="Email"
+                iconFamily="material-icons"
+                iconName="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <Input
+                type="password"
+                color="lightBlue"
+                size="lg"
+                outline={true}
+                placeholder="Пароль"
+                iconFamily="material-icons"
+                iconName="lock"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Checkbox id="remember_me" color="lightBlue" />
+                  <label htmlFor="remember_me" className="ml-2 block text-sm text-gray-900">
+                    Запомнить меня
+                  </label>
+                </div>
+                {/* Ссылка на восстановление пароля */}
+                <NavLink
+                  to="/forgot-password"
+                  className="text-sm text-blue-600 hover:underline"
+                >
+                  Забыли пароль?
+                </NavLink>
+              </div>
+              <Button
+                color="lightBlue"
+                buttonType="filled"
+                size="lg"
+                block={true}
+                iconOnly={false}
+                ripple="light"
+                type="submit"
+              >
+                {isLogin ? "Войти" : "Зарегистрироваться"}
+              </Button>
+              {isLogin ? (
+                <Typography variant="small" className="text-center">
+                  Нет аккаунта?
+                  <NavLink
+                    to={REGISTRATION_ROUTE}
+                    className="ml-1 text-blue-600 font-semibold hover:underline"
+                  >
+                    Зарегистрируйтесь
+                  </NavLink>
+                </Typography>
+              ) : (
+                <Typography variant="small" className="text-center">
+                  Уже зарегистрированы?
+                  <NavLink
+                    to={LOGIN_ROUTE}
+                    className="ml-1 text-blue-600 font-semibold hover:underline"
+                  >
+                    Войти
+                  </NavLink>
+                </Typography>
+              )}
+            </form>
+          </Card>
+        </div>
       </div>
     </>
   );
