@@ -17,26 +17,3 @@ export default function TableCell({ data }) {
     </>
   );
 }
-
-// export default function TableCell({ data, isEditing, handleEdit, productKey }) {
-//   return (
-//     <>
-//       <td className="p-4">
-//         {isEditing ? (
-//           <Input
-//             type="text"
-//             defaultValue={data}
-//             onChange={(e) => {
-//               console.log(`Editing ${productKey}`);
-//               handleEdit(productKey, e.target.value);
-//             }}
-//           />
-//         ) : (
-//           <Typography variant="small" color="blue-gray" className="font-normal">
-//             {data}
-//           </Typography>
-//         )}
-//       </td>
-//     </>
-//   );
-// }

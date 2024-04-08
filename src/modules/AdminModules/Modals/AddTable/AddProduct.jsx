@@ -12,10 +12,10 @@ import {
 import { Context } from "@/main";
 import {
   fetchCategories,
-  fetchAttributes,
   fetchProducts,
   createProduct,
 } from "@/API/ProductAPI";
+import { fetchAttributes } from "@/API/AttributeAPI";
 import { observer } from "mobx-react";
 
 const ProductAddForm = observer(({ show, onHide }) => {
@@ -33,7 +33,6 @@ const ProductAddForm = observer(({ show, onHide }) => {
     fetchCategories().then((data) => product.setCategories(data));
     fetchAttributes().then((data) => {
       setAttribute(data);
-      console.log("Attributes:", data);
     });
   }, []);
 
@@ -185,7 +184,12 @@ const ProductAddForm = observer(({ show, onHide }) => {
               ))}
             </div>
             <hr />
-            <Button className="m-2" color="blue" size="md" onClick={addProduct}>
+            <Button
+              className="my-2"
+              color="blue"
+              size="md"
+              onClick={addProduct}
+            >
               Создать
             </Button>
             <Button

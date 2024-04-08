@@ -5,20 +5,27 @@ import TableRow from "../TableVisual/TableRow";
 import { observer } from "mobx-react";
 import { useContext } from "react";
 import { Context } from "@/main";
-import CategoryEditForm from "../EditCategory";
+import CategoryEditForm from "../EditTable/EditCategory";
+import { fetchCategories, deleteCategory } from "@/API/ProductAPI";
+import { toJS } from "mobx";
 
-const TABLE_HEAD = [
-  "ID",
-  "Название",
-  "Дата создания",
-  "Дата изменения",
-  "",
-  "",
-];
+const TABLE_HEAD = ["ID", "Название", "", ""];
 
 const CategoryTable = observer(() => {
   const { product } = useContext(Context);
   const [categoryEditVisible, setCategoryEditVisible] = useState(false);
+  const [currentCategory, setCurrentCategory] = useState(null);
+
+  console.log(toJS(currentCategory));
+
+  const handleDelete = (id) => {
+    product.deleteCategory(id);
+  };
+
+  const handleEdit = (category) => {
+    setCurrentCategory(category);
+    setCategoryEditVisible(true);
+  };
 
   return (
     <>
@@ -32,13 +39,14 @@ const CategoryTable = observer(() => {
             </tr>
           </thead>
           <tbody>
-            {product.categories.map((product, index) => {
+            {product.categories.map((category, index) => {
               return (
                 <TableRow
                   key={index}
-                  product={product} // данные товаров
-                  // handleEdit={handleEdit}
-                  // handleDelete={handleDelete} // метод удаления
+                  data={category} // данные товаров
+                  hiddenColumns={["createdAt", "updatedAt"]}
+                  handleEdit={() => handleEdit(category)}
+                  handleDelete={() => handleDelete(category.id_category)} // метод удаления
                 />
               );
             })}
@@ -46,7 +54,16 @@ const CategoryTable = observer(() => {
         </table>
       </Card>
 
-      <CategoryEditForm show={categoryEditVisible} onHide={() => setCategoryEditVisible(false)}/>
+      {currentCategory && (
+        <CategoryEditForm
+          category={currentCategory}
+          show={categoryEditVisible}
+          onHide={() => {
+            setCategoryEditVisible(false);
+            setCurrentCategory(null);
+          }}
+        />
+      )}
     </>
   );
 });

@@ -1,12 +1,28 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import { createOrder, fetchOrders, getOrder, updateOrder, deleteOrder } from "../API/OrderAPI";
 
 export default class OrderStore {
-    orders = []
-    selectedOrder = {}
-
     constructor() {
+        this._orders = []
+        this._selectedOrder = {}
+
         makeAutoObservable(this)
+    }
+
+    setOrders(orders) {
+        this._orders = orders
+    }
+    setSelectedOrder(order) {
+        runInAction(() => {
+            this._selectedOrder = order
+        })
+    }
+
+    get orders() {
+        return this._orders
+    }
+    get selectedOrder() {
+        return this._selectedOrder
     }
 
     // Загрузка всех заказов, с опциональной страницацией

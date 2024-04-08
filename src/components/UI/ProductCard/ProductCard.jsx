@@ -37,10 +37,6 @@ const ProductCard = observer(({ product }) => {
               <img src={favourite_logo}></img>
             </button>
           </div>
-          {/* <button className={styles.product_button}>
-            <img src={cart_logo}></img>
-            <p>В корзину</p>
-          </button> */}
         </div>
       </div>
     </>
@@ -48,54 +44,3 @@ const ProductCard = observer(({ product }) => {
 });
 
 export default ProductCard;
-
-// const ProductCard = observer(({ product }) => {
-//   const navigate = useNavigate();
-//   const { product: productStore, user } = useContext(Context);
-//   const [isAddedToCart, setIsAddedToCart] = useState(false);
-
-//   const imageUrl = product.url_main_image_product
-//     ? `${import.meta.env.VITE_APP_API_URL}/${product.url_main_image_product}`
-//     : noProduct;
-
-//   const handleAddToCart = () => {
-//     if (user.isAuth) {
-//       productStore.addToCart(product.id_product, user.user.email_user);
-//       setIsAddedToCart(true);
-//     } else {
-//       console.log("Пользователь не аутентифицирован");
-//     }
-//   };
-
-//   return (
-//     <>
-//       <div
-//         className={styles.product_card}
-//         onClick={() => navigate(PRODUCT_ROUTE + "/" + product.id_product)}
-//       >
-//         <div className={styles.img_place}>
-//           <img src={imageUrl} alt="" />
-//         </div>
-//         <div className={styles.product_info}>
-//           <h2 className={styles.product_name}>{product.name_product}</h2>
-//           <p className={styles.product_price}>{product.price_product}₽</p>
-//           <div className={styles.product_options}>
-//             <div className={styles.product_link}>
-//               <a>Подробнее</a>
-//               <img src={arrow_logo} />
-//             </div>
-//             <button>
-//               <img src={favourite_logo} />
-//             </button>
-//           </div>
-//           <button className={styles.product_button} onClick={handleAddToCart}>
-//             <img src={cart_logo} />
-//             <p>{isAddedToCart ? "Добавлено в корзину" : "В корзину"}</p>
-//           </button>
-//         </div>
-//       </div>
-//     </>
-//   );
-// });
-
-// export default ProductCard;

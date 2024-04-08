@@ -4,12 +4,20 @@ import TableCell from "./TableCell";
 import EditIcon from "@/assets/edit.svg";
 import DeleteIcon from "@/assets/delete.svg";
 
-export default function TableRow({ product, handleEdit, handleDelete }) {
+export default function TableRow({
+  data,
+  handleEdit,
+  handleDelete,
+  hiddenColumns = [],
+}) {
   return (
-    <tr key={product.id_product} className="even:bg-blue-gray-50/50">
-      {Object.entries(product).map(([key, value]) => (
-        <TableCell key={key} data={value} />
-      ))}
+    <tr className="even:bg-blue-gray-50/50">
+      {Object.entries(data).map(([key, value]) => {
+        if (!hiddenColumns.includes(key)) {
+          return <TableCell key={key} data={value} />;
+        }
+        return null;
+      })}
       <td>
         <button className="relative">
           <img className="size-auto" src={EditIcon} onClick={handleEdit}></img>

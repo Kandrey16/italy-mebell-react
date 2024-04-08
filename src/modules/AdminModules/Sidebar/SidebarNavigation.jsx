@@ -27,13 +27,13 @@ import styles from "./Sidebar.module.scss";
 import { NavLink, Route, Routes } from "react-router-dom";
 import { useState } from "react";
 
-export default function SidebarNavigation() {
-  const [open, setOpen] = useState(0);
-  const [openAlert, setOpenAlert] = useState(true);
+export default function SidebarNavigation({ onMenuItemClick }) {
+  // const [open, setOpen] = useState(0);
+  // const [openAlert, setOpenAlert] = useState(true);
 
-  const handleOpen = (value) => {
-    setOpen(open === value ? 0 : value);
-  };
+  // const handleOpen = (value) => {
+  //   setOpen(open === value ? 0 : value);
+  // };
 
   return (
     <>
@@ -44,15 +44,29 @@ export default function SidebarNavigation() {
           </Typography>
         </div>
         <List>
-          <ListItem>
-            <NavLink>Товары</NavLink>
+          <ListItem onClick={() => onMenuItemClick("products")}>
+            <Typography>Товары</Typography>
           </ListItem>
-          <ListItem>
-            <NavLink>Категории</NavLink>
+          <ListItem onClick={() => onMenuItemClick("categories")}>
+            <Typography>Категории</Typography>
+          </ListItem>
+          <ListItem onClick={() => onMenuItemClick("groups")}>
+            <Typography>Группы атрибутов</Typography>
+          </ListItem>
+          <ListItem onClick={() => onMenuItemClick("attributes")}>
+            <Typography>Атрибуты</Typography>
+          </ListItem>
+          <ListItem onClick={() => onMenuItemClick("orders")}>
+            <Typography>Заказы</Typography>
           </ListItem>
         </List>
       </Card>
-      {/* <Accordion
+    </>
+  );
+}
+
+{
+  /* <Accordion
             open={open === 1}
             icon={
               <ChevronDownIcon
@@ -96,7 +110,5 @@ export default function SidebarNavigation() {
                 </ListItem>
               </List>
             </AccordionBody>
-          </Accordion> */}
-    </>
-  );
+          </Accordion> */
 }

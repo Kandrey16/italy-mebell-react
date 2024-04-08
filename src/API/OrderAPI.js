@@ -15,7 +15,7 @@ export const deleteOrder = async(id) => {
     return data
 }
 
-export const fetchOrders = async(page, limit) => {
+export const fetchOrders = async() => {
     const {data} = await $authhost.get('api/orders')
     return data
 }

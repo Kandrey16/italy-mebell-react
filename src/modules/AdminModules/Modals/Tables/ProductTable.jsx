@@ -6,7 +6,7 @@ import { observer } from "mobx-react";
 import { useContext } from "react";
 import { Context } from "@/main";
 import { fetchProducts } from "@/API/ProductAPI";
-import ProductEditForm from "../EditProduct";
+import ProductEditForm from "../EditTable/EditProduct";
 import { toJS } from "mobx";
 
 const TABLE_HEAD = [
@@ -14,13 +14,8 @@ const TABLE_HEAD = [
   "Артикул",
   "Название",
   "Цена",
-  "Изображение",
-  "Описание",
   "Количество",
   "Доступность",
-  "Дата создания",
-  "Дата изменения",
-  "Категория",
   "",
   "",
 ];
@@ -32,12 +27,12 @@ const ProductTable = observer(() => {
 
   useEffect(() => {
     fetchProducts()
-  .then((data) => {
-    product.setProducts(data.rows);
-  })
-  .catch((error) => {
-    console.error('Ошибка при загрузке продуктов:', error);
-  });
+      .then((data) => {
+        product.setProducts(data.rows);
+      })
+      .catch((error) => {
+        console.error("Ошибка при загрузке продуктов:", error);
+      });
   }, []);
 
   const handleDelete = (id) => {
@@ -45,8 +40,8 @@ const ProductTable = observer(() => {
   };
 
   const handleEdit = (product) => {
-    setCurrentProduct(product); 
-    setProductEditVisible(true); 
+    setCurrentProduct(product);
+    setProductEditVisible(true);
   };
 
   return (
@@ -61,20 +56,27 @@ const ProductTable = observer(() => {
             </tr>
           </thead>
           <tbody>
-            {product.products && product.products.map((product, index) => {
-              return (
-                <TableRow
-                  key={index}
-                  product={product} // данные товаров
-                  handleEdit={() => handleEdit(product)} // изменено
-                  handleDelete={() => handleDelete(product.id_product)} // метод удаления
-                />
-              );
-            })}
+            {product.products &&
+              product.products.map((product, index) => {
+                return (
+                  <TableRow
+                    key={index}
+                    data={product} // данные товаров
+                    hiddenColumns={[
+                      "url_main_image_product",
+                      "description_product",
+                      "createdAt",
+                      "updatedAt",
+                      "id_category",
+                    ]}
+                    handleEdit={() => handleEdit(product)} // изменено
+                    handleDelete={() => handleDelete(product.id_product)} // метод удаления
+                  />
+                );
+              })}
           </tbody>
         </table>
       </Card>
-
       {currentProduct && ( // добавлено
         <ProductEditForm
           product={currentProduct} // изменено

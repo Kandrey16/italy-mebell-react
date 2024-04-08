@@ -1,5 +1,12 @@
 import { makeAutoObservable, action, runInAction } from "mobx"
-import { editProduct, deleteProduct, searchProduct as apiSearchProduct, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart, getCart, updateCartQuantity as apiUpdateCartQuantity } from "@/API/ProductAPI"
+import { 
+    editProduct, 
+    deleteProduct, 
+    searchProduct as apiSearchProduct, 
+    editCategory as apiEditCategory,
+    deleteCategory as apiDeleteCategory,
+    fetchCategories as apiFetchCategories, 
+    deleteCategory} from "@/API/ProductAPI"
 
 export default class ProductStore {
     constructor() {
@@ -7,9 +14,6 @@ export default class ProductStore {
             
         ]
         this._products = [
-            
-        ]
-        this._cart = [
             
         ]
         this._isLoading = false
@@ -81,9 +85,6 @@ export default class ProductStore {
     get limit() {
         return this._limit
     }
-    get cart() {
-        return this._cart
-    }
 
     editProduct = async (id, editedProduct) => {
         const data = await editProduct(id, editedProduct);
@@ -108,4 +109,34 @@ export default class ProductStore {
             console.error('Ошибка при поиске товаров:', error)
         }
     }
+
+    // Изменение существующей категории
+    editCategory = async (id, categoryData) => {
+        try {
+            await apiEditCategory(id, categoryData);
+            await this.fetchCategories();
+        } catch (error) {
+            console.error('Ошибка при редактировании категории:', error);
+        } 
+    };
+
+    // Удаление категории
+    deleteCategory = async (id) => {
+        await deleteCategory(id);
+        action(() => {
+            this._categories  = this._categories.filter(categories => categories.id_category !== id);
+        })();
+    };
+
+    // Обновление списка категорий
+    fetchCategories = async () => {
+        try {
+            const categories = await apiFetchCategories();
+            runInAction(() => {
+                this.setCategories(categories);
+            });
+        } catch (error) {
+            console.error('Ошибка при обновлении списка категорий:', error);
+        } 
+    };
 }

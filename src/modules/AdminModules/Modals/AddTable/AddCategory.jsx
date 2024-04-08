@@ -7,20 +7,20 @@ import {
   Input,
   Typography,
 } from "@material-tailwind/react";
-import { editCategory } from "@/API/ProductAPI";
+import { createCategory } from "@/API/ProductAPI";
+import { observer } from "mobx-react";
 import { Context } from "@/main";
 
-export default function CategoryEditForm({ show, onHide }) {
-  const { product } = useContext(Context);
+const CategoryAddForm = observer(({ show, onHide }) => {
+  const product = useContext(Context);
   const [value, setValue] = useState("");
 
-  const updateCategory = () => {
-    editCategory(product.selectedCategory.id, { name_category: value }).then(
-      (data) => {
-        setValue("");
-        onHide();
-      }
-    );
+  const addCategory = () => {
+    createCategory({ name_category: value }).then(() => {
+      product.product.fetchCategories();
+      setValue("");
+      onHide();
+    });
   };
 
   return (
@@ -39,6 +39,7 @@ export default function CategoryEditForm({ show, onHide }) {
               <Input
                 size="lg"
                 value={value}
+                lavel="Название"
                 onChange={(e) => setValue(e.target.value)}
               />
             </div>
@@ -46,9 +47,9 @@ export default function CategoryEditForm({ show, onHide }) {
               className="my-2"
               color="blue"
               size="md"
-              onClick={updateCategory}
+              onClick={addCategory}
             >
-              Обновить
+              Создать
             </Button>
             <Button
               className="my-2"
@@ -64,4 +65,6 @@ export default function CategoryEditForm({ show, onHide }) {
       </Card>
     </Dialog>
   );
-}
+});
+
+export default CategoryAddForm;

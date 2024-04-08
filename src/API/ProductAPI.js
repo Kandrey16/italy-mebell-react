@@ -38,8 +38,13 @@ export const createCategory = async(category) => {
 }
 
 export const editCategory = async(id, category) => {
-    const {data} = await $authhost.put('api/category' + id, category)
+    const {data} = await $authhost.put('api/category/' + id, category)
     return data
+}
+
+export const deleteCategory = async(id) => {
+    const {data} = await $authhost.delete('api/category/' + id)
+    return {data}
 }
 
 export const fetchCategories = async() => {
