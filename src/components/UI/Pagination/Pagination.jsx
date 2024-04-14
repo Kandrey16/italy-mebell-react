@@ -3,6 +3,7 @@ import { Button, IconButton } from "@material-tailwind/react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { observer } from "mobx-react";
 import { Context } from "@/main";
+import style from "./Pagination.module.scss";
 
 const Pagination = observer(() => {
   const { product } = useContext(Context);
@@ -16,10 +17,15 @@ const Pagination = observer(() => {
 
   const getItemProps = (index) => ({
     variant: active === index ? "filled" : "text",
+    color: active === index ? "blue" : "gray",
     onClick: () => {
       product.setPage(index);
       setActive(index);
     },
+    className:
+      active === index
+        ? `bg-colorPrimary text-white`
+        : `bg-white text-gray-700`,
   });
 
   const next = () => {
@@ -40,7 +46,7 @@ const Pagination = observer(() => {
     <div className="flex items-center gap-4">
       <Button
         variant="text"
-        className="flex items-center gap-2"
+        className="flex items-center gap-2 text-colorPrimary"
         onClick={prev}
         disabled={active === 1}
       >
@@ -59,7 +65,7 @@ const Pagination = observer(() => {
       </div>
       <Button
         variant="text"
-        className="flex items-center gap-2"
+        className="flex items-center gap-2 text-colorPrimary"
         onClick={next}
         disabled={active === 5}
       >

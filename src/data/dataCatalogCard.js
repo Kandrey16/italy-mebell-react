@@ -7,17 +7,21 @@ export const images = [
     {
         title: "Кровати",  
         url: bedroom,
+        categoryId: 1,
     },
     {
         title: "Стулья",
         url: chair,
+        categoryId: 1,
     },
     {
         title: "Кухни",
         url: kitchen,
+        categoryId: 1,
     },
     {
         title: "Столы",
         url: table,
+        categoryId: 1,
     },
 ];

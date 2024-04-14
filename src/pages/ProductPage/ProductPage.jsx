@@ -10,6 +10,7 @@ import ProductDetails from "./ProductDetails";
 import ProductSpecification from "./ProductSpecification";
 import styles from "./ProductPage.module.scss";
 import cart_logo from "@/assets/cart_2.svg";
+import SameProductSection from "@/modules/ClientModules/SameProductSection/SameProductSection";
 
 const ProductPage = observer(() => {
   const { product, user, cart } = useContext(Context);
@@ -86,30 +87,35 @@ const ProductPage = observer(() => {
   };
 
   return (
-    <div className="container grid grid-cols-2 w-full p-6">
-      <ProductImage
-        imageUrl={`${import.meta.env.VITE_APP_API_URL}/${productData.selectedProduct.url_main_image_product}`}
+    <div className="container">
+      <div className="grid grid-cols-2 w-full p-6">
+        <ProductImage
+          imageUrl={`${import.meta.env.VITE_APP_API_URL}/${productData.selectedProduct.url_main_image_product}`}
+        />
+        <Card className="col p-6">
+          <ProductDetails
+            name={productData.selectedProduct.name_product}
+            article={productData.selectedProduct.article_product}
+            price={productData.selectedProduct.price_product}
+          />
+          <ProductSpecification
+            specification={productData.specification}
+            attributes={productData.attributes}
+          />
+          <div className="flex justify-end">
+            <button
+              className={styles.product_button}
+              onClick={() => handleAddToCart(id, user.user.email_user)}
+            >
+              <img src={cart_logo} alt="Cart Logo" />
+              <p>{productData.isProductInCart ? "Перейти" : "В корзину"}</p>
+            </button>
+          </div>
+        </Card>
+      </div>
+      <SameProductSection
+        id_category={productData.selectedProduct.id_category} currentProductId={id}
       />
-      <Card className="col p-6">
-        <ProductDetails
-          name={productData.selectedProduct.name_product}
-          article={productData.selectedProduct.article_product}
-          price={productData.selectedProduct.price_product}
-        />
-        <ProductSpecification
-          specification={productData.specification}
-          attributes={productData.attributes}
-        />
-        <div className="flex justify-end">
-          <button
-            className={styles.product_button}
-            onClick={() => handleAddToCart(id, user.user.email_user)}
-          >
-            <img src={cart_logo} alt="Cart Logo" />
-            <p>{productData.isProductInCart ? "Перейти" : "В корзину"}</p>
-          </button>
-        </div>
-      </Card>
     </div>
   );
 });

@@ -6,7 +6,6 @@ import { Card, List, ListItem, Typography } from "@material-tailwind/react";
 const CategoryBar = observer(() => {
   const { product } = useContext(Context);
 
-  
   return (
     <>
       <Card>

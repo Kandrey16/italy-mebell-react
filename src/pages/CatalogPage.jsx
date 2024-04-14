@@ -15,19 +15,28 @@ const CatalogPage = observer(() => {
     fetchProducts(null, product.page, product.limit).then((data) => {
       product.setProducts(data.rows);
       product.setTotalCount(data.count);
-      setShowPagination(data.count > 0);
+      setShowPagination(data.count > product.limit);
     });
   }, []);
 
   useEffect(() => {
-    const selectedCategoryId = product.selectedCategory.id_category;
-    fetchProducts(selectedCategoryId, product.page, product.limit).then(
-      (data) => {
+    if (!product.selectedCategory) {
+      fetchProducts(null, product.page, product.limit).then((data) => {
         product.setProducts(data.rows);
         product.setTotalCount(data.count);
-        setShowPagination(data.count > 0);
-      }
-    );
+        setShowPagination(data.count > product.limit);
+      });
+    } else {
+      fetchProducts(
+        product.selectedCategory.id_category,
+        product.page,
+        product.limit
+      ).then((data) => {
+        product.setProducts(data.rows);
+        product.setTotalCount(data.count);
+        setShowPagination(data.count > product.limit);
+      });
+    }
   }, [product.page, product.selectedCategory]);
 
   return (
