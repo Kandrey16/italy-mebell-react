@@ -3,7 +3,6 @@ import { Button, IconButton } from "@material-tailwind/react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { observer } from "mobx-react";
 import { Context } from "@/main";
-import style from "./Pagination.module.scss";
 
 const Pagination = observer(() => {
   const { product } = useContext(Context);

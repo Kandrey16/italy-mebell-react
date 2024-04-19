@@ -27,7 +27,7 @@ export default withMT({
       colors: {
         'colorPrimary': '#1e40af',
         'colorPrimaryHover': '#1e40af',
-        'colorBackground': '#F0F8FF',
+        'colorBackground': '#f2f5f9',
         'colorGray': 'B9B9B9',
         // purple: {
         //   950: '#24226D',

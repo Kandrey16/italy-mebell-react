@@ -17,7 +17,6 @@ import { fetchAttributes } from "@/API/ProductAPI";
 const AttributeAddForm = observer(({ show, onHide }) => {
   const { attribute } = useContext(Context);
   const [value, setValue] = useState("");
-  const [group, setGroup] = useState([]);
 
   useEffect(() => {
     fetchAttributeGroups().then((data) => attribute.setAttributeGroups(data));

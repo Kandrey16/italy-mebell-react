@@ -8,6 +8,7 @@ import { PRODUCT_ROUTE } from "@/routes/utils/consts";
 import { useState, useContext } from "react";
 import { Context } from "@/main";
 import { observer } from "mobx-react";
+import { Rating } from "@material-tailwind/react";
 
 const ProductCard = observer(({ product }) => {
   const navigate = useNavigate();
@@ -15,6 +16,8 @@ const ProductCard = observer(({ product }) => {
   const imageUrl = product.url_main_image_product
     ? `${import.meta.env.VITE_APP_API_URL}/${product.url_main_image_product}`
     : noProduct;
+
+    const formattedPrice = new Intl.NumberFormat('ru-RU').format(product.price_product);
 
   return (
     <>
@@ -27,7 +30,8 @@ const ProductCard = observer(({ product }) => {
         </div>
         <div className={styles.product_info}>
           <h2 className={styles.product_name}>{product.name_product}</h2>
-          <p className={styles.product_price}>{product.price_product}₽</p>
+          <p className={styles.product_price}>{formattedPrice}₽</p>
+          {/* <Rating value={Number(product.rating)} readonly /> */}
           <div className={styles.product_options}>
             <div className={styles.product_link}>
               <a>Подробнее</a>

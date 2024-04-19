@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import TableCell from "./TableCell";
 import EditIcon from "@/assets/edit.svg";
 import DeleteIcon from "@/assets/delete.svg";

@@ -1,24 +1,11 @@
 .same_section {
+  @apply py-5;
 
-  h2 {
-    @apply text-2xl py-5 font-medium;
-  }
+  .center {
+    @apply container;
 
-  .sameProductsContainer {
-    display: flex;
-    overflow-x: auto;
-    gap: 20px;
-    padding: 20px 0;
-
-    &::-webkit-scrollbar {
-      height: 8px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background: #ccc;
-      border-radius: 10px;
-    }
-    &::-webkit-scrollbar-track {
-      background: #efefef;
+    h2 {
+      @apply text-3xl py-5 font-semibold;
     }
   }
 }

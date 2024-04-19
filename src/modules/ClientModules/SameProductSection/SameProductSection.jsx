@@ -27,15 +27,17 @@ const SameProductSection = ({ id_category, currentProductId }) => {
 
   return (
     <div className={styles.same_section}>
-      <h2>Похожие товары</h2>
-      <div className={styles.sameProductsContainer}>
-        {sameProduct.map((product) => (
-          <ProductCard
-            key={product.id_product}
-            product={product}
-            className={styles.productCard}
-          />
-        ))}
+      <div className={styles.center}>
+        <h2>Похожие товары</h2>
+        <div className={styles.sameProductsContainer}>
+          {sameProduct.map((product) => (
+            <ProductCard
+              key={product.id_product}
+              product={product}
+              className={styles.productCard}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

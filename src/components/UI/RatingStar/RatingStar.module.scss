@@ -1,0 +1,20 @@
+.rating button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.star {
+  color: gold;
+}
+
+.rating .off .star {
+  color: #e4e5e9;
+}
+
+.on svg {
+  fill: gold; /* Заполнение цветом */
+}
+.off svg {
+  fill: #e4e5e9; /* Серый цвет для "пустой" звезды */
+}

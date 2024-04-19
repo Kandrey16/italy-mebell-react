@@ -7,12 +7,14 @@ import ProductStore from "./store/ProductStore.js";
 import CartStore from "./store/CartStore.js";
 import OrderStore from "./store/OrderStore.js";
 import AttributeStore from "./store/AttributeStore.js";
+import ProductCommentStore from "./store/ProductCommentStore.js";
 
 const user = new UserStore();
 const product = new ProductStore();
 const cart = new CartStore();
 const order = new OrderStore();
 const attribute = new AttributeStore();
+const comment = new ProductCommentStore();
 
 export const Context = createContext(null);
 
@@ -25,6 +27,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         cart,
         order,
         attribute,
+        comment,
       }}
     >
       <ThemeProvider>

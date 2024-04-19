@@ -1,5 +1,5 @@
 .product_button {
-  @apply relative flex items-center justify-center w-56 h-10 mt-4 rounded-lg bg-colorPrimary;
+  @apply relative flex w-full items-center justify-center h-10 mt-4 rounded-lg;
 
   img {
     @apply size-auto p-1;
@@ -8,4 +8,12 @@
   p {
     @apply text-white text-sm;
   }
+}
+
+.product_add {
+  @apply bg-colorPrimary;
+}
+
+.product_in_cart {
+  @apply bg-green-500;
 }

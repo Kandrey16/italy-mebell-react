@@ -11,23 +11,6 @@ import AttributeEditForm from "../EditTable/EditAttribute";
 // Заголовки таблицы
 const ATTRIBUTE_TABLE_HEAD = ["ID", "Название", "Группа атрибутов", "", ""];
 
-// function mapDataForTable(data, exclude = [], transform = {}) {
-//   let mappedData = {};
-
-//   Object.keys(data).forEach((key) => {
-//     if (exclude.includes(key)) {
-//       return;
-//     }
-//     if (key in transform) {
-//       mappedData[key] = transform[key](data[key]);
-//     } else {
-//       mappedData[key] = data[key];
-//     }
-//   });
-
-//   return mappedData;
-// }
-
 const AttributeTable = observer(() => {
   const { attribute } = useContext(Context);
   const [editVisible, setEditVisible] = useState(false);
@@ -44,7 +27,6 @@ const AttributeTable = observer(() => {
       });
   }, [attribute]);
 
-  // Методы редактирования и удаления
   const handleDelete = (id) => {
     attribute.deleteAttribute(id);
   };
@@ -53,21 +35,6 @@ const AttributeTable = observer(() => {
     setCurrentAttribute(attributeItem);
     setEditVisible(true);
   };
-
-  //   function getGroupNameById(groupId) {
-  //     console.log("Вызов getGroupNameById с groupId:", groupId); // Должно отобразиться перед возвращением значения
-  //     const group = attribute.attributeGroups.find(
-  //       (g) => g.id_attribute_group === groupId
-  //     );
-  //     console.log(group);
-  //     return group ? group.name_attribute_group : "Неизвестная группа";
-  //   }
-
-  //   const transformRules = {
-  //     id_attribute_group: getGroupNameById, // Используем функцию без вызова
-  //   };
-
-  //   console.log("transformRules", transformRules); // Для проверки содержания transformRules
 
   return (
     <>
@@ -82,13 +49,6 @@ const AttributeTable = observer(() => {
           </thead>
           <tbody>
             {attribute.attributes.map((attr, index) => {
-              //   console.log("Обрабатываем:", attr); // Для проверки входящего объекта
-              //   let rowData = mapDataForTable(
-              //     attr,
-              //     [],
-              //     transformRules
-              //   );
-              //   console.log("После mapDataForTable:", rowData); // Для проверки результата работы mapDataForTable
               return (
                 <TableRow
                   key={index}
@@ -103,10 +63,6 @@ const AttributeTable = observer(() => {
         </table>
       </Card>
 
-      {/* Тут может быть ваша форма редактирования атрибутов
-      {currentAttribute && editVisible && (
-        // Тут должен быть ваш компонент формы редактирования
-      )} */}
       {currentAttribute && (
         <AttributeEditForm
           selectedAttribute={currentAttribute}

@@ -25,3 +25,12 @@ export const check = async() => {
     localStorage.setItem('user', JSON.stringify(userData));
     return userData;
 }
+
+export const fetchOneUser = async (email) => {
+    try {
+      const { data } = await $host.get(`api/user_profile/${encodeURIComponent(email)}`);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
