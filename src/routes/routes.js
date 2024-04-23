@@ -1,11 +1,12 @@
 import AdminPage from "@/pages/AdminPage"
-import { ADMIN_ROUTE, CART_ROUTE, CATALOG_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, ORDER_ROUTE, PRODUCT_ROUTE, REGISTRATION_ROUTE } from "./utils/consts"
+import { ADMIN_ROUTE, CART_ROUTE, CATALOG_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, ORDER_ROUTE, PRODUCT_ROUTE, PROFILE_ROUTE, REGISTRATION_ROUTE } from "./utils/consts"
 import LoginPage from "@/pages/LoginPage"
 import CatalogPage from "@/pages/CatalogPage"
 import MainPage from "@/pages/MainPage"
 import CartPage from "@/pages/CartPage/CartPage"
 import ProductPage from "@/pages/ProductPage/ProductPage"
 import OrderPage from '@/pages/OrderPage/OrderPage'
+import ProfilePage from "@/pages/ProfilePage/ProfilePage"
 
 export const authRoutes = [
     {
@@ -19,6 +20,10 @@ export const authRoutes = [
     {
         path: ORDER_ROUTE,
         Component: OrderPage
+    },
+    {
+        path: PROFILE_ROUTE,
+        Component: ProfilePage
     },
 ]
 

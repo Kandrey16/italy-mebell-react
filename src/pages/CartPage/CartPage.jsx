@@ -18,7 +18,7 @@ const CartPage = observer(() => {
 
   useEffect(() => {
     cart.getCart(user.user.email_user);
-  }, [cart.cart]);
+  }, []);
 
   useEffect(() => {
     let items = 0;
@@ -41,6 +41,8 @@ const CartPage = observer(() => {
       </div>
     );
   }
+
+  console.log(toJS(cart.cart));
 
   return (
     <>

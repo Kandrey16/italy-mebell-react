@@ -31,7 +31,7 @@ const ProductCard = observer(({ product }) => {
         <div className={styles.product_info}>
           <h2 className={styles.product_name}>{product.name_product}</h2>
           <p className={styles.product_price}>{formattedPrice}₽</p>
-          {/* <Rating value={Number(product.rating)} readonly /> */}
+          <Rating value={Number(product.rating)} readonly />
           <div className={styles.product_options}>
             <div className={styles.product_link}>
               <a>Подробнее</a>

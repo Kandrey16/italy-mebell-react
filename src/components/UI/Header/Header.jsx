@@ -29,6 +29,7 @@ import logInIcon from "@/assets/LoginIcon.svg";
 import burderIcon from "@/assets/BurgerIcon.svg";
 import Cart from "@/modules/ClientModules/Cart/Cart";
 import BurgerMenu from "./BurgerMenu/BurgerMenu";
+import ProfileHeader from "./ProfileHeader/ProfileHeader";
 
 export const Header = observer(() => {
   const { user } = useContext(Context);
@@ -46,11 +47,6 @@ export const Header = observer(() => {
       setIsMobile(window.innerWidth < 1024);
     });
   }, []);
-
-  const logOut = () => {
-    user.setUser({});
-    user.setIsAuth(false);
-  };
 
   return (
     <>
@@ -84,12 +80,8 @@ export const Header = observer(() => {
                 <img src={adminIcon}></img>
               </Tooltip>
             </NavLink>
-            <NavLink to={LOGIN_ROUTE}>
-              <Tooltip content="Выход" placement="bottom">
-                <img src={logOutIcon} onClick={() => logOut()} />
-              </Tooltip>
-            </NavLink>
             <Cart />
+            <ProfileHeader />
           </div>
         ) : (
           <div className={styles.header_icons}>

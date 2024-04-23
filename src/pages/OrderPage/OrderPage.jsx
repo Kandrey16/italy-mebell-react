@@ -1,16 +1,20 @@
 import { Context } from "@/main";
 import { observer } from "mobx-react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MAIN_ROUTE } from "@/routes/utils/consts";
 import OrderComplete from "./OrderComplete";
 import OrderForm from "./OrderForm";
 import OrderSummary from "./OrderSummary";
+import { fetchPaymentMethods } from "@/API/OrderAPI";
 
 const OrderPage = observer(() => {
   const { cart, order, user } = useContext(Context);
   const [completeOrder, setCompleteOrder] = useState(false);
 
   const [orderNumber, setOrderNumber] = useState(null);
+
+  const [paymentMethods, setPaymentMethods] = useState([]);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
 
   const cartItems = cart.cart;
   const user_data = user.user.email_user;
@@ -22,6 +26,23 @@ const OrderPage = observer(() => {
 
   const totalItems = cart.totalItems;
   const totalPrice = cart.totalPrice;
+
+  useEffect(() => {
+    async function loadPaymentMethods() {
+      try {
+        const methods = await fetchPaymentMethods();
+        setPaymentMethods(methods);
+        // По умолчанию выбираем первый метод оплаты
+        if (methods.length > 0) {
+          setSelectedPaymentMethod(methods[0]);
+        }
+      } catch (error) {
+        console.error("Ошибка при загрузке способов оплаты:", error);
+      }
+    }
+
+    loadPaymentMethods();
+  }, []);
 
   // функция для генерации номера заказа
   const generateOrderNumber = () => {
@@ -47,6 +68,12 @@ const OrderPage = observer(() => {
         count_order_product: item.count_cart_product,
         id_cart_product: item.id_cart_product,
       })),
+      payment_method: {
+        // Используйте здесь объект, как ожидает сервер
+        id_payment_method: selectedPaymentMethod
+          ? selectedPaymentMethod.id_payment_method
+          : null,
+      },
     };
 
     try {
@@ -78,6 +105,9 @@ const OrderPage = observer(() => {
             code={code}
             setCode={setCode}
             submitOrder={submitOrder}
+            paymentMethods={paymentMethods}
+            selectedPaymentMethod={selectedPaymentMethod}
+            setSelectedPaymentMethod={setSelectedPaymentMethod}
           />
           <OrderSummary
             cartItems={cartItems}

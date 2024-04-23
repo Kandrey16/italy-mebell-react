@@ -24,3 +24,12 @@ export const getProductComment = async(id) => {
     const {data} = await $authhost.get('api/product_comment/' + id)
     return data
 }
+
+export const fetchProductCommentsByEmail = async (email) => {
+    try {
+        const response = await $authhost.get(`api/product_comment/?email_user=${email}`);
+        return response.data;
+    } catch (error) {
+        console.error("Ошибка получения отзывов:", error);
+    }
+};

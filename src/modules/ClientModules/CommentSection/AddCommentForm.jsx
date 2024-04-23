@@ -9,6 +9,8 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import StarRatings from "react-star-ratings";
+import Filter from "bad-words";
+import badwordsList from "@/data/badwords.json";
 import { observer } from "mobx-react";
 import { Context } from "@/main";
 
@@ -18,9 +20,29 @@ const CommentAddForm = observer(({ show, onHide, productId }) => {
   const [description, setDescription] = useState("");
   const email = user.user.email_user;
 
+  const filter = new Filter({
+    list: badwordsList.badwords,
+    replaceRegex: /[A-Za-z0-9А-Яа-я_-]/g,
+    placeHolder: "x",
+  });
+
+  console.log(badwordsList.badwords);
+
+  const customIsProfane = (text) => {
+    const lowerCaseText = text.toLowerCase();
+    return filter.list.some((badWord) => lowerCaseText.includes(badWord));
+  };
+
   const addComment = () => {
     if (!user.isAuth) {
       console.log("User is not authenticated!");
+      return;
+    }
+
+    if (customIsProfane(description)) {
+      alert(
+        "Ваш комментарий содержит недопустимые выражения. Пожалуйста, отредактируйте его."
+      );
       return;
     }
 
@@ -47,7 +69,6 @@ const CommentAddForm = observer(({ show, onHide, productId }) => {
   const handleDescriptionChange = (e) => {
     const newDescription = e.target.value;
     setDescription(newDescription);
-    console.log("Updated description:", newDescription);
   };
 
   return (

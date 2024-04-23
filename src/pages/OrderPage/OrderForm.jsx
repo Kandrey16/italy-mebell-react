@@ -1,4 +1,4 @@
-import { Card, CardBody, Input, Button } from "@material-tailwind/react";
+import { Card, CardBody, Input, Button, Select, Option } from "@material-tailwind/react";
 
 export default function OrderForm({
   address,
@@ -10,6 +10,9 @@ export default function OrderForm({
   code,
   setCode,
   submitOrder,
+  paymentMethods,
+  selectedPaymentMethod,
+  setSelectedPaymentMethod,
 }) {
   const handleAddressChange = (e) => setAddress(e.target.value);
   const handleEntryChange = (e) => setEntry(e.target.value);
@@ -46,6 +49,30 @@ export default function OrderForm({
             value={code}
             onChange={handleCodeChange}
           />
+          <Select
+            color="blue"
+            label="Способ оплаты"
+            value={
+              selectedPaymentMethod
+                ? selectedPaymentMethod.id_payment_method
+                : ""
+            }
+            onChange={(event) => {
+              const method = paymentMethods.find(
+                (m) => m.id_payment_method.toString() === event.target.value
+              );
+              setSelectedPaymentMethod(method);
+            }}
+          >
+            {paymentMethods.map((method) => (
+              <Option
+                key={method.id_payment_method}
+                value={method.id_payment_method}
+              >
+                {method.name_payment_method}
+              </Option>
+            ))}
+          </Select>
           <Button color="blue" type="submit">
             Оформить заказ
           </Button>
