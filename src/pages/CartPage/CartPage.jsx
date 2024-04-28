@@ -23,7 +23,7 @@ const CartPage = observer(() => {
   useEffect(() => {
     let items = 0;
     let price = 0;
-
+    
     cart.cart.forEach((item) => {
       items += item.count_cart_product;
       price += item.product.price_product * item.count_cart_product;
@@ -41,8 +41,6 @@ const CartPage = observer(() => {
       </div>
     );
   }
-
-  console.log(toJS(cart.cart));
 
   return (
     <>

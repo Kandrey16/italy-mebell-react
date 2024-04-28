@@ -1,7 +1,13 @@
 import { Card, CardBody } from "@material-tailwind/react";
 import CartItem from "../CartPage/CartItem";
 
-export default function OrderSummary({ cartItems, totalItems, totalPrice }) {
+export default function OrderSummary({
+  cartItems,
+  totalItems,
+  totalPrice,
+  deliveryPrice,
+}) {
+
   return (
     <Card>
       <CardBody>
@@ -21,11 +27,17 @@ export default function OrderSummary({ cartItems, totalItems, totalPrice }) {
         <hr className="my-4" />
         <div className="flex justify-between">
           <span className="font-medium text-lg">Общее количество:</span>
-          <span className="font-medium text-lg">{totalItems} шт.</span>
+          <span className="font-bold text-lg text-black">{totalItems} шт.</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="font-medium text-lg">Стоимость доставки:</span>
+          <span className="font-bold text-lg text-black">
+            {deliveryPrice.toFixed(2)} руб.
+          </span>
         </div>
         <div className="flex justify-between">
           <span className="font-medium text-lg">Общая сумма:</span>
-          <span className="font-medium text-lg">
+          <span className="font-bold text-lg text-black">
             {totalPrice.toFixed(2)} руб.
           </span>
         </div>

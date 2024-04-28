@@ -9,7 +9,7 @@ import CategoryEditForm from "../EditTable/EditCategory";
 import { fetchCategories, deleteCategory } from "@/API/ProductAPI";
 import { toJS } from "mobx";
 
-const TABLE_HEAD = ["ID", "Название", "", ""];
+const TABLE_HEAD = ["ID", "Название", "Изображение", ""];
 
 const CategoryTable = observer(() => {
   const { product } = useContext(Context);

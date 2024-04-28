@@ -31,6 +31,21 @@ export const fetchOneProduct = async(id) => {
     return data
 }
 
+export const fetchProductsByCollection = async (id_collection, page = 1) => {
+    // здесь добавлен параметр page для пагинации, если он необходим
+    try {
+      const response = await $host.get(`api/product`, {
+        params: { 
+          id_collection: id_collection,
+          page: page,
+        }
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Ошибка при получении товаров коллекции:", error);
+    }
+ };
+
 //category
 export const createCategory = async(category) => {
     const {data} = await $authhost.post('api/category', category)
@@ -82,4 +97,25 @@ export const getCart = async(email_user) => {
 export const updateCartQuantity = async (id_cart_product, newQuantity) => {
     const { data } = await $authhost.put(`api/cart/${id_cart_product}`, { count_cart_product: newQuantity });
     return data;
+}
+
+//collection
+export const createCollection = async(collection) => {
+    const {data} = await $authhost.post('api/collection', collection)
+    return data
+}
+
+export const editCollection = async(id, collection) => {
+    const {data} = await $authhost.put('api/collection/' + id, collection)
+    return data
+}
+
+export const deleteCollection = async(id) => {
+    const {data} = await $authhost.delete('api/collection/' + id)
+    return {data}
+}
+
+export const fetchCollections = async() => {
+    const {data} = await $host.get('api/collection')
+    return data
 }

@@ -16,8 +16,6 @@ const AttributeGroupTable = observer(() => {
   const [groupEditVisible, setGroupEditVisible] = useState(false);
   const [currentGroup, setCurrentGroup] = useState(null);
 
-  console.log(toJS(attribute.attributeGroups));
-
   useEffect(() => {
     attribute
       .fetchAttributeGroups()
@@ -25,7 +23,7 @@ const AttributeGroupTable = observer(() => {
         console.log(
           "Группы атрибутов после загрузки: ",
           attribute.attributeGroups
-        ); // Здесь добавлен console.log
+        ); 
       })
       .catch((error) => {
         console.error("Ошибка при загрузке групп атрибутов:", error);

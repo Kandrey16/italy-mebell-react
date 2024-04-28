@@ -18,11 +18,13 @@ import deleteIcon from "@/assets/delete.svg";
 import { observer } from "mobx-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { CART_ROUTE } from "@/routes/utils/consts";
+import style from "./Cart.module.scss";
 
 const Cart = observer(() => {
   const { product, user, cart } = useContext(Context);
   const navigate = useNavigate();
   const [openPopover, setOpenPopover] = useState(false);
+  const [totalItemsInCart, setTotalItemsInCart] = useState(0);
 
   const triggers = {
     onMouseEnter: () => setOpenPopover(true),
@@ -31,7 +33,13 @@ const Cart = observer(() => {
 
   useEffect(() => {
     cart.getCart(user.user.email_user);
-  }, []);
+  
+    const totalItems = cart.cart.reduce((total, cartItem) => {
+      return total + cartItem.count_cart_product;
+    }, 0);
+
+    setTotalItemsInCart(totalItems);
+  }, [cart.cart]);
 
   const cartNotEmpty = cart.cart.length > 0;
 
@@ -39,7 +47,14 @@ const Cart = observer(() => {
     <>
       <Popover open={openPopover} handler={setOpenPopover}>
         <PopoverHandler {...triggers} onClick={() => navigate(CART_ROUTE)}>
-          <img src={basketIcon} />
+          <div className="relative inline-block">
+            <img src={basketIcon} className={style.not_active} />
+            {cartNotEmpty && (
+              <div src={basketIcon} className={style.active}>
+                {totalItemsInCart}
+              </div>
+            )}
+          </div>
         </PopoverHandler>
         {cartNotEmpty && (
           <PopoverContent {...triggers} className="z-50 max-w-[32rem]">

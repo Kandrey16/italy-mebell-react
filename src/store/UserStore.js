@@ -1,4 +1,5 @@
 import { makeAutoObservable } from "mobx"
+import { updateUserProfile } from "@/API/UserAPI"
 
 export default class UserStore {
     constructor() {
@@ -23,5 +24,14 @@ export default class UserStore {
 
     get user() {
         return this._user
+    }
+
+    async updateUserProfile(profileData) {
+        try {
+            const updatedUser = await updateUserProfile(this._user.email_user, profileData);
+            this.setUser(updatedUser);
+        } catch (error) {
+            console.error("Ошибка при обновлении профиля пользователя: ", error);
+        }
     }
 }

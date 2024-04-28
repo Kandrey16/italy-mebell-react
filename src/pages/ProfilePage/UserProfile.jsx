@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar } from "@material-tailwind/react";
+import { Avatar, Button } from "@material-tailwind/react";
 import noPhoto from "@/assets/images/noPhoto.webp";
 
 export const UserProfile = ({ userData, imageUrl }) => {

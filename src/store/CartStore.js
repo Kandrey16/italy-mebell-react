@@ -28,7 +28,7 @@ export default class CartStore {
     get totalPrice() {
         return this._totalPrice;
     }
-
+    
     addToCart = async (id_product, email_user) => {
         if(this._productsInCartIds.has(id_product)) {
             return;

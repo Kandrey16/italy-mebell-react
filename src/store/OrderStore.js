@@ -1,11 +1,21 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { createOrder, fetchOrders, getOrder, updateOrder, deleteOrder, fetchPaymentMethods as apiFetchPaymentMethods, createPaymentMethod, editPaymentMethod, deletePaymentMethod } from "../API/OrderAPI";
+import { createOrder, fetchOrders, getOrder, updateOrder, deleteOrder, 
+    fetchPaymentMethods as apiFetchPaymentMethods, 
+    createPaymentMethod, 
+    editPaymentMethod, 
+    deletePaymentMethod, 
+    editOrderDelivery,
+    deleteOrderDelivery,
+    fetchOrderDeliveries as apiFetchOrderDeliveries
+ } from "../API/OrderAPI";
 
 export default class OrderStore {
     constructor() {
         this._orders = []
         this._payment_methods = []
+        this._order_delivery = []
         this._selectedOrder = {}
+        // this._deliveryPrice = 0
 
         makeAutoObservable(this)
     }
@@ -16,15 +26,27 @@ export default class OrderStore {
     setPaymentMethods(payment_methods) {
         this._payment_methods = payment_methods
     }
+    setOrderDeliveries(order_delivery) {
+        this._order_delivery = order_delivery
+    }
+    // setDeliveryPrice(price) {
+    //     this._deliveryPrice = price;
+    // }
 
     setSelectedOrder(order) {
         runInAction(() => {
             this._selectedOrder = order
         })
     }
-    setSelectedPaymentMethod(payment_methods) {
+    setSelectedPaymentMethod(paymentMethod) {
         runInAction(() => {
-            this._payment_methods = payment_methods
+            this._selectedPaymentMethod = paymentMethod; // Изменено название свойства
+        })
+    }
+    setSelectedOrderDelivery(orderDelivery) {
+        runInAction(() => {
+            this._selectedOrderDelivery = orderDelivery; // Изменено название свойства
+            // this.setDeliveryPrice(Number(orderDelivery.price))
         })
     }
 
@@ -34,11 +56,21 @@ export default class OrderStore {
     get payment_method() {
         return this._payment_methods
     }
+    get order_delivery() {
+        return this._order_delivery
+    }
+    // get deliveryPrice() {
+    //     return this._deliveryPrice
+    // }
     get selectedOrder() {
         return this._selectedOrder
     }
-    get setSelectedPaymentMethod() {
-        return this._payment_methods
+    get selectedPaymentMethod() {
+        return this._selectedPaymentMethod; // Используем правильное свойство
+    }
+
+    get selectedOrderDelivery() {
+        return this._selectedOrderDelivery; // Используем правильное свойство
     }
 
     // Загрузка всех заказов, с опциональной страницацией
@@ -113,5 +145,40 @@ export default class OrderStore {
             console.error('Ошибка при обновлении списка методов оплаты:', error);
         } 
     };
+
+    //order_delivery
+    editOrderDelivery = async (id, orderDeliveryData) => {
+        try {
+            await editOrderDelivery(id, orderDeliveryData);
+            await this.fetchPaymentMethods();
+        } catch (error) {
+            console.error('Ошибка при редактировании метода оплаты:', error);
+        } 
+    };
+
+    deletePaymentMethod = async (id) => {
+        const result = await deletePaymentMethod(id);
+        if (result) {
+            runInAction(() => {
+                this._payment_methods = this._payment_methods.filter(pm => pm.id_payment_method !== id);
+            });
+        }
+    };
+
+    fetchOrderDeliveries = async () => {
+        try {
+            const order_deliveries = await apiFetchOrderDeliveries();
+            runInAction(() => {
+                this.setOrderDeliveries(order_deliveries);
+            });
+        } catch (error) {
+            console.error('Ошибка при обновлении списка способа довставки:', error);
+        } 
+    };
+
+    // getTotalPriceWithDelivery(totalPrice) {
+    //     const deliveryPrice = this._deliveryPrice
+    //     return totalPrice + deliveryPrice;
+    // }
 
 }

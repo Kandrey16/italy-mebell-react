@@ -6,12 +6,18 @@ import {
     editCategory as apiEditCategory,
     deleteCategory as apiDeleteCategory,
     fetchCategories as apiFetchCategories, 
-    deleteCategory} from "@/API/ProductAPI"
+    deleteCategory,
+    editCollection as apiEditCollection,
+    deleteCollection as apiDeleteCollection,
+    fetchCollections as apiFetchCollections} from "@/API/ProductAPI"
 
 export default class ProductStore {
     constructor() {
         this._categories = [
             
+        ]
+        this._collections = [
+
         ]
         this._products = [
             
@@ -20,6 +26,7 @@ export default class ProductStore {
         this._searchProduct = {}
         this._productsInCartIds = {}
         this._selectedCategory = {}
+        this._selectedCollection = {}
 
         this._page = 1
         this._totalCount = 0
@@ -35,6 +42,9 @@ export default class ProductStore {
 
     setCategories(categories) {
         this._categories = categories
+    }
+    setCollections(collections) {
+        this._collections = collections
     }
     setProducts(products) {
         this._products = products
@@ -53,6 +63,13 @@ export default class ProductStore {
             this._selectedCategory = category
         })
     }
+    setSelectedCollection(collection) {
+        runInAction(() => {
+            this.setPage(1)
+            this._selectedCollection = collection
+        })
+    }
+
     setPage(page) {
         this._page = page
     }
@@ -67,11 +84,17 @@ export default class ProductStore {
     get categories() {
         return this._categories
     }
+    get collections() {
+        return this._collections
+    }
     get searchedProduct() {
         return this._searchProduct
     }
     get selectedCategory() {
         return this._selectedCategory
+    }
+    get selectedCollection() {
+        return this._selectedCollection
     }
     get products() {
         return this._products
@@ -136,7 +159,38 @@ export default class ProductStore {
                 this.setCategories(categories);
             });
         } catch (error) {
-            console.error('Ошибка при обновлении списка категорий:', error);
+            console.error('Ошибка при обновлении списка коллекций:', error);
+        } 
+    };
+
+    // Изменение существующей коллекции
+    editCollection = async (id, collectionData) => {
+        try {
+            await apiEditCollection(id, collectionData);
+            await this.fetchCollections();
+        } catch (error) {
+            console.error('Ошибка при редактировании коллекции:', error);
+        } 
+    };
+
+    // Удаление категории
+    deleteCollection = async (id) => {
+        await apiDeleteCollection(id);
+        action(() => {
+            this._collections  = this._collections.filter(collections => collections.id_collection !== id);
+        })();
+    };
+
+    // Обновление списка категорий
+    fetchCollections = async () => {
+        try {
+            const collections = await apiFetchCollections();
+            runInAction(() => {
+                this.setCollections(collections);
+                console.log(collections);
+            });
+        } catch (error) {
+            console.error('Ошибка при обновлении списка коллекций:', error);
         } 
     };
 }

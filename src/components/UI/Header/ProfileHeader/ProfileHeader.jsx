@@ -54,7 +54,6 @@ const ProfileHeader = observer(() => {
               <p>Личный кабинет</p>
             </NavLink>
           </MenuItem>
-          <MenuItem>Заказы</MenuItem>
           <MenuItem>
             <NavLink to={LOGIN_ROUTE}>
               <p className="text-red-400" onClick={() => logOut()}>

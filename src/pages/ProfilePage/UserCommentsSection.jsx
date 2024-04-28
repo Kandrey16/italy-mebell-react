@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Accordion,
   AccordionBody,
@@ -11,9 +11,16 @@ import {
 import CommentItem from "./Items/CommentItem";
 import { fetchOneProduct } from "@/API/ProductAPI";
 import noPhoto from "@/assets/images/noPhoto.webp";
+import { Context } from "@/main";
+import { observer } from "mobx-react";
+import CommentEditForm from "./Items/EditCommentForm";
 
-export const UserComments = ({ comments, open, handleOpen }) => {
+export const UserComments = observer(({ comments, open, handleOpen }) => {
   const [products, setProducts] = useState({});
+
+  const { comment } = useContext(Context);
+  const [currentComment, setCurrentComment] = useState(null);
+  const [commentEditVisible, setCommentEditVisible] = useState(false);
 
   function formatDate(isoDate) {
     const date = new Date(isoDate);
@@ -36,6 +43,15 @@ export const UserComments = ({ comments, open, handleOpen }) => {
     Promise.all(productPromises).catch(console.error);
   }, [comments]);
 
+  const handleDelete = (id) => {
+    comment.deleteComment(id);
+  };
+
+  const handleEdit = (comment) => {
+    setCurrentComment(comment);
+    setCommentEditVisible(true);
+  };
+
   return (
     <div className="mt-6">
       <Accordion open={open === 2}>
@@ -49,9 +65,11 @@ export const UserComments = ({ comments, open, handleOpen }) => {
           {comments.length > 0 ? (
             comments.map((comment) => (
               <CommentItem
-                key={comment.id_comment}
+                key={comment.id_product_comment}
                 comment={comment}
                 product={products[comment.id_product]}
+                handleEdit={() => handleEdit(comment)}
+                handleDelete={() => handleDelete(comment.id_product_comment)}
               />
             ))
           ) : (
@@ -59,6 +77,17 @@ export const UserComments = ({ comments, open, handleOpen }) => {
           )}
         </AccordionBody>
       </Accordion>
+
+      {currentComment && (
+        <CommentEditForm
+          commentData={currentComment}
+          show={commentEditVisible}
+          onHide={() => {
+            setCommentEditVisible(false);
+            setCurrentComment(null);
+          }}
+        />
+      )}
     </div>
   );
-};
+});

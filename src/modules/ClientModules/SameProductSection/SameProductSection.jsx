@@ -1,7 +1,7 @@
 import { fetchProducts } from "@/API/ProductAPI";
 import ProductCard from "@/components/UI/ProductCard/ProductCard";
 import { useEffect, useState } from "react";
-import styles from "../SameProductSection/SameProductSection.module.scss";
+import styles from "../SameProductSection/SameSection.module.scss";
 
 const SameProductSection = ({ id_category, currentProductId }) => {
   const [sameProduct, setSameProduct] = useState([]);
@@ -34,7 +34,6 @@ const SameProductSection = ({ id_category, currentProductId }) => {
             <ProductCard
               key={product.id_product}
               product={product}
-              className={styles.productCard}
             />
           ))}
         </div>

@@ -8,8 +8,10 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import OrderItem from "./Items/OrderItem";
+import { toJS } from "mobx";
 
 export const UserOrders = ({ orders, open, handleOpen }) => {
+  console.log(toJS(orders));
   return (
     <div className="user-orders mt-6">
       <Accordion open={open === 1}>
@@ -41,7 +43,7 @@ export const UserOrders = ({ orders, open, handleOpen }) => {
                   </div>
                   <div>
                     <p className="text-black font-bold text-lg">
-                      {order.price_order}
+                      {order.price_order} ₽
                     </p>
                   </div>
                 </CardHeader>

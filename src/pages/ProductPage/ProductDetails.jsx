@@ -4,8 +4,6 @@ import React from "react";
 const ProductDetails = ({ name, article, price, rating }) => {
   const formattedPrice = new Intl.NumberFormat("ru-RU").format(price);
 
-  console.log(rating);
-
   let rate = Math.ceil(rating)
 
   return (

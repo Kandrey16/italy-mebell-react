@@ -28,13 +28,7 @@ import { NavLink, Route, Routes } from "react-router-dom";
 import { useState } from "react";
 
 export default function SidebarNavigation({ onMenuItemClick }) {
-  // const [open, setOpen] = useState(0);
-  // const [openAlert, setOpenAlert] = useState(true);
-
-  // const handleOpen = (value) => {
-  //   setOpen(open === value ? 0 : value);
-  // };
-
+  
   return (
     <>
       <Card className={styles.card}>
@@ -49,6 +43,9 @@ export default function SidebarNavigation({ onMenuItemClick }) {
           </ListItem>
           <ListItem onClick={() => onMenuItemClick("categories")}>
             <Typography>Категории</Typography>
+          </ListItem>
+          <ListItem onClick={() => onMenuItemClick("collections")}>
+            <Typography>Коллекции</Typography>
           </ListItem>
           <ListItem onClick={() => onMenuItemClick("groups")}>
             <Typography>Группы атрибутов</Typography>

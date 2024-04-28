@@ -12,17 +12,41 @@ import { Context } from "@/main";
 
 const AttributeGroupAddForm = observer(({ show, onHide }) => {
   const { attribute } = useContext(Context);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [value, setValue] = useState("");
+  const [error, setError] = useState(""); // Добавляем состояние для отображения ошибки
+
+  const validateInput = () => {
+    if (!value.trim()) {
+      setError("Название не может быть пустым");
+      return false;
+    }
+    return true;
+  };
 
   const addAttributeGroup = () => {
-    attribute.createAttributeGroup({ name_attribute_group: value }).then(() => {
-      setValue(""); 
-      onHide(); 
-    });
+    setIsSubmitted(true);
+    if (validateInput()) {
+      attribute
+        .createAttributeGroup({ name_attribute_group: value })
+        .then(() => {
+          setValue("");
+          onHide();
+          setIsSubmitted(false);
+          setError("");
+        });
+    }
   };
 
   return (
-    <Dialog open={show} onClose={onHide}>
+    <Dialog
+      open={show}
+      onClose={() => {
+        onHide();
+        setError("");
+        setIsSubmitted(false);
+      }}
+    >
       <Card className="p-4 rounded-xl">
         <CardBody>
           <div>
@@ -33,8 +57,13 @@ const AttributeGroupAddForm = observer(({ show, onHide }) => {
               type="text"
               size="lg"
               value={value}
-              onChange={(e) => setValue(e.target.value)}
+              onChange={(e) => {
+                setValue(e.target.value);
+                if (isSubmitted) validateInput();
+              }}
               placeholder="Введите название группы"
+              required
+              error={isSubmitted && error}
             />
           </div>
 
@@ -45,7 +74,11 @@ const AttributeGroupAddForm = observer(({ show, onHide }) => {
             color="red"
             className="my-2"
             variant="outlined"
-            onClick={onHide}
+            onClick={() => {
+              onHide();
+              setError("");
+              setIsSubmitted(false);
+            }}
           >
             Отмена
           </Button>

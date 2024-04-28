@@ -1,4 +1,4 @@
-import { createProductComment, deleteProductComment, updateProductComment } from "@/API/ProductCommentAPI";
+import { createProductComment, deleteProductComment, fetchProductComments, updateProductComment } from "@/API/ProductCommentAPI";
 import { makeAutoObservable, runInAction } from "mobx";
 
 export default class ProductCommentStore {
@@ -61,4 +61,15 @@ export default class ProductCommentStore {
             console.error('Ошибка при удалении отзыва:', error);
         }
     };
+
+    fetchComments = async () => {
+        try {
+            const data = await fetchProductComments();
+            runInAction(() => {
+                this._comments = data;
+            });
+        } catch (error) {
+            console.error('Ошибка при получении отзывов:', error);
+        }
+    }
 }

@@ -51,6 +51,37 @@ export const deletePaymentMethod = async(id) => {
 }
 
 export const fetchPaymentMethods = async() => {
-    const {data} = await $host.get('api/payment_method')
+    try {
+        const {data} = await $host.get('api/payment_method');
+        return data;
+    } catch (error) {
+        console.error("Ошибка при получении методов оплаты:", error);
+        throw error; // Важно, чтобы бросить ошибку и предотвратить дальнейшее выполнение в случае неудачи
+    }
+}
+
+//category
+export const createOrderDelivery = async(order_delivery) => {
+    const {data} = await $authhost.post('api/order_delivery', order_delivery)
     return data
+}
+
+export const editOrderDelivery = async(id, order_delivery) => {
+    const {data} = await $authhost.put('api/order_delivery/' + id, order_delivery)
+    return data
+}
+
+export const deleteOrderDelivery = async(id) => {
+    const {data} = await $authhost.delete('api/order_delivery/' + id)
+    return {data}
+}
+
+export const fetchOrderDeliveries = async() => {
+    try {
+        const {data} = await $host.get('api/order_delivery');
+        return data;
+    } catch (error) {
+        console.error("Ошибка при получении способов доставки:", error);
+        throw error; // Аналогично, бросить ошибку и предотвратить дальнейшее выполнение
+    }
 }

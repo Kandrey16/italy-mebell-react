@@ -13,6 +13,8 @@ import cart_logo from "@/assets/cart_2.svg";
 import SameProductSection from "@/modules/ClientModules/SameProductSection/SameProductSection";
 import CommentSection from "@/modules/ClientModules/CommentSection/CommentSection";
 import { fetchProductComments } from "@/API/ProductCommentAPI";
+import SameCollectionSection from "@/modules/ClientModules/SameCollectionSection/SameCollectionSection";
+import { toJS } from "mobx";
 
 const ProductPage = observer(() => {
   const { product, user, cart } = useContext(Context);
@@ -31,6 +33,7 @@ const ProductPage = observer(() => {
     fetchAttributesData();
     fetchComments();
   }, [id]);
+
 
   useEffect(() => {
     const productInCart = checkProductInCart(id);
@@ -69,7 +72,6 @@ const ProductPage = observer(() => {
         (comment) => comment.id_product === parseInt(id)
       );
       setComments(currentProductComments);
-      console.log(commentsData);
     } catch (error) {
       console.error("Error fetching comments:", error);
     }
@@ -135,6 +137,10 @@ const ProductPage = observer(() => {
       </div>
       <SameProductSection
         id_category={productData.selectedProduct.id_category}
+        currentProductId={id}
+      />
+      <SameCollectionSection
+        id_collection={productData.selectedProduct.id_collection}
         currentProductId={id}
       />
       <CommentSection comments={comments} id={id} />

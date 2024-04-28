@@ -1,9 +1,8 @@
 import SidebarNavigation from "@/modules/AdminModules/Sidebar/SidebarNavigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@material-tailwind/react";
 import ProductAddForm from "@/modules/AdminModules/Modals/AddTable/AddProduct";
 import CategoryAddForm from "@/modules/AdminModules/Modals/AddTable/AddCategory";
-import CategoryEditForm from "@/modules/AdminModules/Modals/EditTable/EditCategory";
 import ProductTable from "@/modules/AdminModules/Modals/Tables/ProductTable";
 import CategoryTable from "@/modules/AdminModules/Modals/Tables/CategoryTable";
 import { observer } from "mobx-react";
@@ -12,12 +11,15 @@ import AttributeGroupAddForm from "@/modules/AdminModules/Modals/AddTable/AddAtt
 import AttributeTable from "@/modules/AdminModules/Modals/Tables/AttributeTable";
 import AttributeAddForm from "@/modules/AdminModules/Modals/AddTable/AddAttribute";
 import OrderTable from "@/modules/AdminModules/Modals/Tables/OrderTable";
+import CollectionTable from "@/modules/AdminModules/Modals/Tables/CollectionTable";
+import CollectionAddForm from "@/modules/AdminModules/Modals/AddTable/AddCollection";
 
 const AdminPage = observer(() => {
   const [productVisible, setProductVisible] = useState(false);
   const [categoryVisible, setCategoryVisible] = useState(false);
   const [groupVisible, setGroupVisible] = useState(false);
   const [attributeVisible, setAttributeVisible] = useState(false);
+  const [collectionVisible, setCollectionVisible] = useState(false);
 
   const [activeComponent, setActiveComponent] = useState("products");
 
@@ -53,6 +55,18 @@ const AdminPage = observer(() => {
               <CategoryAddForm
                 show={categoryVisible}
                 onHide={() => setCategoryVisible(false)}
+              />
+            </>
+          )}
+          {activeComponent === "collections" && (
+            <>
+              <CollectionTable />
+              <Button onClick={() => setCollectionVisible(true)}>
+                Добавить коллекцию
+              </Button>
+              <CollectionAddForm
+                show={collectionVisible}
+                onHide={() => setCollectionVisible(false)}
               />
             </>
           )}
