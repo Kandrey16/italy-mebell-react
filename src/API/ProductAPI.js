@@ -119,3 +119,8 @@ export const fetchCollections = async() => {
     const {data} = await $host.get('api/collection')
     return data
 }
+
+export const fetchSpecifications = async() => {
+    const {data} = await $host.get('api/specification')
+    return data
+}

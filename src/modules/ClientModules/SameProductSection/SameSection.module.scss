@@ -7,5 +7,9 @@
     h2 {
       @apply text-3xl py-5 font-semibold;
     }
+
+    .sameProductsContainer {
+      @apply grid grid-cols-4;
+    }
   }
 }

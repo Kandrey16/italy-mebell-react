@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Card, Button } from "@material-tailwind/react";
-import TableHead from "../TableVisual/TableHead";
-import TableRow from "../TableVisual/TableRow";
 import { observer } from "mobx-react";
 import { useContext } from "react";
 import { Context } from "@/main";
 import { fetchOrders } from "@/API/OrderAPI";
 
-const TABLE_HEAD = ["ID", "№ Заказа", "Сумма", "Дата", "Адрес", "", ""];
+import OrderCard from "@/pages/ProfilePage/Items/OrderCard";
 
 const OrderTable = observer(() => {
   const { order } = useContext(Context);
@@ -23,8 +20,13 @@ const OrderTable = observer(() => {
   }, []);
 
   return (
-    <>
-      <Card className="m-8 rounded-xl transition-al overflow-auto">
+    <div className="container mt-6">
+      {order.orders.length > 0 ? (
+        order.orders.map((order) => <OrderCard key={order.id_order} data={order} isAdmin={true} />)
+      ) : (
+        <p className="text-gray-500">У вас нет активных заказов.</p>
+      )}
+      {/* <Card className="m-8 rounded-xl transition-al overflow-auto">
         <table className="table-auto text-left">
           <thead>
             <tr>
@@ -50,8 +52,8 @@ const OrderTable = observer(() => {
             })}
           </tbody>
         </table>
-      </Card>
-    </>
+      </Card> */}
+    </div>
   );
 });
 

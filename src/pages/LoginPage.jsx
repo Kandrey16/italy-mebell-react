@@ -24,17 +24,25 @@ const LoginPage = observer(() => {
   const isLogin = location.pathname === LOGIN_ROUTE;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const signIn = async () => {
     try {
+      // Проверяем совпадение паролей только при регистрации
+      if (!isLogin && password !== confirmPassword) {
+        alert("Пароли не совпадают!");
+        return;
+      }
+
       let data;
       if (isLogin) {
         data = await login(email, password);
       } else {
         data = await registration(email, password);
-        await createCart(email); // Вызываем функцию createCart после успешной регистрации
+        await createCart(data.user.email_user); // Логика по созданию корзины, если требуется
       }
       user.setUser(data);
+      console.log(data);
       user.setIsAuth(true);
       navigate(MAIN_ROUTE);
     } catch (error) {
@@ -42,89 +50,27 @@ const LoginPage = observer(() => {
     }
   };
 
+
   return (
     <>
-      {/* <div className="container flex flex-col items-center justify-center">
-        <Typography variant="h3" className="my-10">
-          {isLogin ? "Вход в аккаунт" : "Регистрация"}
-        </Typography>
-        <Card
-          color="white"
-          className="flex flex-col p-4 w-1/2 h-1/3 items-center"
-        >
-          <form action="" className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
-            <div className="my-3">
-              <Typography variant="h6" color="blue-gray">
-                Почта
-              </Typography>
-              <Input
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="my-3">
-              <Typography variant="h6" color="blue-gray">
-                Пароль
-              </Typography>
-              <Input
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <Checkbox />
-                <Typography>Запомнить меня</Typography>
-              </div>
-              <NavLink>Забыли пароль?</NavLink>
-            </div>
-            <Button className="mt-6" color="blue" onClick={signIn}>
-              {isLogin ? "Вход" : "Регистрация"}
-            </Button>
-            {isLogin ? (
-              <Typography color="gray" className="p-4 text-center">
-                Нет аккаунта?
-                <NavLink
-                  to={REGISTRATION_ROUTE}
-                  className="font-medium text-gray-900 p-2"
-                >
-                  Регистрация
-                </NavLink>
-              </Typography>
-            ) : (
-              <Typography color="gray" className="p-4 text-center">
-                Есть акканут?
-                <NavLink
-                  to={LOGIN_ROUTE}
-                  className="font-medium text-gray-900 p-2"
-                >
-                  Авторизация
-                </NavLink>
-              </Typography>
-            )}
-          </form>
-        </Card>
-      </div> */}
       <div className="container flex flex-col items-center justify-center h-screen">
         <Typography variant="h3" className="mb-5">
           {isLogin ? "Добро пожаловать!" : "Создать новый аккаунт"}
         </Typography>
         <div className="w-full max-w-md mx-auto">
           <Card color="white" className="flex flex-col p-10 w-full shadow-lg">
-            <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); signIn(); }}>
+            <form
+              className="space-y-6"
+              onSubmit={(e) => {
+                e.preventDefault();
+                signIn();
+              }}
+            >
               <Input
                 type="email"
                 color="lightBlue"
                 size="lg"
-                outline={true}
                 placeholder="Email"
-                iconFamily="material-icons"
-                iconName="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -133,18 +79,30 @@ const LoginPage = observer(() => {
                 type="password"
                 color="lightBlue"
                 size="lg"
-                outline={true}
                 placeholder="Пароль"
-                iconFamily="material-icons"
-                iconName="lock"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              {!isLogin && (
+                <Input
+                  type="password"
+                  color="lightBlue"
+                  size="lg"
+                  placeholder="Повторите пароль"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
+              )}
+
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <Checkbox id="remember_me" color="lightBlue" />
-                  <label htmlFor="remember_me" className="ml-2 block text-sm text-gray-900">
+                  <label
+                    htmlFor="remember_me"
+                    className="ml-2 block text-sm text-gray-900"
+                  >
                     Запомнить меня
                   </label>
                 </div>

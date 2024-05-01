@@ -36,13 +36,13 @@ const UserProfileEditForm = observer(
       formData.append("first_name_user", firstName);
       formData.append("second_name_user", lastName);
       formData.append("phone_number_client", phoneNumber);
+
       if (profileImage) {
         formData.append("image_user_profile", profileImage);
       }
 
       // Отправляем обновлённые данные пользователя на сервер
       user.updateUserProfile(formData).then((updatedUserData) => {
-        // Обновляем локальные данные пользователя после ответа от сервера
         setUserData({ ...userData, ...updatedUserData });
         onHide();
       });

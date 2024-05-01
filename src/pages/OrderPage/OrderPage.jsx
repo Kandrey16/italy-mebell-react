@@ -4,7 +4,11 @@ import { useContext, useEffect, useState } from "react";
 import OrderComplete from "./OrderComplete";
 import OrderForm from "./OrderForm";
 import OrderSummary from "./OrderSummary";
-import { fetchOrderDeliveries, fetchPaymentMethods } from "@/API/OrderAPI";
+import {
+  fetchOrderDeliveries,
+  fetchOrderStatuses,
+  fetchPaymentMethods,
+} from "@/API/OrderAPI";
 import { fetchOneUser, updateUserProfile } from "@/API/UserAPI";
 
 const OrderPage = observer(() => {
@@ -17,6 +21,9 @@ const OrderPage = observer(() => {
 
   const [orderDeliveries, setOrderDeliveries] = useState([]);
   const [selectedOrderDelivery, setSelectedOrderDelivery] = useState(null);
+
+  const [orderStatuses, setOrderStatuses] = useState([]);
+  const [selectedOrderStatus, setSelectedOrderStatus] = useState(null);
 
   const [deliveryPrice, setDeliveryPrice] = useState(0);
   const [totalPriceWithDelivery, setTotalPriceWithDelivery] = useState(0);
@@ -61,8 +68,26 @@ const OrderPage = observer(() => {
       }
     };
 
+    const loadOrderStatuses = async () => {
+      try {
+        const statuses = await fetchOrderStatuses();
+        setOrderStatuses(statuses);
+
+        const inProgressStatus = statuses.find(
+          (status) => status.name_order_status === "В обработке"
+        );
+        if (inProgressStatus) {
+          setSelectedOrderStatus(inProgressStatus);
+        }
+        console.log(selectedOrderStatus);
+      } catch (error) {
+        console.error("Ошибка при загрузке статусов заказа:", error);
+      }
+    };
+
     loadPaymentMethods();
     loadOrderDeliveries();
+    loadOrderStatuses();
   }, [totalPrice]);
 
   useEffect(() => {
@@ -134,6 +159,10 @@ const OrderPage = observer(() => {
           id_order_delivery: selectedOrderDelivery
             ? selectedOrderDelivery.id_order_delivery
             : null,
+        },
+        order_status: {
+          //TODO: необходимо исправить
+          id_order_status: 2,
         },
       };
 

@@ -13,6 +13,8 @@ import AttributeAddForm from "@/modules/AdminModules/Modals/AddTable/AddAttribut
 import OrderTable from "@/modules/AdminModules/Modals/Tables/OrderTable";
 import CollectionTable from "@/modules/AdminModules/Modals/Tables/CollectionTable";
 import CollectionAddForm from "@/modules/AdminModules/Modals/AddTable/AddCollection";
+import DeliveryTable from "@/modules/AdminModules/Modals/Tables/DeliveryTable";
+import DeliveryAddForm from "@/modules/AdminModules/Modals/AddTable/AddDelivery";
 
 const AdminPage = observer(() => {
   const [productVisible, setProductVisible] = useState(false);
@@ -20,6 +22,7 @@ const AdminPage = observer(() => {
   const [groupVisible, setGroupVisible] = useState(false);
   const [attributeVisible, setAttributeVisible] = useState(false);
   const [collectionVisible, setCollectionVisible] = useState(false);
+  const [deliveryVisible, setDeliveryVisible] = useState(false);
 
   const [activeComponent, setActiveComponent] = useState("products");
 
@@ -95,6 +98,18 @@ const AdminPage = observer(() => {
             </>
           )}
           {activeComponent === "orders" && <OrderTable />}
+          {activeComponent === "order_deliveries" && (
+            <>
+              <DeliveryTable />
+              <Button onClick={() => setDeliveryVisible(true)}>
+                Добавить способ доставки
+              </Button>
+              <DeliveryAddForm
+                show={deliveryVisible}
+                onHide={() => setDeliveryVisible(false)}
+              />
+            </>
+          )}
         </div>
       </div>
     </>

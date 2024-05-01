@@ -3,29 +3,11 @@ import {
   Typography,
   List,
   ListItem,
-  ListItemPrefix,
-  ListItemSuffix,
-  Chip,
-  Accordion,
-  AccordionHeader,
-  AccordionBody,
-  Alert,
-  Input,
-  Button,
 } from "@material-tailwind/react";
-import {
-  ChevronRightIcon,
-  ChevronDownIcon,
-  CubeTransparentIcon,
-  MagnifyingGlassIcon,
-  PresentationChartBarIcon,
-} from "@heroicons/react/24/outline";
 
 import SidebarItem from "../../ClientModules/Sidebar/SidebarItem/SidebarItem";
 import { SidebarItems } from "@/data/dataSidebar";
 import styles from "./Sidebar.module.scss";
-import { NavLink, Route, Routes } from "react-router-dom";
-import { useState } from "react";
 
 export default function SidebarNavigation({ onMenuItemClick }) {
   
@@ -55,6 +37,9 @@ export default function SidebarNavigation({ onMenuItemClick }) {
           </ListItem>
           <ListItem onClick={() => onMenuItemClick("orders")}>
             <Typography>Заказы</Typography>
+          </ListItem>
+          <ListItem onClick={() => onMenuItemClick("order_deliveries")}>
+            <Typography>Способы доставки</Typography>
           </ListItem>
         </List>
       </Card>

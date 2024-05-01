@@ -11,10 +11,22 @@ const ProductSection = observer(() => {
       ? product.searchedProduct
       : product.products;
 
+  useEffect(() => {
+    // Этот код будет выполняться каждый раз, когда меняется productsToShow
+    const uniqueIds = new Set();
+    productsToShow.forEach((product) => {
+      if (uniqueIds.has(product.id_product)) {
+        console.error("Duplicate id_product found:", product.id_product);
+      } else {
+        uniqueIds.add(product.id_product);
+      }
+    });
+  }, [productsToShow]);
+  
   return (
     <>
       <div
-        className="w-full h-full grid gap-4 p-4
+        className="w-full h-fit grid gap-4 p-4
         grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
       >
         {productsToShow.length > 0 ? (

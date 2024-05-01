@@ -26,7 +26,12 @@ const CommentAddForm = observer(({ show, onHide, productId }) => {
     placeHolder: "x",
   });
 
-  console.log(badwordsList.badwords);
+  const containsLinks = (text) => {
+    // Регулярное выражение для обнаружения URL
+    const urlPattern =
+      /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
+    return urlPattern.test(text);
+  };
 
   const customIsProfane = (text) => {
     const lowerCaseText = text.toLowerCase();
@@ -42,6 +47,13 @@ const CommentAddForm = observer(({ show, onHide, productId }) => {
     if (customIsProfane(description)) {
       alert(
         "Ваш комментарий содержит недопустимые выражения. Пожалуйста, отредактируйте его."
+      );
+      return;
+    }
+
+    if (containsLinks(description)) {
+      alert(
+        "Вставка ссылок недопустима. Пожалуйста, удалите ссылки из вашего комментария."
       );
       return;
     }

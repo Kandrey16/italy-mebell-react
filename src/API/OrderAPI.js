@@ -5,8 +5,9 @@ export const createOrder = async(order) => {
     return data
 }
 
-export const updateOrder = async(id, order) => {
-    const {data} = await $authhost.put('api/orders/' + id, order)
+export const updateOrder = async(id, updatedData) => {
+    console.log(`Making PUT request to /api/orders/${id} with data:`, updatedData);
+    const {data} = await $authhost.put(`api/orders/` + id, updatedData)
     return data
 }
 
@@ -28,6 +29,7 @@ export const getOrder = async(id) => {
 export const fetchOrdersByEmail = async (email) => {
     try {
         const response = await $authhost.get(`api/orders/?email_user=${email}`);
+        console.log("Received order statuses:", response.data);
         return response.data;
     } catch (error) {
         console.error("Ошибка получения заказов:", error);
@@ -60,7 +62,7 @@ export const fetchPaymentMethods = async() => {
     }
 }
 
-//category
+//delivery
 export const createOrderDelivery = async(order_delivery) => {
     const {data} = await $authhost.post('api/order_delivery', order_delivery)
     return data
@@ -82,6 +84,33 @@ export const fetchOrderDeliveries = async() => {
         return data;
     } catch (error) {
         console.error("Ошибка при получении способов доставки:", error);
+        throw error; // Аналогично, бросить ошибку и предотвратить дальнейшее выполнение
+    }
+}
+
+//status
+export const createOrderStatus = async(order_status) => {
+    const {data} = await $authhost.post('api/order_status', order_status)
+    return data
+}
+
+export const editOrderStatus = async(id, order_status) => {
+    const {data} = await $authhost.put('api/order_status/' + id, order_status)
+    console.log(`Making PUT request to /api/order_status/${id} with statusId: ${order_status}`);
+    return data
+}
+
+export const deleteOrderStatus = async(id) => {
+    const {data} = await $authhost.delete('api/order_status/' + id)
+    return {data}
+}
+
+export const fetchOrderStatuses = async() => {
+    try {
+        const {data} = await $host.get('api/order_status');
+        return data;
+    } catch (error) {
+        console.error("Ошибка при получении статусов заказа:", error);
         throw error; // Аналогично, бросить ошибку и предотвратить дальнейшее выполнение
     }
 }

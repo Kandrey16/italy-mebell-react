@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { fetchOneUser } from "@/API/UserAPI";
-import noPhoto from "@/assets/images/noPhoto.webp";
 import { Context } from "@/main";
 import { observer } from "mobx-react";
 import {
@@ -20,7 +19,6 @@ import { UserProfile } from "./UserProfile";
 import { UserOrders } from "./UserOrdersSection";
 import { UserComments } from "./UserCommentsSection";
 import { fetchProductCommentsByEmail } from "@/API/ProductCommentAPI";
-import { fetchOneProduct } from "@/API/ProductAPI";
 import UserProfileEditForm from "./Items/EditProfile";
 
 const ProfilePage = observer(() => {
@@ -52,29 +50,23 @@ const ProfilePage = observer(() => {
     }
   }, [userEmail]);
 
-  const imageUrl =
-    userData && userData.image_user_profile
-      ? `${import.meta.env.VITE_APP_API_URL}/user_photo/${userData.image_user_profile}`
-      : noPhoto;
-
   return (
     <>
-      <Card color="white" className="container my-5">
-        <UserProfile userData={userData} imageUrl={imageUrl} />
-        <span className="text-green-400 font-semibold text-lg cursor-pointer" color="blue" onClick={() => setEditProfileVisible(true)}>
-          Редактировать профиль
-        </span>
-        <UserOrders
-          orders={orders}
-          open={open}
-          handleOpen={() => handleOpen(1)}
-        />
-        <UserComments
-          comments={comments}
-          open={open}
-          handleOpen={() => handleOpen(2)}
-        />
-      </Card>
+      <div className=" container grid grid-cols-4 gap-4">
+        <UserProfile userData={userData} setUserData={setUserData} />
+        <Card color="white" className="container my-5 col-span-3 h-fit">
+          <UserOrders
+            orders={orders}
+            open={open}
+            handleOpen={() => handleOpen(1)}
+          />
+          <UserComments
+            comments={comments}
+            open={open}
+            handleOpen={() => handleOpen(2)}
+          />
+        </Card>
+      </div>
 
       {userData && (
         <UserProfileEditForm

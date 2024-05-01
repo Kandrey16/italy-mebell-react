@@ -9,7 +9,7 @@ import {
     deleteCategory,
     editCollection as apiEditCollection,
     deleteCollection as apiDeleteCollection,
-    fetchCollections as apiFetchCollections} from "@/API/ProductAPI"
+    fetchCollections as apiFetchCollections, fetchSpecifications as apiFetchSpecifications} from "@/API/ProductAPI"
 
 export default class ProductStore {
     constructor() {
@@ -27,6 +27,7 @@ export default class ProductStore {
         this._productsInCartIds = {}
         this._selectedCategory = {}
         this._selectedCollection = {}
+        this._specifications = []
 
         this._page = 1
         this._totalCount = 0
@@ -48,6 +49,9 @@ export default class ProductStore {
     }
     setProducts(products) {
         this._products = products
+    }
+    setSpecifications(specifications) {
+        this._specifications = specifications
     }
 
     setSearchProduct(product) {
@@ -86,6 +90,9 @@ export default class ProductStore {
     }
     get collections() {
         return this._collections
+    }
+    get specifications() {
+        return this._specifications;
     }
     get searchedProduct() {
         return this._searchProduct
@@ -193,4 +200,26 @@ export default class ProductStore {
             console.error('Ошибка при обновлении списка коллекций:', error);
         } 
     };
+
+    fetchSpecifications = async () => {
+        try {
+            const specifications = await apiFetchSpecifications(); // реализуйте запрос к API
+            runInAction(() => {
+                this.setSpecifications(specifications);
+            });
+        } catch (error) {
+            console.error('Ошибка при получении списка характеристик:', error);
+        }
+    };
+
+    toggleSpecificationFilter(specificationId, isChecked) {
+        if (isChecked) {
+            this._specificationsFilter.push(specificationId);
+        } else {
+            this._specificationsFilter = this._specificationsFilter.filter(id => id !== specificationId);
+        }
+        // API-запрос с новыми фильтрами для обновления списка товаров, например:
+        // this.fetchProducts();
+    }
+
 }

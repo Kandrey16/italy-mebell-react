@@ -6,7 +6,9 @@ import { createOrder, fetchOrders, getOrder, updateOrder, deleteOrder,
     deletePaymentMethod, 
     editOrderDelivery,
     deleteOrderDelivery,
-    fetchOrderDeliveries as apiFetchOrderDeliveries
+    fetchOrderDeliveries as apiFetchOrderDeliveries,
+    fetchOrderStatuses as apiFetchOrderStatuses,
+    editOrderStatus
  } from "../API/OrderAPI";
 
 export default class OrderStore {
@@ -14,8 +16,8 @@ export default class OrderStore {
         this._orders = []
         this._payment_methods = []
         this._order_delivery = []
+        this._order_status = []
         this._selectedOrder = {}
-        // this._deliveryPrice = 0
 
         makeAutoObservable(this)
     }
@@ -29,9 +31,9 @@ export default class OrderStore {
     setOrderDeliveries(order_delivery) {
         this._order_delivery = order_delivery
     }
-    // setDeliveryPrice(price) {
-    //     this._deliveryPrice = price;
-    // }
+    setOrderStatuses(order_status) {
+        this._order_status = order_status
+    }
 
     setSelectedOrder(order) {
         runInAction(() => {
@@ -46,7 +48,11 @@ export default class OrderStore {
     setSelectedOrderDelivery(orderDelivery) {
         runInAction(() => {
             this._selectedOrderDelivery = orderDelivery; // Изменено название свойства
-            // this.setDeliveryPrice(Number(orderDelivery.price))
+        })
+    }
+    setSelectedOrderStatus(orderStatus) {
+        runInAction(() => {
+            this._selectedOrderStatus = orderStatus; // Изменено название свойства
         })
     }
 
@@ -59,9 +65,10 @@ export default class OrderStore {
     get order_delivery() {
         return this._order_delivery
     }
-    // get deliveryPrice() {
-    //     return this._deliveryPrice
-    // }
+    get order_status() {
+        return this._order_status
+    }
+
     get selectedOrder() {
         return this._selectedOrder
     }
@@ -72,15 +79,24 @@ export default class OrderStore {
     get selectedOrderDelivery() {
         return this._selectedOrderDelivery; // Используем правильное свойство
     }
-
-    // Загрузка всех заказов, с опциональной страницацией
-    loadOrders = async (page, limit) => {
-        this.orders = await fetchOrders()
+    get selectedOrderStatus() {
+        return this._selectedOrderStatus; // Используем правильное свойство
     }
 
+    // Загрузка всех заказов, с опциональной страницацией
+    loadOrders = async () => {
+        const orders = await fetchOrders();
+        runInAction(() => {
+            this.setOrders(orders);
+        });
+    }
+    
     // Загрузка конкретного заказа по id
     loadOrder = async (id) => {
-        this.selectedOrder = await getOrder(id)
+        const order = await getOrder(id);
+        runInAction(() => {
+            this.setSelectedOrder(order);
+        });
     }
 
     // Создание нового заказа
@@ -95,14 +111,16 @@ export default class OrderStore {
     }
 
     // Обновление существующего заказа
-    updateOrder = async (id, order) => {
-        const result = await updateOrder(id, order)
-        // Обновляем список заказов, если успешно обновили заказ
-        if (result) {
-            this.loadOrders()
-            return result;
+    editOrder = async (id, order) => {
+        try {
+            const data = await updateOrder(id, order)
+            runInAction(() => {
+                this._orders = this._orders.map((order) => 
+                order.id_order === id ? data : order);
+            });
+        } catch (error) {
+            console.log('Ошибка при изменении заказа', error);
         }
-        return null;
     }
     
     // Удаление заказа
@@ -115,6 +133,17 @@ export default class OrderStore {
         }
         return null;
     }
+
+    fetchOrders = async () => {
+        try {
+            const orders = await fetchOrders();
+            runInAction(() => {
+                this.setOrders(orders);
+            });
+        } catch (error) {
+            console.error('Ошибка при обновлении списка заказов:', error);
+        } 
+    };
 
     //payment_method
     editPaymentMethod = async (id, paymentMethodData) => {
@@ -156,11 +185,11 @@ export default class OrderStore {
         } 
     };
 
-    deletePaymentMethod = async (id) => {
-        const result = await deletePaymentMethod(id);
+    deleteOrderDelivery = async (id) => {
+        const result = await deleteOrderDelivery(id);
         if (result) {
             runInAction(() => {
-                this._payment_methods = this._payment_methods.filter(pm => pm.id_payment_method !== id);
+                this._order_delivery = this._order_delivery.filter(od => od.id_order_delivery !== id);
             });
         }
     };
@@ -176,9 +205,23 @@ export default class OrderStore {
         } 
     };
 
-    // getTotalPriceWithDelivery(totalPrice) {
-    //     const deliveryPrice = this._deliveryPrice
-    //     return totalPrice + deliveryPrice;
-    // }
+    updateOrderStatus = async (orderId, newStatus) => {
+        const result = await editOrderStatus(orderId, { status: newStatus });
+        if (result) {
+            await this.fetchOrderStatuses();
+            // Здесь может понадобиться обновить список заказов, чтобы отобразить новый статус
+            await this.loadOrders();
+        }
+    }
 
+    fetchOrderStatuses = async () => {
+        try {
+            const order_statuses = await apiFetchOrderStatuses();
+            runInAction(() => {
+                this.setOrderStatuses(order_statuses);
+            });
+        } catch (error) {
+            console.error('Ошибка при обновлении списка статусов заказа:', error);
+        } 
+    };
 }

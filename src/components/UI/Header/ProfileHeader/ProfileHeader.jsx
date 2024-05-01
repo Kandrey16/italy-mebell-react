@@ -13,10 +13,11 @@ import {
 import { toJS } from "mobx";
 import { observer } from "mobx-react";
 import { useContext, useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const ProfileHeader = observer(() => {
   const { user } = useContext(Context);
+  const navigate = useNavigate();
   const [userData, setUserData] = useState("");
 
   const userEmail = toJS(user.user.email_user);
@@ -49,17 +50,13 @@ const ProfileHeader = observer(() => {
           />
         </MenuHandler>
         <MenuList>
-          <MenuItem>
-            <NavLink to={PROFILE_ROUTE}>
-              <p>Личный кабинет</p>
-            </NavLink>
+          <MenuItem onClick={() => navigate(PROFILE_ROUTE)}>
+            <p>Личный кабинет</p>
           </MenuItem>
-          <MenuItem>
-            <NavLink to={LOGIN_ROUTE}>
-              <p className="text-red-400" onClick={() => logOut()}>
-                Выйти из аккаунта
-              </p>
-            </NavLink>
+          <MenuItem onClick={() => navigate(LOGIN_ROUTE)}>
+            <p className="text-red-400" onClick={() => logOut()}>
+              Выйти из аккаунта
+            </p>
           </MenuItem>
         </MenuList>
       </Menu>

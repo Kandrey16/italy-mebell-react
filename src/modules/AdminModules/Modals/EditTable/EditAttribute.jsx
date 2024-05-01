@@ -30,6 +30,8 @@ const AttributeEditForm = observer(({ show, onHide, selectedAttribute }) => {
     });
   }, [selectedAttribute, attribute]);
 
+  console.log(selectedGroupId);
+
   const editAttribute = () => {
     if (!selectedGroupId || !value) return;
 
@@ -37,10 +39,17 @@ const AttributeEditForm = observer(({ show, onHide, selectedAttribute }) => {
     formData.append("name_attribute", value);
     formData.append("id_attribute_group", selectedGroupId);
 
+    for (const entry of formData.entries()) {
+      console.log(entry);
+    }
+
     attribute
       .editAttribute(selectedAttribute.id_attribute, formData)
       .then(() => {
         onHide();
+      })
+      .catch((error) => {
+        console.error("Ошибка при изменении атрибута:", error);
       });
   };
 
@@ -57,7 +66,9 @@ const AttributeEditForm = observer(({ show, onHide, selectedAttribute }) => {
               size="lg"
               lavel="Название"
               value={value}
-              onChange={(e) => setValue(e.target.value)}
+              onChange={(e) => {
+                setValue(e.target.value);
+              }}
               placeholder="Введите новое название атрибута"
             />
           </div>
@@ -65,7 +76,9 @@ const AttributeEditForm = observer(({ show, onHide, selectedAttribute }) => {
             color="blue"
             label="Группа атрибутов"
             value={selectedGroupId}
-            onChange={(e) => setSelectedGroupId(e.target.value)}
+            onChange={(value) => {
+              setSelectedGroupId(value);
+            }}
           >
             {attribute.attributeGroups.map((group) => (
               <Option
