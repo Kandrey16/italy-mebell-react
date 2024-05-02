@@ -27,7 +27,8 @@
     "react-router-dom": "^6.21.3",
     "react-scripts": "^5.0.1",
     "react-star-ratings": "^2.3.0",
-    "scss": "^0.2.4"
+    "scss": "^0.2.4",
+    "swiper": "^11.1.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

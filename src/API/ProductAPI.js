@@ -16,11 +16,14 @@ export const deleteProduct = async(id) => {
     return {data}
 }
 //пагинация
-export const fetchProducts = async(id_category, page, limit) => {
-    const {data} = await $host.get('api/product', {params: {id_category, page, limit}})
+// export const fetchProducts = async (filters) => {
+//     const { data } = await $host.get('api/product', { params: { ...filters } });
+//     return data;
+// }
+export const fetchProducts = async(filters, page, limit) => {
+    const {data} = await $host.get('api/product', {params: {...filters, page, limit}})
     return data
 }
-
 export const searchProduct = async(keyword) => {
     const {data} = await $host.get('api/product/search', {params: {keyword}})
     return data

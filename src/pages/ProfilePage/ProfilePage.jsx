@@ -14,7 +14,6 @@ import {
 } from "@material-tailwind/react";
 import { toJS } from "mobx";
 import { fetchOrdersByEmail } from "@/API/OrderAPI";
-import OrderItem from "./Items/OrderItem";
 import { UserProfile } from "./UserProfile";
 import { UserOrders } from "./UserOrdersSection";
 import { UserComments } from "./UserCommentsSection";

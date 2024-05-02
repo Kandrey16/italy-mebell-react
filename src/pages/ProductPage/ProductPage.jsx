@@ -1,6 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Card } from "@material-tailwind/react";
+import {
+  Card,
+  Tabs,
+  TabsHeader,
+  TabsBody,
+  Tab,
+  TabPanel,
+} from "@material-tailwind/react";
 import { fetchOneProduct, fetchAttributes } from "@/API/ProductAPI";
 import { Context } from "@/main";
 import { observer } from "mobx-react";
@@ -33,7 +40,6 @@ const ProductPage = observer(() => {
     fetchAttributesData();
     fetchComments();
   }, [id]);
-
 
   useEffect(() => {
     const productInCart = checkProductInCart(id);
@@ -119,10 +125,33 @@ const ProductPage = observer(() => {
               price={productData.selectedProduct.price_product}
               rating={productData.selectedProduct.rating}
             />
-            <ProductSpecification
+            <Tabs value="specification">
+              <TabsHeader
+                className="rounded-none border-b border-blue-gray-50 bg-transparent p-0"
+                indicatorProps={{
+                  className:
+                    "bg-transparent border-b-2 border-gray-900 shadow-none rounded-none",
+                }}
+              >
+                <Tab className="text-xl font-semibold" value="specification">Характеристики</Tab>
+                <Tab className="text-xl font-semibold" value="description">Описание</Tab>
+              </TabsHeader>
+              <TabsBody>
+                <TabPanel value="specification">
+                  <ProductSpecification
+                    specification={productData.specification}
+                    attributes={productData.attributes}
+                  />
+                </TabPanel>
+                <TabPanel value="description">
+                  <p>{productData.selectedProduct.description_product}</p>
+                </TabPanel>
+              </TabsBody>
+            </Tabs>
+            {/* <ProductSpecification
               specification={productData.specification}
               attributes={productData.attributes}
-            />
+            /> */}
           </div>
           <div className="flex justify-end">
             <button

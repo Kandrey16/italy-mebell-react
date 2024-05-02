@@ -10,6 +10,7 @@ import { Context } from "@/main";
 import { observer } from "mobx-react";
 import { Rating } from "@material-tailwind/react";
 
+
 const ProductCard = observer(({ product }) => {
   const navigate = useNavigate();
 

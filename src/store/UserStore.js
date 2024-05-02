@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx"
-import { updateUserProfile } from "@/API/UserAPI"
+import { changePassword, updateUserProfile } from "@/API/UserAPI"
 
 export default class UserStore {
     constructor() {
@@ -32,6 +32,16 @@ export default class UserStore {
             this.setUser(updatedUser);
         } catch (error) {
             console.error("Ошибка при обновлении профиля пользователя: ", error);
+        }
+    }
+
+    async changePassword(old_password, new_password, confirm_password) {
+        try {
+            const updatedUser = await changePassword(this._user.email_user, old_password, new_password, confirm_password);
+            this.setUser(updatedUser)
+        } catch (error) {
+            console.error("Ошибка при изменении пароля: ", error);
+            throw error;
         }
     }
 }

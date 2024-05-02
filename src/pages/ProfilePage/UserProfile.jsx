@@ -11,9 +11,11 @@ import { FaQrcode } from "react-icons/fa"; // Иконка QR-кода
 import noPhoto from "@/assets/images/noPhoto.webp";
 import QR_Code from "@/assets/images/qr-code.png";
 import UserProfileEditForm from "./Items/EditProfile";
+import ChangePasswordForm from "./Items/ChangePasswordForm";
 
 export const UserProfile = ({ userData, setUserData }) => {
   const [editProfileVisible, setEditProfileVisible] = useState(false);
+  const [editPasswordVisible, setEditPasswordVisible] = useState(false);
   const [showCode, setShowCode] = useState(false);
 
   const userFirstName =
@@ -24,20 +26,13 @@ export const UserProfile = ({ userData, setUserData }) => {
   const userPhone = userData ? userData.phone_number_client : "";
 
   const handleShowQRCode = () => setShowCode(!showCode);
-
-  const handleEditProfile = () => {
-    setEditProfileVisible(true);
-  };
-
-  // Функция для скрытия формы редактирования
-  const handleCloseEditForm = () => {
-    setEditProfileVisible(false);
-  };
+  const handleEditProfile = () => setEditProfileVisible(true);
+  const handleEditPassword = () => setEditPasswordVisible(true);
 
   // Функция для обновления данных профиля
   const handleUpdateUserData = (newUserData) => {
     setUserData(newUserData);
-    handleCloseEditForm();
+    setEditProfileVisible(false);
   };
 
   const imageUrl =
@@ -65,6 +60,12 @@ export const UserProfile = ({ userData, setUserData }) => {
         >
           Редактировать профиль
         </span>
+        <span
+          className="text-green-400 font-semibold my-2"
+          onClick={handleEditPassword}
+        >
+          Изменить пароль
+        </span>
       </div>
       <Button
         onClick={handleShowQRCode}
@@ -78,6 +79,15 @@ export const UserProfile = ({ userData, setUserData }) => {
         <UserProfileEditForm
           show={editProfileVisible}
           onHide={handleCloseEditForm}
+          userData={userData}
+          setUserData={handleUpdateUserData}
+        />
+      )}
+
+      {editPasswordVisible && (
+        <ChangePasswordForm
+          show={editPasswordVisible}
+          onHide={() => setEditPasswordVisible(false)}
           userData={userData}
           setUserData={handleUpdateUserData}
         />

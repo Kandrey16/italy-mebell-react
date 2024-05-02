@@ -29,7 +29,7 @@ const UserProfileEditForm = observer(
 
     const selectProfileImage = (e) => {
       setProfileImage(e.target.files[0]);
-    };
+    };    
 
     const handleSave = () => {
       const formData = new FormData();
@@ -41,7 +41,6 @@ const UserProfileEditForm = observer(
         formData.append("image_user_profile", profileImage);
       }
 
-      // Отправляем обновлённые данные пользователя на сервер
       user.updateUserProfile(formData).then((updatedUserData) => {
         setUserData({ ...userData, ...updatedUserData });
         onHide();

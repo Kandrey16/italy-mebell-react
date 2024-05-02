@@ -7,6 +7,10 @@ import ProductCard from "@/components/UI/ProductCard/ProductCard";
 import { useEffect, useState } from "react";
 import styles from "../SameProductSection/SameSection.module.scss";
 
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+
 const SameCollectionSection = ({ id_collection, currentProductId }) => {
   const [sameCollectionProducts, setSameCollectionProducts] = useState([]);
   const [collectionName, setCollectionName] = useState("");
@@ -50,14 +54,19 @@ const SameCollectionSection = ({ id_collection, currentProductId }) => {
     <div className={styles.same_section}>
       <div className={styles.center}>
         <h2>Этот товар входит в коллекцию {collectionName}</h2>
-        <div className={styles.sameProductsContainer}>
+        <Swiper
+          spaceBetween={1}
+          slidesPerView={4}
+          onSlideChange={() => console.log("slide change")}
+          onSwiper={(swiper) => console.log(swiper)}
+          data-swiper-autoplay="2000"
+        >
           {sameCollectionProducts.map((product) => (
-            <ProductCard
-              key={product.id_product}
-              product={product}
-            />
+            <SwiperSlide key={product.id_product}>
+              <ProductCard product={product} />
+            </SwiperSlide>
           ))}
-        </div>
+        </Swiper>
       </div>
     </div>
   );

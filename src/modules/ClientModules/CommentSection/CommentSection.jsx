@@ -36,15 +36,15 @@ const CommentSection = observer(({ id }) => {
   function getCommentWord(count) {
     const tens = count % 100;
     const ones = count % 10;
-  
+
     if (tens > 10 && tens < 20) {
-      return 'отзывов';
+      return "отзывов";
     } else if (ones > 1 && ones < 5) {
-      return 'отзыва';
+      return "отзыва";
     } else if (ones === 1) {
-      return 'отзыв';
+      return "отзыв";
     }
-    return 'отзывов';
+    return "отзывов";
   }
 
   return (
@@ -53,7 +53,9 @@ const CommentSection = observer(({ id }) => {
         <div className="flex justify-between items-center">
           <div className="flex space-x-4 items-center">
             <h2 className="text-3xl py-5 font-semibold">Отзывы о товаре</h2>
-            <p>{commentData.length} {getCommentWord(commentData.length)}</p>
+            <p>
+              {commentData.length} {getCommentWord(commentData.length)}
+            </p>
           </div>
           <span
             className="flex text-base py-5 font-semibold cursor-pointer 

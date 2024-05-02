@@ -45,6 +45,25 @@ export const updateUserProfile = async (email_user, profileData) => {
   }
 };
 
+export const changePassword = async (email_user, old_password, new_password, confirm_password) => {
+  try {
+      const requestData = {
+          email_user,
+          old_password,
+          new_password,
+          confirm_password
+      };
+
+      console.log('Sending changePassword request with data:', requestData);
+
+      const { data } = await $authhost.put('api/user_profile/change_password', requestData);
+      return data;
+  } catch (error) {
+      console.error("Ошибка при изменении пароля: ", error);
+      throw error;
+  }
+};
+
 //   export const updateUser = async (email_user, userData, imageFile) => {
 //     try {
 //         const formData = new FormData();
