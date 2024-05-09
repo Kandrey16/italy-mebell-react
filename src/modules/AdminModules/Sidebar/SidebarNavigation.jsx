@@ -1,16 +1,10 @@
-import {
-  Card,
-  Typography,
-  List,
-  ListItem,
-} from "@material-tailwind/react";
+import { Card, Typography, List, ListItem } from "@material-tailwind/react";
 
 import SidebarItem from "../../ClientModules/Sidebar/SidebarItem/SidebarItem";
 import { SidebarItems } from "@/data/dataSidebar";
 import styles from "./Sidebar.module.scss";
 
 export default function SidebarNavigation({ onMenuItemClick }) {
-  
   return (
     <>
       <Card className={styles.card}>
@@ -22,6 +16,9 @@ export default function SidebarNavigation({ onMenuItemClick }) {
         <List>
           <ListItem onClick={() => onMenuItemClick("products")}>
             <Typography>Товары</Typography>
+          </ListItem>
+          <ListItem onClick={() => onMenuItemClick("orders")}>
+            <Typography>Заказы</Typography>
           </ListItem>
           <ListItem onClick={() => onMenuItemClick("categories")}>
             <Typography>Категории</Typography>
@@ -35,9 +32,7 @@ export default function SidebarNavigation({ onMenuItemClick }) {
           <ListItem onClick={() => onMenuItemClick("attributes")}>
             <Typography>Атрибуты</Typography>
           </ListItem>
-          <ListItem onClick={() => onMenuItemClick("orders")}>
-            <Typography>Заказы</Typography>
-          </ListItem>
+
           <ListItem onClick={() => onMenuItemClick("order_deliveries")}>
             <Typography>Способы доставки</Typography>
           </ListItem>

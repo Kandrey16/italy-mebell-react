@@ -47,25 +47,6 @@ const OrderItem = observer(({ item, isAdmin, onChangeStatus }) => {
       <div>
         <span>{productData.price_product} руб.</span>
       </div>
-      {/* {isAdmin && (
-        <Select
-          onChange={(event, value) => {
-            onChangeStatus(item.id_order_product, value.id_order_status);
-          }}
-          label="Статус"
-          // Значение должно соответствовать текущему ID статуса заказа, а не его названию
-          value={item.id_order_status}
-        >
-          {orderStatuses.map((status) => (
-            <Option
-              key={status.id_order_status}
-              value={status.id_order_status} // Здесь используется ID для значения опции
-            >
-              {status.name_order_status}
-            </Option>
-          ))}
-        </Select>
-      )} */}
     </div>
   );
 });

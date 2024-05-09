@@ -35,10 +35,24 @@ const ProductPage = observer(() => {
   });
   const [comments, setComments] = useState([]);
 
+  // console.log(productData.selectedProduct.product_images);
+  // console.log(productData.selectedProduct.url_main_image_product);
+
   useEffect(() => {
-    fetchProductDetails(id);
-    fetchAttributesData();
-    fetchComments();
+    const fetchData = async () => {
+      try {
+        product.setIsLoading(true);
+        await fetchProductDetails(id);
+        await fetchAttributesData();
+        await fetchComments();
+        product.setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        product.setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, [id]);
 
   useEffect(() => {
@@ -56,6 +70,7 @@ const ProductPage = observer(() => {
         ...prevData,
         selectedProduct: data,
         specification: data.specifications,
+        attributes: data.attributes,
       }));
     } catch (error) {
       console.error("Error fetching product details:", error);
@@ -113,9 +128,11 @@ const ProductPage = observer(() => {
 
   return (
     <div className="">
-      <div className="container grid grid-cols-2 w-full p-6">
+      <div className="container grid grid-cols-2 w-full gap-4 p-6">
         <ProductImage
-          imageUrl={`${import.meta.env.VITE_APP_API_URL}/${productData.selectedProduct.url_main_image_product}`}
+          mainImageUrl={`${import.meta.env.VITE_APP_API_URL}/${productData.selectedProduct.url_main_image_product}`}
+          // additionalImages={`${import.meta.env.VITE_APP_API_URL}/${productData.selectedProduct.product_images}`}
+          additionalImages={productData.selectedProduct.product_images || []}
         />
         <Card className="col p-6 flex flex-col justify-between">
           <div>
@@ -133,8 +150,12 @@ const ProductPage = observer(() => {
                     "bg-transparent border-b-2 border-gray-900 shadow-none rounded-none",
                 }}
               >
-                <Tab className="text-xl font-semibold" value="specification">Характеристики</Tab>
-                <Tab className="text-xl font-semibold" value="description">Описание</Tab>
+                <Tab className="text-xl font-semibold" value="specification">
+                  Характеристики
+                </Tab>
+                <Tab className="text-xl font-semibold" value="description">
+                  Описание
+                </Tab>
               </TabsHeader>
               <TabsBody>
                 <TabPanel value="specification">
@@ -148,10 +169,6 @@ const ProductPage = observer(() => {
                 </TabPanel>
               </TabsBody>
             </Tabs>
-            {/* <ProductSpecification
-              specification={productData.specification}
-              attributes={productData.attributes}
-            /> */}
           </div>
           <div className="flex justify-end">
             <button

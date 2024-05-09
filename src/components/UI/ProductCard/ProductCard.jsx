@@ -10,7 +10,6 @@ import { Context } from "@/main";
 import { observer } from "mobx-react";
 import { Rating } from "@material-tailwind/react";
 
-
 const ProductCard = observer(({ product }) => {
   const navigate = useNavigate();
 
@@ -18,7 +17,11 @@ const ProductCard = observer(({ product }) => {
     ? `${import.meta.env.VITE_APP_API_URL}/${product.url_main_image_product}`
     : noProduct;
 
-    const formattedPrice = new Intl.NumberFormat('ru-RU').format(product.price_product);
+  const formattedPrice = new Intl.NumberFormat("ru-RU").format(
+    product.price_product
+  );
+
+  const normalizedRating = product.rating ? Math.ceil(product.rating) : 0;
 
   return (
     <>
@@ -32,15 +35,14 @@ const ProductCard = observer(({ product }) => {
         <div className={styles.product_info}>
           <h2 className={styles.product_name}>{product.name_product}</h2>
           <p className={styles.product_price}>{formattedPrice}₽</p>
-          <Rating value={Number(product.rating)} readonly />
+
+          <Rating value={normalizedRating} readonly />
+
           <div className={styles.product_options}>
             <div className={styles.product_link}>
               <a>Подробнее</a>
               <img src={arrow_logo}></img>
             </div>
-            <button>
-              <img src={favourite_logo}></img>
-            </button>
           </div>
         </div>
       </div>

@@ -39,9 +39,6 @@ export const Header = observer(() => {
   const [open, setOpen] = useState(false);
   const [burderVisible, setBurderVisible] = useState(false);
 
-  // const openDrawer = () => setOpen(true);
-  // const closeDrawer = () => setOpen(false);
-
   useEffect(() => {
     window.addEventListener("resize", () => {
       setIsMobile(window.innerWidth < 1024);

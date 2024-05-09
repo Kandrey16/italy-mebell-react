@@ -38,8 +38,6 @@ const SameProductSection = ({ id_category, currentProductId }) => {
         modules={[Navigation]}
           spaceBetween={1}
           slidesPerView={4}
-          onSlideChange={() => console.log("slide change")}
-          onSwiper={(swiper) => console.log(swiper)}
           data-swiper-autoplay="2000"
           navigation
         >

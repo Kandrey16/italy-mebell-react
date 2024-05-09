@@ -22,12 +22,12 @@ const CollectionTable = observer(() => {
   useEffect(() => {
     product
       .fetchCollections()
-      .then(() => {
-        console.log(
-          "Коллекции после загрузки: ",
-          product.collections
-        ); // Здесь добавлен console.log
-      })
+      // .then(() => {
+      //   console.log(
+      //     "Коллекции после загрузки: ",
+      //     product.collections
+      //   ); // Здесь добавлен console.log
+      // })
       .catch((error) => {
         console.error("Ошибка при загрузке коллекций:", error);
       });

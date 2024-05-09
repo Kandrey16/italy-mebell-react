@@ -5,8 +5,9 @@ import TableRow from "../TableVisual/TableRow";
 import { observer } from "mobx-react";
 import { useContext } from "react";
 import { Context } from "@/main";
-import { fetchProducts } from "@/API/ProductAPI";
+import { fetchProducts, deleteProduct } from "@/API/ProductAPI";
 import ProductEditForm from "../EditTable/EditProduct";
+import { toJS } from "mobx";
 
 const TABLE_HEAD = [
   "ID",
@@ -15,19 +16,26 @@ const TABLE_HEAD = [
   "Цена",
   "Количество",
   "Доступность",
+  "Рейтинг",
+  "Коллекция",
+  "Атрибуты",
+  "Группы атрибутов",
+  "Характеристики",
+  "",
   "",
   "",
 ];
 
 const ProductTable = observer(() => {
-  const { product } = useContext(Context);
+  const [products, setProducts] = useState([]);
   const [productEditVisible, setProductEditVisible] = useState(false);
   const [currentProduct, setCurrentProduct] = useState(null); // добавлено
 
   useEffect(() => {
     fetchProducts()
       .then((data) => {
-        product.setProducts(data.rows);
+        console.log("Товары", data);
+        setProducts(data.rows);
       })
       .catch((error) => {
         console.error("Ошибка при загрузке продуктов:", error);
@@ -35,7 +43,7 @@ const ProductTable = observer(() => {
   }, []);
 
   const handleDelete = (id) => {
-    product.deleteProduct(id);
+    deleteProduct(id);
   };
 
   const handleEdit = (product) => {
@@ -55,8 +63,8 @@ const ProductTable = observer(() => {
             </tr>
           </thead>
           <tbody>
-            {product.products &&
-              product.products.map((product, index) => {
+            {products &&
+              products.map((product, index) => {
                 return (
                   <TableRow
                     key={index}
@@ -76,13 +84,13 @@ const ProductTable = observer(() => {
           </tbody>
         </table>
       </Card>
-      {currentProduct && ( // добавлено
+      {currentProduct && (
         <ProductEditForm
-          product={currentProduct} // изменено
+          product={currentProduct}
           show={productEditVisible}
           onHide={() => {
             setProductEditVisible(false);
-            setCurrentProduct(null); // добавлено
+            setCurrentProduct(null);
           }}
         />
       )}

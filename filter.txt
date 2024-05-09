@@ -1,0 +1,267 @@
+const FilterBar = observer((uniqueSpecifications) => {
+  const { product } = useContext(Context);
+  const [appliedFilters, setAppliedFilters] = useState({});
+  const [selectedRating, setSelectedRating] = useState(0);
+
+  useEffect(() => {
+    product.fetchSpecifications();
+    product.fetchCollections();
+  }, [product]);
+
+  console.log(uniqueSpecifications);
+
+  // const uniqueSpecifications = product.specifications.reduce((acc, current) => {
+  //   const x = acc.find(
+  //     (item) => item.value_specification === current.value_specification
+  //   );
+  //   if (!x) {
+  //     return acc.concat([current]);
+  //   } else {
+  //     return acc;
+  //   }
+  // }, []);
+
+  const groupedSpecifications = product.specifications.reduce(
+    (acc, current) => {
+      // Преобразуем Proxy-объект MobX в обычный JS объект
+      const specAttributes = toJS(current.attribute);
+      const valueSpec = current.value_specification; // Теперь мы получаем value_specification непосредственно из current
+      const idSpec = current.id_specification; // Аналогично, получаем id_specification из current
+
+      if (specAttributes && valueSpec && idSpec) {
+        const { name_attribute } = specAttributes;
+
+        acc[name_attribute] = acc[name_attribute] || [];
+        const found = acc[name_attribute].some(
+          (spec) => spec.value_specification === valueSpec
+        );
+
+        if (!found) {
+          acc[name_attribute].push({
+            value_specification: valueSpec, // Используем значение из current
+            id_specification: idSpec, // Используем значение из current
+          });
+        }
+      }
+      // console.log(acc);
+      return acc;
+    },
+    {}
+  );
+
+  const attributesArray = Object.keys(groupedSpecifications).map(
+    (name_attribute) => {
+      return { name_attribute, values: groupedSpecifications[name_attribute] };
+    }
+  );
+
+  // console.log(attributesArray);
+
+  const applyFilters = async () => {
+    try {
+      product.setIsLoading(true); // Устанавливаем флаг загрузки перед отправкой запроса
+      const valueSpecString = appliedFilters.value_specification
+        ? appliedFilters.value_specification.join(",")
+        : "";
+
+      const filteredProducts = await fetchProducts(
+        {
+          ...appliedFilters,
+          value_specification: valueSpecString,
+        },
+        product.page,
+        product.limit
+      );
+      console.log("Получены отфильтрованные товары:", filteredProducts);
+      product.setFilteredProducts(filteredProducts); // Обновляем searchedProduct вместо products
+    } catch (error) {
+      console.error("Ошибка при применении фильтров:", error);
+    } finally {
+      product.setIsLoading(false); // Сбрасываем флаг загрузки после получения данных
+    }
+  };
+
+  const resetFilters = async () => {
+    setAppliedFilters({}); // Сбрасываем примененные фильтры
+    setSelectedRating(0); // Сбрасываем рейтинг, если он был установлен
+
+    try {
+      product.setIsLoading(true); // Устанавливаем флаг загрузки
+      const allProducts = await fetchProducts({}, product.page, product.limit);
+      product.setFilteredProducts(allProducts);
+    } catch (error) {
+      console.error("Ошибка при получении всех товаров:", error);
+    } finally {
+      product.setIsLoading(false); // Сбрасываем флаг загрузки
+    }
+  };
+
+  const hasActiveFilters = () => {
+    return (
+      Object.values(appliedFilters).filter(Boolean).length > 0 ||
+      selectedRating > 0
+    );
+  };
+
+  return (
+    <div className="items-start">
+      <div className="mb-2 p-4">
+        <Typography variant="h5" color="black">
+          Фильтры
+        </Typography>
+        {hasActiveFilters() && (
+          <Button
+            className="bg-gray-400 text-black w-full mt-10"
+            onClick={resetFilters} // Привязываем функцию сброса фильтров к кнопке
+          >
+            Сбросить
+          </Button>
+        )}
+        <Button
+          className="w-full bg-colorPrimary mt-3"
+          onClick={() => {
+            applyFilters();
+          }}
+        >
+          Применить
+        </Button>
+      </div>
+      <List className="items-start">
+        <Typography variant="h5" color="blue-gray">
+          Цена
+        </Typography>
+        <ListItem className="flex space-x-2 justify-between">
+          <input
+            placeholder="От"
+            className="p-2 w-[7rem] rounded-xl border-2 border-blue-300"
+            value={appliedFilters.price_min || ""}
+            onChange={(e) =>
+              setAppliedFilters({
+                ...appliedFilters,
+                price_min: e.target.value,
+              })
+            }
+          ></input>
+          <input
+            placeholder="До"
+            className="p-2 w-[7rem] rounded-xl border-2 border-blue-300"
+            value={appliedFilters.price_max || ""}
+            onChange={(e) =>
+              setAppliedFilters({
+                ...appliedFilters,
+                price_max: e.target.value,
+              })
+            }
+          ></input>
+        </ListItem>
+        <Typography variant="h5" color="blue-gray">
+          Рейтинг
+        </Typography>
+        <ListItem className="flex flex-col items-start">
+          {[1, 2, 3, 4, 5].map((rating) => (
+            <div className="flex ">
+              <Radio
+                key={`rating-${rating}`}
+                id={`rating-${rating}`}
+                checked={selectedRating === rating}
+                onChange={() => {
+                  setSelectedRating(rating);
+                  setAppliedFilters({ ...appliedFilters, rating_min: rating });
+                }}
+              />
+              <Rating value={rating} readonly />
+            </div>
+          ))}
+        </ListItem>
+        <Typography variant="h5" color="blue-gray">
+          Коллекции
+        </Typography>
+        {product.collections.map((collection) => (
+          <div
+            key={collection.id_collection}
+            className="flex flex-col items-start mb-2"
+          >
+            <label className="inline-flex items-center">
+              <Checkbox
+                type="checkbox"
+                className="form-checkbox w-4 h-4"
+                id={`collection-checkbox-${collection.name_collection}`}
+                checked={
+                  appliedFilters.id_collection &&
+                  appliedFilters.id_collection.includes(
+                    collection.id_collection
+                  )
+                }
+                onChange={(e) => {
+                  const newCollectionIds = e.target.checked
+                    ? [
+                        ...(appliedFilters.id_collection || []),
+                        collection.id_collection,
+                      ]
+                    : (appliedFilters.id_collection || []).filter(
+                        (id) => id !== collection.id_collection
+                      );
+                  setAppliedFilters({
+                    ...appliedFilters,
+                    id_collection: newCollectionIds,
+                  });
+                }}
+              />
+              <span className="ml-2">{collection.name_collection}</span>{" "}
+            </label>
+          </div>
+        ))}
+        <Typography variant="h5" color="blue-gray">
+          Характеристики
+        </Typography>
+        {attributesArray.map((spec) => (
+          <div
+            key={spec.id_attribute} // Использовать spec.id_attribute вместо spec.id_specification, если id_attribute является уникальным идентификатором атрибута
+            className="flex flex-col items-start mb-2"
+          >
+            <span className="font-bold">{spec.name_attribute}</span>
+            {spec.values.map(
+              (
+                value // Проитерироваться по values, так как они являются массивом значений для каждого атрибута
+              ) => (
+                <label
+                  key={value.id_specification}
+                  className="inline-flex items-center"
+                >
+                  <Checkbox
+                    type="checkbox"
+                    className="form-checkbox w-4 h-4"
+                    id={`checkbox-${value.id_specification}`}
+                    checked={
+                      appliedFilters.value_specification &&
+                      appliedFilters.value_specification.includes(
+                        value.value_specification
+                      )
+                    }
+                    onChange={(e) => {
+                      const newValue = e.target.checked
+                        ? [
+                            ...(appliedFilters.value_specification || []),
+                            value.value_specification,
+                          ]
+                        : (appliedFilters.value_specification || []).filter(
+                            (val) => val !== value.value_specification
+                          );
+                      setAppliedFilters({
+                        ...appliedFilters,
+                        value_specification: newValue,
+                      });
+                    }}
+                  />
+                  <span className="ml-2">{value.value_specification}</span>
+                </label>
+              )
+            )}
+          </div>
+        ))}
+      </List>
+    </div>
+  );
+});
+
+export default FilterBar;

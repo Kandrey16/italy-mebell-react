@@ -36,6 +36,13 @@ export const fetchOrdersByEmail = async (email) => {
     }
 };
 
+export const exportOrderData = async (id) => {
+    const { data } = await $authhost.get(`api/orders/${id}/export`, {
+      responseType: 'blob', // Specify that the response should be treated as a binary blob
+    });
+    return data;
+  };
+
 //category
 export const createPaymentMethod = async(payment_method) => {
     const {data} = await $authhost.post('api/payment_method', payment_method)

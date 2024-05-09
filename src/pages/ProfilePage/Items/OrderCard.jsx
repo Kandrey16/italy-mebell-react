@@ -12,6 +12,7 @@ import {
 import OrderItem from "./OrderItem";
 import { useContext, useEffect, useState } from "react";
 import { fetchOneUser } from "@/API/UserAPI";
+import { exportOrderData } from "@/API/OrderAPI";
 import { Context } from "@/main";
 import { toJS } from "mobx";
 import { fetchOrderStatuses, updateOrder } from "@/API/OrderAPI";
@@ -25,39 +26,26 @@ const OrderCard = ({ data, isAdmin }) => {
 
   const [editVisible, setEditVisible] = useState(false);
   const [currentOrder, setCurrentOrder] = useState(null);
-  // const [selectedStatus, setSelectedStatus] = useState(data.id_order_status);
-  // const [isStatusDialogOpen, setIsStatusDialogOpen] = useState(false);
 
   const email = data.order_address.email_user;
   const order_data = order.orders;
   const status_data = order.order_status;
-  // console.log(status_data);
-  //   console.log(toJS(order_data));
-  // console.log(toJS(order));
-  // console.log(orderStatuses);
-  //   console.log(toJS(data));
 
   useEffect(() => {
-    if (isAdmin) {
-      fetchOneUser(email).then(setUserData);
-      order
-        .fetchOrders()
-        .then(() => {
-          // console.log("Заказы после загрузки", toJS(order_data));
-        })
-        .catch((error) => {
-          console.error("Ошибка при загрузке заказов:", error);
-        });
-      order
-        .fetchOrderStatuses()
-        .then(() => {
-          // console.log("Статусы после загрузки", toJS(status_data));
-        })
-        .catch((error) => {
-          console.error("Ошибка при загрузке статусов:", error);
-        });
-    }
-  }, [isAdmin, order]);
+    fetchOneUser(email).then(setUserData);
+    order
+      .fetchOrders()
+      .then(() => {})
+      .catch((error) => {
+        console.error("Ошибка при загрузке заказов:", error);
+      });
+    order
+      .fetchOrderStatuses()
+      .then(() => {})
+      .catch((error) => {
+        console.error("Ошибка при загрузке статусов:", error);
+      });
+  }, [order]);
 
   const getStatusNameById = (statusId) => {
     const status = status_data.find(
@@ -79,6 +67,32 @@ const OrderCard = ({ data, isAdmin }) => {
   const handleCloseOrderDetails = () => {
     setSelectedOrder(null);
     setShowOrderDetails(false);
+  };
+
+  const handleExportOrder = async (id) => {
+    try {
+      const response = await exportOrderData(id);
+      console.log("Export response:", response); // Log the response
+      if (!response) {
+        throw new Error("Empty response received");
+      }
+      const contentType = response.type; // Access the content type directly from the response object
+      if (!contentType) {
+        throw new Error("Content type header not found in response");
+      }
+      const blob = new Blob([response], { // Pass the response directly to the Blob constructor
+        type: contentType,
+      });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "order.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Ошибка при экспорте данных:", error);
+    }
   };
 
   // const handleOpenStatusDialog = (data) => {
@@ -128,13 +142,22 @@ const OrderCard = ({ data, isAdmin }) => {
             </div>
 
             {isAdmin && (
-              <Button
-                variant="filled"
-                color="green"
-                onClick={() => handleEdit(order_data)}
-              >
-                Изменить заказ
-              </Button>
+              <>
+                <Button
+                  variant="filled"
+                  color="green"
+                  onClick={() => handleEdit(order_data)}
+                >
+                  Изменить заказ
+                </Button>
+                <Button
+                  variant="filled"
+                  color="blue"
+                  onClick={() => handleExportOrder(data.id_order)} // Call the handleExportOrder function on button click
+                >
+                  Экспорт данных
+                </Button>
+              </>
             )}
 
             <OrderEditForm
@@ -170,7 +193,9 @@ const OrderCard = ({ data, isAdmin }) => {
 
           <p
             className="hover:text-colorPrimary text-lg font-bold"
-            onClick={() => handleShowOrderDetails(data)}
+            onClick={() => {
+              handleShowOrderDetails(data);
+            }}
           >
             Полная информация
           </p>
@@ -206,11 +231,21 @@ const OrderCard = ({ data, isAdmin }) => {
               </div>
               <div>
                 <h3 className="text-lg font-bold">Адрес доставки:</h3>
-                <p>Адрес: {selectedOrder.order_address.address_order}</p>
-                <p>Подъезд: {selectedOrder.order_address.entrance_order}</p>
-                <p>Этаж: {selectedOrder.order_address.floor_order}</p>
                 <p>
-                  Код домофона: {selectedOrder.order_address.home_code_order}
+                  Адрес:{" "}
+                  {selectedOrder.order_address?.address_order || "Не указан"}
+                </p>
+                <p>
+                  Подъезд:{" "}
+                  {selectedOrder.order_address?.entrance_order || "Не указан"}
+                </p>
+                <p>
+                  Этаж:{" "}
+                  {selectedOrder.order_address?.floor_order || "Не указан"}
+                </p>
+                <p>
+                  Код домофона:{" "}
+                  {selectedOrder.order_address?.home_code_order || "Не указан"}
                 </p>
               </div>
             </div>

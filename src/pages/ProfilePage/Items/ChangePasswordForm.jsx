@@ -5,6 +5,7 @@ import {
   DialogBody,
   DialogFooter,
   Input,
+  Alert,
 } from "@material-tailwind/react";
 import { Context } from "@/main";
 import { observer } from "mobx-react";
@@ -16,13 +17,18 @@ const ChangePasswordForm = observer(
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    console.log(userData);
+    const email = userData.email_user;
 
     const handleSave = () => {
+      if (newPassword !== confirmPassword) {
+        alert("Поля нового пароля и подтверждения не совпадают.");
+        return;
+      }
+
       user
         .changePassword(email, oldPassword, newPassword, confirmPassword)
-        .then((updatedPassword) => {
-          setUserData({ ...userData, ...updatedPassword });
+        .then(() => {
+          setUserData({ oldPassword, newPassword, confirmPassword });
           onHide();
         })
         .catch((error) => {

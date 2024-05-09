@@ -21,7 +21,7 @@ const ProfileHeader = observer(() => {
   const [userData, setUserData] = useState("");
 
   const userEmail = toJS(user.user.email_user);
-  const imageUrl = userData.image_user_profile
+  const imageUrl = userData && userData.image_user_profile
     ? `${import.meta.env.VITE_APP_API_URL}/user_photo/${userData.image_user_profile}`
     : noPhoto;
 

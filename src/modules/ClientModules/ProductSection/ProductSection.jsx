@@ -3,7 +3,6 @@ import ProductCard from "@/components/UI/ProductCard/ProductCard";
 import { Context } from "@/main";
 import { observer } from "mobx-react";
 import { toJS } from "mobx";
-import { Option, Select } from "@material-tailwind/react";
 
 const ProductSection = observer(() => {
   const { product } = useContext(Context);
@@ -49,16 +48,25 @@ const ProductSection = observer(() => {
   //   productsToShow = product.products;
   // }
   const productsToShow = (() => {
+    console.log("Начало выбора отображаемых товаров");
     let products = [];
     if (product.filteredProducts.count > 0) {
+      console.log("Отображаются отфильтрованные товары");
       products = toJS(product.filteredProducts.rows);
     } else if (product.searchedProduct.length > 0) {
+      console.log("Отображаются найденные товары");
       products = product.searchedProduct;
     } else {
+      console.log("Отображаются все товары");
       products = product.products;
     }
+    console.log("Количество товаров для отображения:", products.length);
     return sortProducts(products, sortCriteria);
   })();
+
+  useEffect(() => {
+    console.log("Обновлен список товаров для отображения", productsToShow);
+  }, [productsToShow]);
 
   return (
     <div className="flex flex-col">

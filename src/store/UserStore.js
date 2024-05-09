@@ -35,9 +35,9 @@ export default class UserStore {
         }
     }
 
-    async changePassword(old_password, new_password, confirm_password) {
+    async changePassword(email_user, old_password, new_password, confirm_password) {
         try {
-            const updatedUser = await changePassword(this._user.email_user, old_password, new_password, confirm_password);
+            const updatedUser = await changePassword(email_user, old_password, new_password, confirm_password);
             this.setUser(updatedUser)
         } catch (error) {
             console.error("Ошибка при изменении пароля: ", error);

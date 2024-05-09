@@ -5,8 +5,6 @@ import TableRow from "../TableVisual/TableRow";
 import { observer } from "mobx-react";
 import { useContext } from "react";
 import { Context } from "@/main";
-import CategoryEditForm from "../EditTable/EditCategory";
-import { toJS } from "mobx";
 import AttributeGroupEditForm from "../EditTable/EditAttributeGroup";
 
 const TABLE_HEAD = ["ID", "Название", "", ""];
@@ -19,12 +17,12 @@ const AttributeGroupTable = observer(() => {
   useEffect(() => {
     attribute
       .fetchAttributeGroups()
-      .then(() => {
-        console.log(
-          "Группы атрибутов после загрузки: ",
-          attribute.attributeGroups
-        ); 
-      })
+      // .then(() => {
+      //   console.log(
+      //     "Группы атрибутов после загрузки: ",
+      //     attribute.attributeGroups
+      //   ); 
+      // })
       .catch((error) => {
         console.error("Ошибка при загрузке групп атрибутов:", error);
       });

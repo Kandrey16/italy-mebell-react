@@ -19,9 +19,9 @@ const AttributeTable = observer(() => {
   useEffect(() => {
     attribute
       .fetchAttributes()
-      .then(() => {
-        console.log("Атрибуты после загрузки:", toJS(attribute.attributes));
-      })
+      // .then(() => {
+      //   console.log("Атрибуты после загрузки:", toJS(attribute.attributes));
+      // })
       .catch((error) => {
         console.error("Ошибка при загрузке атрибутов:", error);
       });

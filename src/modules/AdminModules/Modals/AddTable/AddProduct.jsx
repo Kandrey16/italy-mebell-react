@@ -11,12 +11,12 @@ import {
 } from "@material-tailwind/react";
 import { Context } from "@/main";
 import {
-  fetchCategories,
   fetchProducts,
   createProduct,
 } from "@/API/ProductAPI";
 import { fetchAttributes } from "@/API/AttributeAPI";
 import { observer } from "mobx-react";
+import { toJS } from "mobx";
 
 const ProductAddForm = observer(({ show, onHide }) => {
   const { product } = useContext(Context);
@@ -28,9 +28,25 @@ const ProductAddForm = observer(({ show, onHide }) => {
   const [count, setCount] = useState("");
   const [specification, setSpecification] = useState([]);
   const [attribute, setAttribute] = useState([]);
+  const [images, setImages] = useState([]);
 
   useEffect(() => {
-    fetchCategories().then((data) => product.setCategories(data));
+    product
+      .fetchCategories()
+      .then(() => {
+        // console.log("Категории:", toJS(product.categories));
+      })
+      .catch((e) => {
+        console.error("Ошибка при загрузке категорий", e);
+      });
+    product
+      .fetchCollections()
+      .then(() => {
+        // console.log("Коллекции:", toJS(product.collections));
+      })
+      .catch((e) => {
+        console.error("Ошибка при загрузке коллекций", e);
+      });
     fetchAttributes().then((data) => {
       setAttribute(data);
     });
@@ -67,10 +83,29 @@ const ProductAddForm = observer(({ show, onHide }) => {
     setFile(e.target.files[0]);
   };
 
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setImages(images.concat(files));
+  };
+
+  const removeImage = (index) => {
+    setImages(images.filter((_, i) => i !== index));
+  };
+
   const addProduct = () => {
     if (!product.selectedCategory || !product.selectedCategory.id_category) {
+      console.warn("Категория не выбрана. Отмена добавления продукта.");
       return;
     }
+
+    console.log("Начало процесса добавления продукта:");
+    console.log(`Название: ${name}, Артикул: ${article}, Цена: ${price}`);
+    console.log(`Описание: ${description}, Количество: ${count}`);
+    console.log("Выбранные характеристики:", specification);
+    console.log(
+      "Выбранные изображения:",
+      images.map((file) => file.name)
+    );
 
     const formData = new FormData();
     formData.append("name_product", name);
@@ -80,15 +115,31 @@ const ProductAddForm = observer(({ show, onHide }) => {
     formData.append("description_product", description);
     formData.append("count_product", `${count}`);
     formData.append("id_category", product.selectedCategory.id_category);
+    formData.append(
+      "id_collection",
+      product.setSelectedCollection.id_collection
+    );
     formData.append("specifications", JSON.stringify(specification));
-    console.log(specification);
-
-    createProduct(formData).then(() => {
-      fetchProducts().then((data) => {
-        product.setProducts(data.rows);
-      });
-      onHide();
+    images.forEach((image) => {
+      formData.append("additional_images", image);
     });
+
+    createProduct(formData)
+      .then(() => {
+        console.log("Продукт успешно создан. Обновление списка продуктов...");
+        fetchProducts()
+          .then((data) => {
+            console.log("Список продуктов после создания товара:", data.rows);
+            product.setProducts(data.rows);
+          })
+          .catch((error) => {
+            console.error("Ошибка при обновлении списка продуктов:", error);
+          });
+        onHide();
+      })
+      .catch((error) => {
+        console.error("Ошибка при добавлении продукта:", error);
+      });
   };
 
   return (
@@ -122,6 +173,19 @@ const ProductAddForm = observer(({ show, onHide }) => {
                     key={category.id_category}
                   >
                     {category.name_category}
+                  </Option>
+                ))}
+              </Select>
+              <Select color="blue" label="Коллекция">
+                {product.collections.map((collection) => (
+                  <Option
+                    onClick={() => {
+                      product.setSelectedCollection(collection);
+                      console.log(product.selectedCollection);
+                    }}
+                    key={collection.id_collection}
+                  >
+                    {collection.name_collection}
                   </Option>
                 ))}
               </Select>
@@ -182,6 +246,15 @@ const ProductAddForm = observer(({ show, onHide }) => {
                   </Button>
                 </div>
               ))}
+              {images.map((file, index) => (
+                <div key={index}>
+                  <Typography>{file.name}</Typography>
+                  <Button color="red" onClick={() => removeImage(index)}>
+                    Удалить
+                  </Button>
+                </div>
+              ))}
+              <input type="file" multiple onChange={handleImageChange} />
             </div>
             <hr />
             <Button

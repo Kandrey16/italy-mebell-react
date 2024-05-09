@@ -27,7 +27,7 @@ const AttributeAddForm = observer(({ show, onHide }) => {
       !attribute.selectedAttributeGroup ||
       !attribute.selectedAttributeGroup.id_attribute_group
     )
-      return;
+    return;
 
     const formData = new FormData();
     formData.append("name_attribute", value);
@@ -42,6 +42,7 @@ const AttributeAddForm = observer(({ show, onHide }) => {
       });
       onHide();
     });
+    
   };
 
   return (

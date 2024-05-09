@@ -127,3 +127,21 @@ export const fetchSpecifications = async() => {
     const {data} = await $host.get('api/specification')
     return data
 }
+
+export const createProductImage = async(product_image) => {
+    const {data} = await $authhost.post('api/product_image', product_image)
+    return data
+}
+
+export const editProductImage = async(id, product_image) => {
+    const {data} = await $authhost.put('api/product_image/' + id, product_image)
+    return data
+}
+export const deleteProductImage = async(id) => {
+    const {data} = await $authhost.delete('api/product_image/' + id)
+    return {data}
+}
+export const fetchProductImages = async() => {
+    const {data} = await $host.get('api/product_image')
+    return data
+}

@@ -5,6 +5,7 @@ import { Spinner } from "@material-tailwind/react";
 import "assets/styles/App.css";
 import { Header } from "@/components/UI/Header/Header";
 import Navbar from "@/components/UI/Navbar/Navbar";
+import Footer from "@/components/UI/Footer/Footer";
 import { AppRouter } from "./routes/AppRouter";
 import { Context } from "./main";
 import { check } from "./API/UserAPI";
@@ -30,7 +31,12 @@ const App = observer(() => {
     <BrowserRouter>
       <Header />
       <Navbar />
-      <AppRouter />
+      <div className="flex flex-col min-h-screen">
+        <main className="flex-grow">
+          <AppRouter />
+        </main>
+        <Footer />
+      </div>
     </BrowserRouter>
   );
 });

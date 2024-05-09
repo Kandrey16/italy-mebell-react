@@ -35,6 +35,10 @@ export const UserProfile = ({ userData, setUserData }) => {
     setEditProfileVisible(false);
   };
 
+  const handleCloseEditForm = () => {
+    setEditProfileVisible(false);
+  };
+
   const imageUrl =
     userData && userData.image_user_profile
       ? `${import.meta.env.VITE_APP_API_URL}/user_photo/${userData.image_user_profile}`
@@ -54,18 +58,20 @@ export const UserProfile = ({ userData, setUserData }) => {
         <p className="text-2xl font-bold">{`${userFirstName} ${userLastName}`}</p>
         <p>{userEmailData}</p>
         <p>{userPhone}</p>
-        <span
-          className="text-green-400 font-semibold my-2"
-          onClick={handleEditProfile}
-        >
-          Редактировать профиль
-        </span>
-        <span
-          className="text-green-400 font-semibold my-2"
-          onClick={handleEditPassword}
-        >
-          Изменить пароль
-        </span>
+        <div className="flex flex-col items-center">
+          <span
+            className="text-green-400 font-semibold my-2 cursor-pointer"
+            onClick={handleEditProfile}
+          >
+            Редактировать профиль
+          </span>
+          <span
+            className="text-green-400 font-semibold cursor-pointer"
+            onClick={handleEditPassword}
+          >
+            Изменить пароль
+          </span>
+        </div>
       </div>
       <Button
         onClick={handleShowQRCode}
@@ -103,7 +109,7 @@ export const UserProfile = ({ userData, setUserData }) => {
           onClose={handleShowQRCode}
         >
           <DialogBody>
-            <img src={QR_Code} className="w-auto h-fit" />
+            <img src={QR_Code} className="w-full h-fit" />
           </DialogBody>
           <DialogFooter>
             <span className="cursor-pointer" onClick={handleShowQRCode}>

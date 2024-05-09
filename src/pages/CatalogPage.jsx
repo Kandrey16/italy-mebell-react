@@ -6,10 +6,11 @@ import { fetchCategories, fetchProducts } from "@/API/ProductAPI";
 import CategoryBar from "@/modules/ClientModules/CategoryBar/CategoryBar";
 import Pagination from "@/components/UI/Pagination/Pagination";
 import { toJS } from "mobx";
-import FilterBar from "@/modules/FilterBar/FilterBar";
+import FilterBar from "@/modules/ClientModules/FilterBar/FilterBar";
 
 const CatalogPage = observer(() => {
   const { product } = useContext(Context);
+  const [uniqueSpecifications, setUniqueSpecifications] = useState({});
   const [showPagination, setShowPagination] = useState(true);
 
   const filters = {
@@ -31,8 +32,43 @@ const CatalogPage = observer(() => {
       product.setProducts(data.rows);
       product.setTotalCount(data.count);
       setShowPagination(data.count > product.limit);
+      updateUniqueSpecifications(data.rows);
     });
   }, []);
+
+  const updateUniqueSpecifications = (products) => {
+    const specs = {};
+
+    for (const product of products) {
+      const attributes = product.attributes || [];
+      const specifications = product.specifications || [];
+
+      if (attributes.length !== specifications.length) {
+        continue; // Пропускаем продукт, если количество атрибутов и характеристик не совпадает
+      }
+
+      attributes.forEach((attribute, index) => {
+        if (attribute === null) {
+          return;
+        }
+
+        const value = specifications[index];
+
+        if (!specs[attribute]) {
+          specs[attribute] = new Set();
+        }
+
+        if (value) {
+          specs[attribute].add(value);
+        }
+      });
+    }
+
+    if (specs.hasOwnProperty("null")) {
+      delete specs["null"];
+    }
+    setUniqueSpecifications(specs);
+  };
 
   useEffect(() => {
     if (!product.selectedCategory) {
@@ -58,13 +94,13 @@ const CatalogPage = observer(() => {
     <>
       <div className="container grid grid-cols-5 gap-4">
         <div className="col">
-          <FilterBar />
+          <FilterBar uniqueSpecifications={uniqueSpecifications} />
         </div>
         <div className="col-span-4">
-          <CategoryBar />
+          {/* <CategoryBar /> */}
 
           <ProductSection />
-          {showPagination && <Pagination />}
+          {/* {showPagination && <Pagination />} */}
         </div>
       </div>
     </>

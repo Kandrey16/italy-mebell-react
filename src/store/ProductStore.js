@@ -10,7 +10,10 @@ import {
     deleteCategory,
     editCollection as apiEditCollection,
     deleteCollection as apiDeleteCollection,
-    fetchCollections as apiFetchCollections, fetchSpecifications as apiFetchSpecifications} from "@/API/ProductAPI"
+    fetchCollections as apiFetchCollections, 
+    fetchSpecifications as apiFetchSpecifications,
+    fetchProductImages as apiFetchProductImages
+    } from "@/API/ProductAPI"
 
 export default class ProductStore {
     constructor() {
@@ -32,6 +35,7 @@ export default class ProductStore {
         this._productsInCartIds = {}
         this._selectedCategory = {}
         this._selectedCollection = {}
+        this._productImages = []
         this._specifications = []
         this._specificationsFilter = []
         
@@ -42,7 +46,7 @@ export default class ProductStore {
         this.name_attribute = null,
         this.value_specification = null,
 
-        this._limit = 6
+        this._limit = 30
         this._page = 1
         this._totalCount = 0
 
@@ -52,6 +56,7 @@ export default class ProductStore {
 
     // Setters
     setIsLoading(value) {
+        console.log('Загрузка начата');
         this._isLoading = value;
     }
 
@@ -62,10 +67,20 @@ export default class ProductStore {
         this._collections = collections
     }
     setProducts(products) {
-        this._products = products
+        this._products = products;
     }
+    setProductIsEnabled(id, isEnabled) {
+        const index = this._products.findIndex(product => product.id === id);
+        if (index !== -1) {
+            this._products[index].isEnabled = isEnabled;
+        }
+    }
+
     setSpecifications(specifications) {
         this._specifications = specifications
+    }
+    setProductImages(product_images) {
+        this._productImages = product_images
     }
 
     setPriceMin(price_min) {
@@ -120,6 +135,9 @@ export default class ProductStore {
         this._totalCount = count
     }
 
+    getEnabledProducts() {
+        return this._products.filter(product => product.isEnabled);
+    }
 
     get isLoading() {
         return this._isLoading
@@ -132,6 +150,9 @@ export default class ProductStore {
     }
     get specifications() {
         return this._specifications;
+    }
+    get productImages() {
+        return this._productImages;
     }
 
     get priceMin() {
@@ -163,7 +184,7 @@ export default class ProductStore {
     get filteredProducts() {
         return this._filteredProducts;
     }
-
+    
     get selectedCategory() {
         return this._selectedCategory
     }
@@ -276,7 +297,6 @@ export default class ProductStore {
             const collections = await apiFetchCollections();
             runInAction(() => {
                 this.setCollections(collections);
-                console.log(collections);
             });
         } catch (error) {
             console.error('Ошибка при обновлении списка коллекций:', error);
@@ -294,6 +314,16 @@ export default class ProductStore {
         }
     };
 
+    fetchProductImages = async () => {
+        try {
+            const product_images = await apiFetchProductImages();
+            runInAction(() => {
+                this.setProductImages(product_images)
+            })
+        } catch (error) {
+            console.error('Ошибка при получении списка изображений:', error);
+        }
+    }
     // toggleSpecificationFilter(specificationId, isChecked) {
     //     if (isChecked) {
     //         this._specificationsFilter.push(specificationId);
