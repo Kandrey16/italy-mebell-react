@@ -3,10 +3,10 @@ import ProductCard from "@/components/UI/ProductCard/ProductCard";
 import { useEffect, useState } from "react";
 import styles from "../SameProductSection/SameSection.module.scss";
 
-import { Navigation } from 'swiper/modules';
+import { Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/scss";
-import "swiper/scss/navigation";
+import "swiper/scss/pagination";
 
 const SameProductSection = ({ id_category, currentProductId }) => {
   const [sameProduct, setSameProduct] = useState([]);
@@ -35,15 +35,34 @@ const SameProductSection = ({ id_category, currentProductId }) => {
       <div className={styles.center}>
         <h2>Похожие товары</h2>
         <Swiper
-        modules={[Navigation]}
+          modules={[Pagination]}
           spaceBetween={1}
-          slidesPerView={4}
+          pagination={{
+            clickable: true,
+          }}
           data-swiper-autoplay="2000"
-          navigation
+          breakpoints={{
+            // при ширине экрана 320px будет показан 1 слайд
+            320: {
+              slidesPerView: 1,
+            },
+            // при ширине экрана 640px будет показано 2 слайда
+            640: {
+              slidesPerView: 2,
+            },
+            // при ширине экрана 768px будет показано 3 слайда
+            768: {
+              slidesPerView: 3,
+            },
+            // при ширине экрана 1024px будет показано 4 слайда
+            1024: {
+              slidesPerView: 4,
+            },
+          }}
         >
           {sameProduct.map((product) => (
             <SwiperSlide key={product.id_product}>
-              <ProductCard  product={product} />
+              <ProductCard product={product} />
             </SwiperSlide>
           ))}
         </Swiper>

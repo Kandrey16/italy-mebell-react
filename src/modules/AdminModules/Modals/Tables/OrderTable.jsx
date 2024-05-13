@@ -26,33 +26,6 @@ const OrderTable = observer(() => {
       ) : (
         <p className="text-gray-500">У вас нет активных заказов.</p>
       )}
-      {/* <Card className="m-8 rounded-xl transition-al overflow-auto">
-        <table className="table-auto text-left">
-          <thead>
-            <tr>
-              {TABLE_HEAD.map((head, index) => (
-                <TableHead key={index} data={head} />
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {order.orders.map((order, index) => {
-              return (
-                <TableRow
-                  key={index}
-                  data={order}
-                  hiddenColumns={[
-                    "createdAt",
-                    "updatedAt",
-                    "order_address",
-                    "order_product",
-                  ]}
-                />
-              );
-            })}
-          </tbody>
-        </table>
-      </Card> */}
     </div>
   );
 });

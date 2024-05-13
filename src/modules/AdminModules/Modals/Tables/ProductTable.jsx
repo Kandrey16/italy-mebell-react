@@ -86,7 +86,7 @@ const ProductTable = observer(() => {
       </Card>
       {currentProduct && (
         <ProductEditForm
-          product={currentProduct}
+          selectedProduct={currentProduct}
           show={productEditVisible}
           onHide={() => {
             setProductEditVisible(false);

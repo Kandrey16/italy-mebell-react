@@ -1,76 +1,60 @@
+//productSection.jsx
 import { useContext, useEffect, useState } from "react";
 import ProductCard from "@/components/UI/ProductCard/ProductCard";
 import { Context } from "@/main";
 import { observer } from "mobx-react";
 import { toJS } from "mobx";
+import { Card, Typography } from "@material-tailwind/react";
 
 const ProductSection = observer(() => {
   const { product } = useContext(Context);
   const [sortCriteria, setSortCriteria] = useState("name");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const sortProducts = (products, criteria) => {
     switch (criteria) {
       case "name":
-        return [...products].sort((a, b) =>
-          a.name_product.localeCompare(b.name)
+        const sortedByName = [...products].sort((a, b) =>
+          a.name_product.localeCompare(b.name_product)
         );
+        return sortedByName;
       case "price":
-        return [...products].sort((a, b) => a.price_product - b.price);
-      case "dateAdded":
-        return [...products].sort(
-          (a, b) => new Date(b.dateAdded) - new Date(a.dateAdded)
+        const sortedByPrice = [...products].sort(
+          (a, b) => parseFloat(a.price_product) - parseFloat(b.price_product)
         );
+        return sortedByPrice;
+      case "dateAdded":
+        const sortedByDateAdded = [...products].sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        return sortedByDateAdded;
       default:
-        return products; // Если критерий не указан, возвращаем товары без изменений
+        return products;
     }
   };
 
-  // const hasFilteredProducts = product.filteredProducts.count > 0;
-  // const productsToShow = hasFilteredProducts
-  //   ? product.filteredProducts.rows // С учетом исправленного пути к товарам
-  //   : product.products;
-
-  // const productsToShow =
-  //   product.searchedProduct.length > 0
-  //     ? product.searchedProduct
-  //     : product.products;
-
-  // const hasFilteredProducts = product.filteredProducts.count > 0;
-  // const hasSearchedProducts = product.searchedProduct.length > 0;
-
-  // let productsToShow = [];
-
-  // if (hasFilteredProducts) {
-  //   productsToShow = toJS(product.filteredProducts.rows);
-  // } else if (hasSearchedProducts) {
-  //   productsToShow = product.searchedProduct;
-  // } else {
-  //   productsToShow = product.products;
-  // }
   const productsToShow = (() => {
-    console.log("Начало выбора отображаемых товаров");
     let products = [];
     if (product.filteredProducts.count > 0) {
-      console.log("Отображаются отфильтрованные товары");
       products = toJS(product.filteredProducts.rows);
     } else if (product.searchedProduct.length > 0) {
-      console.log("Отображаются найденные товары");
       products = product.searchedProduct;
     } else {
-      console.log("Отображаются все товары");
       products = product.products;
     }
-    console.log("Количество товаров для отображения:", products.length);
     return sortProducts(products, sortCriteria);
   })();
 
+  console.log(toJS(productsToShow));
+
   useEffect(() => {
-    console.log("Обновлен список товаров для отображения", productsToShow);
-  }, [productsToShow]);
+    if (product.searchedProduct.length > 0)
+      setSearchQuery(product.searchedProduct[0].name_product);
+  }, [product.searchedProduct]);
 
   return (
     <div className="flex flex-col">
-      <div className="justify-end max-w-40">
+      <div className="flex justify-end mt-4">
         <select
           value={sortCriteria}
           onChange={(e) => setSortCriteria(e.target.value)}
@@ -82,22 +66,25 @@ const ProductSection = observer(() => {
         </select>
       </div>
 
-      <div
-        className="w-full h-fit grid gap-4 p-4
+      {product.searchQuery && ( // Если есть текст поискового запроса, отобразите его
+        <Typography variant="h5" className="mb-4">
+          Результаты по запросу «{product.searchQuery}»
+        </Typography>
+      )}
+      {productsToShow.length > 0 ? (
+        <div
+          className="w-full h-fit grid gap-4 p-4
         grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
-      >
-        {productsToShow.length > 0 ? (
-          productsToShow.map((prod) => (
+        >
+          {productsToShow.map((prod) => (
             <div className="col" key={prod.id_product}>
               <ProductCard product={prod} />
             </div>
-          ))
-        ) : (
-          <div className="col-span-4 text-3xl font-bold ">
-            <p>Товары не найдены</p>
-          </div>
-        )}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-lg">Товары не найдены</div>
+      )}
     </div>
   );
 });

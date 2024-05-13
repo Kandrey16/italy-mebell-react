@@ -15,7 +15,10 @@ import {
   LOGIN_ROUTE,
   MAIN_ROUTE,
 } from "@/routes/utils/consts";
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+import Catalog from "../Catalog/Catalog";
+import Search from "../Search/Search";
+import styles from "../Header.module.scss";
 
 export default function BurgerMenu({ show, onHide }) {
   const navigate = useNavigate();
@@ -43,13 +46,18 @@ export default function BurgerMenu({ show, onHide }) {
       </div>
       <List>
         <ListItem>
-          <span>Каталог</span>
+          <Catalog />
         </ListItem>
         <ListItem>
-          <span>Каталог</span>
+          <Search />
         </ListItem>
         <ListItem>
-          <span>Каталог</span>
+          <div className={styles.header_info}>
+            <h4>
+              <a href="https://t.me/akurdelov">+7(999)-888-77-66</a>
+            </h4>
+            <span>Ежедневно 09:00-21:00</span>
+          </div>
         </ListItem>
       </List>
     </Drawer>

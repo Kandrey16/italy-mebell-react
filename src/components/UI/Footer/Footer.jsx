@@ -1,6 +1,7 @@
 import { MAIN_ROUTE } from "@/routes/utils/consts";
 import { Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
+import QR_Code from "@/assets/images/QR_Code_mobile.svg";
 
 const LINKS = [
   {
@@ -9,7 +10,12 @@ const LINKS = [
   },
   {
     title: "Поддержка",
-    items: ["Связаться с нами"],
+    items: [
+      {
+        text: "Связаться с нами",
+        link: "https://t.me/akurdelov", // новое поле 'link' с URL-адресом
+      },
+    ],
   },
   {
     title: "Дополнительно",
@@ -22,15 +28,29 @@ export default function Footer() {
   const navigate = useNavigate();
 
   return (
-    <footer className="relative w-full border-t border-gray-200">
+    <footer className="relative w-full border-t border-gray-400">
       <div className="mx-auto w-full max-w-7xl p-8">
+        <h1
+          onClick={() => navigate(MAIN_ROUTE)}
+          className="mb-6 flex-none text-3xl lg:text-4xl  flex-shrink-0 cursor-pointer"
+        >
+          ItalyMebell
+        </h1>
         <div className="grid grid-cols-1 justify-between gap-4 md:grid-cols-2">
-          <h1
-            onClick={() => navigate(MAIN_ROUTE)}
-            className="mb-6 flex-none text-3xl lg:text-4xl  flex-shrink-0 cursor-pointer"
-          >
-            ItalyMebell
-          </h1>
+          <div className="grid grid-cols-2">
+            <div className="flex flex-col col-span-3 max-w-96 items-center border-4 border-indigo-200 rounded-xl p-4">
+              <img
+                src={QR_Code}
+                alt="QR Code"
+                className="max-h-60 w-auto mb-4"
+              />
+              <div className="w-full text-center">
+                Наведите камеру на QR-код <br />
+                для установки мобильного приложения
+              </div>
+            </div>
+          </div>
+
           <div className="grid grid-cols-3 justify-between gap-4">
             {LINKS.map(({ title, items }) => (
               <ul key={title}>
@@ -41,18 +61,22 @@ export default function Footer() {
                 >
                   {title}
                 </Typography>
-                {items.map((link) => (
-                  <li key={link}>
-                    <Typography
-                      as="a"
-                      href="#"
-                      color="gray"
-                      className="py-1.5 font-normal transition-colors hover:text-blue-gray-900"
-                    >
-                      {link}
-                    </Typography>
-                  </li>
-                ))}
+                {items.map((item) => {
+                  const { text, link } =
+                    typeof item === "object" ? item : { text: item, link: "#" }; // обрабатываем новую структуру объекта или используем старую
+                  return (
+                    <li key={text}>
+                      <Typography
+                        as="a"
+                        href={link} // используем link из объекта item, если он есть, или '#', если элемент - строка
+                        color="gray"
+                        className="py-1.5 font-normal transition-colors hover:text-blue-gray-900"
+                      >
+                        {text}
+                      </Typography>
+                    </li>
+                  );
+                })}
               </ul>
             ))}
           </div>

@@ -31,7 +31,6 @@ const CommentEditForm = observer(({ show, onHide, commentData }) => {
   };
 
   const editComment = () => {
-
     if (commentData && commentData.id_product_comment) {
       comment
         .editComment(commentData.id_product_comment, {
@@ -72,12 +71,14 @@ const CommentEditForm = observer(({ show, onHide, commentData }) => {
             numberOfStars={5}
             name="rating"
           />
-          <Button color="blue" onClick={editComment}>
-            Сохранить
-          </Button>
-          <Button color="red" variant="outlined" onClick={onHide}>
-            Отмена
-          </Button>
+          <div className="my-5">
+            <Button color="blue" onClick={editComment}>
+              Сохранить
+            </Button>
+            <Button color="red" variant="outlined" onClick={onHide}>
+              Отмена
+            </Button>
+          </div>
         </CardBody>
       </Card>
     </Dialog>

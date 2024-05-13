@@ -1,3 +1,4 @@
+//productStore.jsx
 import { makeAutoObservable, action, runInAction } from "mobx"
 import { 
     fetchProducts as apiFetchProducts,
@@ -29,7 +30,8 @@ export default class ProductStore {
 
         this._isLoading = false
         this._searchProduct = {}
-        
+        this._searchQuery = ""
+
         this._filteredProducts = []
 
         this._productsInCartIds = {}
@@ -46,7 +48,7 @@ export default class ProductStore {
         this.name_attribute = null,
         this.value_specification = null,
 
-        this._limit = 30
+        this._limit = 0
         this._page = 1
         this._totalCount = 0
 
@@ -56,7 +58,6 @@ export default class ProductStore {
 
     // Setters
     setIsLoading(value) {
-        console.log('Загрузка начата');
         this._isLoading = value;
     }
 
@@ -105,13 +106,16 @@ export default class ProductStore {
     setSearchProduct(product) {
         runInAction(() => {
             this._searchProduct = product
-            console.log(product);
+        })
+    }
+    setSearchQuery(query) {
+        runInAction(() => {
+            this._searchQuery = query
         })
     }
     setFilteredProducts(products) {
         runInAction(() => {
             this._filteredProducts = products;
-            console.log('Устанавливаем отфильтрованные товары:', products);
         })
     }
 
@@ -179,7 +183,10 @@ export default class ProductStore {
     }
 
     get searchedProduct() {
-        return this._searchProduct
+        return this._searchProduct;
+    }
+    get searchQuery() {
+        return this._searchQuery;
     }
     get filteredProducts() {
         return this._filteredProducts;
@@ -204,21 +211,6 @@ export default class ProductStore {
         return this._limit
     }
 
-    // fetchFilteredProducts = async () => {
-    //     const filteredSpecifications = this.filteredSpecifications;
-        
-    //     try {
-    //         // Предположим, что ваш API принимает массив идентификаторов спецификаций для фильтрации
-    //         const products = await apiFetchProducts({ specifications: filteredSpecifications });
-            
-    //         runInAction(() => {
-    //             this.setProducts(products);
-    //         });
-    //     } catch (error) {
-    //         console.error('Ошибка при фильтрации продуктов:', error);
-    //     }
-    // };
-
     editProduct = async (id, editedProduct) => {
         const data = await editProduct(id, editedProduct);
         this.products = this.products.map(product => product.id_product === id ? data : product);
@@ -233,7 +225,9 @@ export default class ProductStore {
 
     searchProduct = async (keyword) => {
         try {
-            const data = await apiSearchProduct(keyword)
+            console.log("API search keyword:", keyword);
+            const data = await apiSearchProduct(keyword);
+            console.log("Data from API:", data);
             runInAction(() => {
                 this._searchProduct = data.rows               
                 this._totalCount = data.length;
@@ -324,12 +318,4 @@ export default class ProductStore {
             console.error('Ошибка при получении списка изображений:', error);
         }
     }
-    // toggleSpecificationFilter(specificationId, isChecked) {
-    //     if (isChecked) {
-    //         this._specificationsFilter.push(specificationId);
-    //     } else {
-    //         this._specificationsFilter = this._specificationsFilter.filter(id => id !== specificationId);
-    //     }
-    //     this.fetchFilteredProducts();
-    // }
 }

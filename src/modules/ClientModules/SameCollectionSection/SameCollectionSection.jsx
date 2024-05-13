@@ -7,9 +7,10 @@ import ProductCard from "@/components/UI/ProductCard/ProductCard";
 import { useEffect, useState } from "react";
 import styles from "../SameProductSection/SameSection.module.scss";
 
+import { Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import "swiper/css/navigation";
+import "swiper/scss/pagination";
 
 const SameCollectionSection = ({ id_collection, currentProductId }) => {
   const [sameCollectionProducts, setSameCollectionProducts] = useState([]);
@@ -55,11 +56,30 @@ const SameCollectionSection = ({ id_collection, currentProductId }) => {
       <div className={styles.center}>
         <h2>Этот товар входит в коллекцию {collectionName}</h2>
         <Swiper
+          modules={[Pagination]}
           spaceBetween={1}
-          slidesPerView={4}
-          onSlideChange={() => console.log("slide change")}
-          onSwiper={(swiper) => console.log(swiper)}
+          pagination={{
+            clickable: true,
+          }}
           data-swiper-autoplay="2000"
+          breakpoints={{
+            // при ширине экрана 320px будет показан 1 слайд
+            320: {
+              slidesPerView: 1,
+            },
+            // при ширине экрана 640px будет показано 2 слайда
+            640: {
+              slidesPerView: 2,
+            },
+            // при ширине экрана 768px будет показано 3 слайда
+            768: {
+              slidesPerView: 3,
+            },
+            // при ширине экрана 1024px будет показано 4 слайда
+            1024: {
+              slidesPerView: 4,
+            },
+          }}
         >
           {sameCollectionProducts.map((product) => (
             <SwiperSlide key={product.id_product}>

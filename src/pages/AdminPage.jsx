@@ -30,6 +30,7 @@ const AdminPage = observer(() => {
     setActiveComponent(menuItem);
   }
 
+
   return (
     <>
       <div className="flex max-w-full">
@@ -97,7 +98,9 @@ const AdminPage = observer(() => {
               />
             </>
           )}
-          {activeComponent === "orders" && <OrderTable />}
+          {activeComponent === "orders" && (
+              <OrderTable />
+          )}
           {activeComponent === "order_deliveries" && (
             <>
               <DeliveryTable />

@@ -23,12 +23,6 @@ const DeliveryTable = observer(() => {
   useEffect(() => {
     order
       .fetchOrderDeliveries()
-      // .then(() => {
-      //   console.log(
-      //     "Доставка после загрузки: ",
-      //     order.order_delivery
-      //   ); // Здесь добавлен console.log
-      // })
       .catch((error) => {
         console.error("Ошибка при загрузке доставки:", error);
       });

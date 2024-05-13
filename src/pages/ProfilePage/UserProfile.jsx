@@ -45,7 +45,7 @@ export const UserProfile = ({ userData, setUserData }) => {
       : noPhoto;
 
   return (
-    <Card className="container my-5 p-4 col-span-1 h-fit">
+    <Card className="container my-5 p-4 col-span-1 min-w-60 h-fit">
       <div>
         <Avatar
           size="xxl"
@@ -58,7 +58,7 @@ export const UserProfile = ({ userData, setUserData }) => {
         <p className="text-2xl font-bold">{`${userFirstName} ${userLastName}`}</p>
         <p>{userEmailData}</p>
         <p>{userPhone}</p>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col">
           <span
             className="text-green-400 font-semibold my-2 cursor-pointer"
             onClick={handleEditProfile}

@@ -159,14 +159,16 @@ const ProductAddForm = observer(({ show, onHide }) => {
                 onChange={(e) => setName(e.target.value)}
                 size="lg"
                 label="Название"
+                required
               />
               <Input
                 value={article}
                 onChange={(e) => setArticle(e.target.value)}
                 size="lg"
                 label="Артикул"
+                required
               />
-              <Select color="blue" label="Категория">
+              <Select color="blue" label="Категория" required>
                 {product.categories.map((category) => (
                   <Option
                     onClick={() => product.setSelectedCategory(category)}
@@ -176,7 +178,7 @@ const ProductAddForm = observer(({ show, onHide }) => {
                   </Option>
                 ))}
               </Select>
-              <Select color="blue" label="Коллекция">
+              <Select color="blue" label="Коллекция" required>
                 {product.collections.map((collection) => (
                   <Option
                     onClick={() => {
@@ -195,6 +197,7 @@ const ProductAddForm = observer(({ show, onHide }) => {
                 size="lg"
                 type="number"
                 label="Цена"
+                required
               />
               <Input
                 value={count}
@@ -202,14 +205,16 @@ const ProductAddForm = observer(({ show, onHide }) => {
                 size="lg"
                 type="number"
                 label="Количество"
+                required
               />
               <Input
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 size="lg"
                 label="Описание"
+                required
               />
-              <input type="file" onChange={selectFile} />
+              <input type="file" onChange={selectFile} required/>
               <Button variant="outlined" onClick={addSpecification}>
                 Добавить новую характеристику
               </Button>

@@ -5,6 +5,7 @@ import {
   LOGIN_ROUTE,
   MAIN_ROUTE,
   REGISTRATION_ROUTE,
+  RESET_PASSWORD_ROUTE,
 } from "@/routes/utils/consts";
 import {
   Card,
@@ -28,6 +29,7 @@ const LoginPage = observer(() => {
 
   const signIn = async () => {
     try {
+      console.log("Начало процесса входа/регистрации");
       // Проверяем совпадение паролей только при регистрации
       if (!isLogin && password !== confirmPassword) {
         alert("Пароли не совпадают!");
@@ -36,29 +38,36 @@ const LoginPage = observer(() => {
 
       let data;
       if (isLogin) {
+        console.log("Попытка войти с email:", email);
+
         data = await login(email, password);
       } else {
+        console.log("Попытка регистрации с email:", email);
         data = await registration(email, password);
-        await createCart(data.user.email_user); // Логика по созданию корзины, если требуется
+        console.log("Ответ сервера на регистрацию:", data);
+        await createCart(data.email_user); // Логика по созданию корзины, если требуется
       }
+      console.log("Ответ сервера:", data);
       user.setUser(data);
-      console.log(data);
       user.setIsAuth(true);
       navigate(MAIN_ROUTE);
     } catch (error) {
-      alert(error.response.data.message);
+      console.error("Ошибка при запросе:", error);
+      const errorMessage =
+        error.response?.data?.message || "Неизвестная ошибка";
+      console.error("Сообщение об ошибке:", errorMessage);
+      alert(errorMessage);
     }
   };
-
 
   return (
     <>
       <div className="container flex flex-col items-center justify-center h-screen">
-        <Typography variant="h3" className="mb-5">
-          {isLogin ? "Добро пожаловать!" : "Создать новый аккаунт"}
-        </Typography>
-        <div className="w-full max-w-md mx-auto">
-          <Card color="white" className="flex flex-col p-10 w-full shadow-lg">
+        <div className="w-full max-w-md mx-auto shadow-2xl">
+          <Typography variant="h3" className="m-5 text-center">
+            {isLogin ? "Добро пожаловать!" : "Создать новый аккаунт"}
+          </Typography>
+          <Card color="white" className="flex flex-col p-10 w-full ">
             <form
               className="space-y-6"
               onSubmit={(e) => {
@@ -108,14 +117,14 @@ const LoginPage = observer(() => {
                 </div>
                 {/* Ссылка на восстановление пароля */}
                 <NavLink
-                  to="/forgot-password"
+                  to={RESET_PASSWORD_ROUTE}
                   className="text-sm text-blue-600 hover:underline"
                 >
                   Забыли пароль?
                 </NavLink>
               </div>
               <Button
-                color="lightBlue"
+                className="w-full bg-colorPrimary"
                 buttonType="filled"
                 size="lg"
                 block={true}

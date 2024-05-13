@@ -23,7 +23,7 @@ const CartPage = observer(() => {
   useEffect(() => {
     let items = 0;
     let price = 0;
-    
+
     cart.cart.forEach((item) => {
       items += item.count_cart_product;
       price += item.product.price_product * item.count_cart_product;
@@ -46,32 +46,30 @@ const CartPage = observer(() => {
     <>
       <div className="container py-10">
         <h1 className="text-4xl">Корзина</h1>
-        <div className="grid grid-cols-3 gap-10">
-          <Card className="col-span-2">
-            <div className="table w-full py-3">
-              <div className="table-header-group">
-                <div className="grid grid-cols-[40%_20%_20%_15%_5%]">
-                  <span className="text-lg font-medium">Название</span>
-                  <span className="text-lg font-medium">Цена</span>
-                  <span className="text-lg font-medium">Количество</span>
-                  <span className="text-lg font-medium">Сумма</span>
-                </div>
+        <div className="flex flex-col lg:flex-row gap-10">
+          <Card className="w-full lg:w-2/3">
+            <div className="py-3">
+              <div className="md:grid md:grid-cols-2 lg:grid-cols-5 table-header-group">
+                <span className="text-lg font-medium">Название</span>
+                <span className="md:col-span-2 lg:col-span-1 text-lg font-medium">
+                  Цена
+                </span>
+                <span className="text-lg font-medium">Количество</span>
+                <span className="text-lg font-medium">Сумма</span>
               </div>
               <hr />
-              <div className="">
-                {cart.cart.map((item) => (
-                  <CartItem
-                    key={item.id_cart_product}
-                    item={item}
-                    canChangeQuantity={true}
-                    canRemove={true}
-                  />
-                ))}
-              </div>
+              {cart.cart.map((item) => (
+                <CartItem
+                  key={item.id_cart_product}
+                  item={item}
+                  canChangeQuantity={true}
+                  canRemove={true}
+                />
+              ))}
             </div>
           </Card>
 
-          <Card className="col-span-1 p-4 flex flex-col justify-between h-56">
+          <Card className="w-full lg:w-1/3 p-4 flex flex-col justify-between h-56">
             <div>
               <h1 className="text-3xl font-bold text-black py-2">
                 Ваша корзина

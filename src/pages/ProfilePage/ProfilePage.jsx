@@ -51,9 +51,9 @@ const ProfilePage = observer(() => {
 
   return (
     <>
-      <div className=" container grid grid-cols-4 gap-4">
+      <div className="container grid lg:grid-cols-4 gap-4">
         <UserProfile userData={userData} setUserData={setUserData} />
-        <Card color="white" className="container my-5 col-span-3 h-fit">
+        <Card color="white" className="container my-5 lg:col-span-3 h-fit">
           <UserOrders
             orders={orders}
             open={open}

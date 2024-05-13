@@ -15,15 +15,12 @@ export const deleteProduct = async(id) => {
     const {data} = await $authhost.delete('api/product/' + id)
     return {data}
 }
-//пагинация
-// export const fetchProducts = async (filters) => {
-//     const { data } = await $host.get('api/product', { params: { ...filters } });
-//     return data;
-// }
+
 export const fetchProducts = async(filters, page, limit) => {
     const {data} = await $host.get('api/product', {params: {...filters, page, limit}})
     return data
 }
+
 export const searchProduct = async(keyword) => {
     const {data} = await $host.get('api/product/search', {params: {keyword}})
     return data
@@ -48,6 +45,27 @@ export const fetchProductsByCollection = async (id_collection, page = 1) => {
       console.error("Ошибка при получении товаров коллекции:", error);
     }
  };
+
+ //collection
+export const createCollection = async(collection) => {
+    const {data} = await $authhost.post('api/collection', collection)
+    return data
+}
+
+export const editCollection = async(id, collection) => {
+    const {data} = await $authhost.put('api/collection/' + id, collection)
+    return data
+}
+
+export const deleteCollection = async(id) => {
+    const {data} = await $authhost.delete('api/collection/' + id)
+    return {data}
+}
+
+export const fetchCollections = async() => {
+    const {data} = await $host.get('api/collection')
+    return data
+}
 
 //category
 export const createCategory = async(category) => {
@@ -100,27 +118,6 @@ export const getCart = async(email_user) => {
 export const updateCartQuantity = async (id_cart_product, newQuantity) => {
     const { data } = await $authhost.put(`api/cart/${id_cart_product}`, { count_cart_product: newQuantity });
     return data;
-}
-
-//collection
-export const createCollection = async(collection) => {
-    const {data} = await $authhost.post('api/collection', collection)
-    return data
-}
-
-export const editCollection = async(id, collection) => {
-    const {data} = await $authhost.put('api/collection/' + id, collection)
-    return data
-}
-
-export const deleteCollection = async(id) => {
-    const {data} = await $authhost.delete('api/collection/' + id)
-    return {data}
-}
-
-export const fetchCollections = async() => {
-    const {data} = await $host.get('api/collection')
-    return data
 }
 
 export const fetchSpecifications = async() => {

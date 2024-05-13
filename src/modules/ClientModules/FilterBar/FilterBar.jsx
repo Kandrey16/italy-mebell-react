@@ -38,13 +38,6 @@ const FilterBar = observer(({ uniqueSpecifications }) => {
     setAppliedSpecifications(newAppliedSpecifications);
   }, [uniqueSpecifications]);
 
-  useEffect(() => {
-    console.log(
-      "Обновленный набор appliedSpecifications:",
-      appliedSpecifications
-    );
-  }, [appliedSpecifications]);
-
   const attributesArray = Object.keys(uniqueSpecifications).map(
     (name_attribute) => {
       return {
@@ -71,16 +64,13 @@ const FilterBar = observer(({ uniqueSpecifications }) => {
         }
       });
 
-      console.log("Отправляемые фильтры на сервер:", filters);
       const filteredProducts = await fetchProducts(
         filters,
         product.page,
         product.limit
       );
-      console.log("Получены отфильтрованные товары:", filteredProducts);
       product.setFilteredProducts(filteredProducts); // Обновляем searchedProduct вместо products
     } catch (error) {
-      console.error("Ошибка при применении фильтров:", error);
     } finally {
       product.setIsLoading(false); // Сбрасываем флаг загрузки после получения данных
     }
@@ -89,7 +79,6 @@ const FilterBar = observer(({ uniqueSpecifications }) => {
   const resetFilters = async () => {
     setAppliedFilters({}); // Сбрасываем примененные фильтры
     setSelectedRating(0); // Сбрасываем рейтинг, если он был установлен
-    console.log("Применяемые фильтры перед запросом:", appliedFilters);
     try {
       product.setIsLoading(true); // Устанавливаем флаг загрузки
       const allProducts = await fetchProducts({}, product.page, product.limit);
@@ -115,30 +104,32 @@ const FilterBar = observer(({ uniqueSpecifications }) => {
           Фильтры
         </Typography>
         {hasActiveFilters() && (
-          <Button
-            className="bg-gray-400 text-black w-full mt-10"
-            onClick={resetFilters} // Привязываем функцию сброса фильтров к кнопке
-          >
-            Сбросить
-          </Button>
+          <>
+            <Button
+              className="bg-gray-400 text-black w-full mt-10"
+              onClick={resetFilters} // Привязываем функцию сброса фильтров к кнопке
+            >
+              Сбросить
+            </Button>
+            <Button
+              className="w-full bg-colorPrimary mt-3"
+              onClick={() => {
+                applyFilters();
+              }}
+            >
+              Применить
+            </Button>
+          </>
         )}
-        <Button
-          className="w-full bg-colorPrimary mt-3"
-          onClick={() => {
-            applyFilters();
-          }}
-        >
-          Применить
-        </Button>
       </div>
-      <List className="items-start">
+      <List className="items-start ">
         <Typography variant="h5" color="blue-gray">
           Цена
         </Typography>
-        <ListItem className="flex space-x-2 justify-between">
+        <ListItem className="flex space-x-1">
           <input
             placeholder="От"
-            className="p-2 w-[7rem] rounded-xl border-2 border-blue-300"
+            className="p-2 w-[6rem] rounded-xl border-2 border-blue-300"
             value={appliedFilters.price_min || ""}
             onChange={(e) =>
               setAppliedFilters({
@@ -149,7 +140,7 @@ const FilterBar = observer(({ uniqueSpecifications }) => {
           ></input>
           <input
             placeholder="До"
-            className="p-2 w-[7rem] rounded-xl border-2 border-blue-300"
+            className="p-2 w-[6rem] rounded-xl border-2 border-blue-300"
             value={appliedFilters.price_max || ""}
             onChange={(e) =>
               setAppliedFilters({

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { FaCopy } from "react-icons/fa";
-import { Rating } from "@material-tailwind/react";
+import { Alert, Rating } from "@material-tailwind/react";
 import copy from "copy-to-clipboard";
 
 const ProductDetails = ({ name, article, price, rating }) => {
   const [showCopyIcon, setShowCopyIcon] = useState(false);
+  const [showCopyAlert, setShowCopyAlert] = useState(false); // Используем для алерта более подходящее имя переменной
   const formattedPrice = new Intl.NumberFormat("ru-RU").format(price);
 
   let rate = Math.ceil(rating);
@@ -12,11 +13,19 @@ const ProductDetails = ({ name, article, price, rating }) => {
   function handleCopy() {
     copy(article);
     setShowCopyIcon(true);
-    alert("Артикул скопирован");
+    setShowCopyAlert(true);
+    setTimeout(() => setShowCopyAlert(false), 3000); // Алерт автоматически закроется через 3 секунды
   }
 
   return (
     <>
+      {showCopyAlert && (
+        <div className="fixed bottom-0 left-0 p-4 max-w-md w-full">
+          <Alert color="green" onClose={() => setShowCopyAlert(false)}>
+            Артикул скопирован
+          </Alert>
+        </div>
+      )}
       <h2 className="text-2xl font-semibold text-black uppercase">{name}</h2>
       <div
         className="flex space-x-2 items-center"

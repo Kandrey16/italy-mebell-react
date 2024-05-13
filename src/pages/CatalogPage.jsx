@@ -13,19 +13,6 @@ const CatalogPage = observer(() => {
   const [uniqueSpecifications, setUniqueSpecifications] = useState({});
   const [showPagination, setShowPagination] = useState(true);
 
-  const filters = {
-    id_category: null,
-    id_collection: null,
-    price_min: null,
-    price_max: null,
-    rating_min: null,
-    name_attribute_group: null,
-    name_attribute: null,
-    value_specification: null,
-    limit: 6,
-    page: 1,
-  };
-
   useEffect(() => {
     fetchCategories().then((data) => product.setCategories(data));
     fetchProducts().then((data) => {
@@ -92,13 +79,12 @@ const CatalogPage = observer(() => {
 
   return (
     <>
-      <div className="container grid grid-cols-5 gap-4">
-        <div className="col">
+      <div className="container flex gap-5">
+        <div className="flex-none">
           <FilterBar uniqueSpecifications={uniqueSpecifications} />
         </div>
-        <div className="col-span-4">
+        <div className="flex-grow">
           {/* <CategoryBar /> */}
-
           <ProductSection />
           {/* {showPagination && <Pagination />} */}
         </div>

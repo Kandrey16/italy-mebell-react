@@ -6,14 +6,7 @@ export default function Navbar() {
   return (
     <>
       <nav className={styles.navbar}>
-        <ul>
-          <li>
-            <NavLink to={MAIN_ROUTE}>Main</NavLink>
-          </li>
-          <li>
-            <NavLink to={CATALOG_ROUTE}>Catalog</NavLink>
-          </li>
-        </ul>
+        
       </nav>
     </>
   );

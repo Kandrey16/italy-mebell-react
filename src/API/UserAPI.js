@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode"
 import { $authhost, $host } from "./index"
 
 export const registration = async(email_user, password_user) => {
-    const {data} = await $host.post('api/user_profile/registration', {email_user, password_user, role_user: 'ADMIN'})
+    const {data} = await $host.post('api/user_profile/registration', {email_user, password_user, role_user: 'USER'})
     localStorage.setItem('token', data.token)
     const userData = jwtDecode(data.token);
     localStorage.setItem('user', JSON.stringify(userData));
@@ -54,8 +54,6 @@ export const changePassword = async (email_user, old_password, new_password, con
           confirm_password
       };
 
-      console.log('Sending changePassword request with data:', requestData);
-
       const { data } = await $authhost.put('api/user_profile/change_password', requestData);
       return data;
   } catch (error) {
@@ -64,28 +62,22 @@ export const changePassword = async (email_user, old_password, new_password, con
   }
 };
 
-//   export const updateUser = async (email_user, userData, imageFile) => {
-//     try {
-//         const formData = new FormData();
-//         // Добавляем данные пользователя в форму
-//         Object.entries(userData).forEach(([key, value]) => {
-//             if (value !== null) formData.append(key, value);
-//         });
-//         // Добавляем изображение, если оно было передано
-//         if (imageFile) formData.append('image_user_profile', imageFile);
+export const sendResetPasswordCode = async (email_user) => {
+  try {
+    const { data } = await $host.post('api/user_profile/reset_password/send_code', { email_user });
+    return data;
+  } catch (error) {
+    console.error("Ошибка при отправке кода подтверждения: ", error);
+    throw error;
+  }
+};
 
-//         const { data } = await $authhost.put(`api/user_profile/${encodeURIComponent(email_user)}`, formData, {
-//             headers: {
-//                 'Content-Type': 'multipart/form-data'
-//             }
-//         });
-//         return data;
-//     } catch (error) {
-//         console.error(error);
-//     }
-// };
-
-// export const updateUser = async(email_user, user) => {
-//   const {data} = await $authhost.put(`api/user_profile/${encodeURIComponent(email)}, user`)
-//   return data
-// }
+export const resetPassword = async (email_user, code, new_password, confirm_password) => {
+  try {
+    const { data } = await $host.post('api/user_profile/reset_password/confirm', { email_user, code, new_password, confirm_password });
+    return data;
+  } catch (error) {
+    console.error("Ошибка при смене пароля: ", error);
+    throw error;
+  }
+};

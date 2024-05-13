@@ -47,14 +47,16 @@ const DeliveryAddForm = observer(({ show, onHide }) => {
                 type="text"
                 size="lg"
                 value={name}
-                lavel="Название"
+                label="Название"
+                required
                 onChange={(e) => setName(e.target.value)}
               />
               <Input
                 type="number"
                 size="lg"
                 value={price}
-                lavel="Стоимость"
+                label="Стоимость"
+                required
                 onChange={(e) => setPrice(e.target.value)}
               />
             </div>

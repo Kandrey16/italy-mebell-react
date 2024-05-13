@@ -12,7 +12,6 @@ import {
 } from "@material-tailwind/react";
 import { Context } from "@/main";
 import { fetchOrderStatuses, updateOrder } from "@/API/OrderAPI";
-import { toJS } from "mobx";
 
 const OrderEditForm = ({ show, onHide, orderData }) => {
   const { order } = useContext(Context);
@@ -38,14 +37,15 @@ const OrderEditForm = ({ show, onHide, orderData }) => {
   const handleStatusChange = () => {
     if (!selectedStatusId) return;
 
-    console.log("Статус для обновления: ", selectedStatusId);
-    const formData = new FormData();
-    formData.append("price_order", price);
-    formData.append("id_order_status", selectedStatusId);
+    const updatedData = {
+      order: {
+        price_order: price,
+      },
+      id_order_status: selectedStatusId,
+    };
 
-    updateOrder(orderData.id_order, formData)
+    updateOrder(orderData.id_order, updatedData)
       .then(() => {
-        console.log("Обновление произошло", orderData.id_order, price);
         onHide(); // Закрыть диалоговое окно после успешного изменения
       })
       .catch((error) => {
@@ -65,7 +65,10 @@ const OrderEditForm = ({ show, onHide, orderData }) => {
               type="number"
               color="blue"
               value={price}
-              onChange={(e) => setPrice(e.target.value)}
+              onChange={(e) => {
+                console.log("Цена изменена: ", e.target.value);
+                setPrice(e.target.value);
+              }}
             />
             <Typography variant="h5" className="mb-2">
               Изменить статус заказа
@@ -75,6 +78,7 @@ const OrderEditForm = ({ show, onHide, orderData }) => {
               label="Статус заказа"
               value={selectedStatusId}
               onChange={(value) => {
+                console.log("Статус изменен: ", value); // Добавлено: логирование изменения статуса
                 setSelectedStatusId(value);
               }}
             >

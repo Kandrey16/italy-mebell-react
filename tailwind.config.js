@@ -21,17 +21,14 @@ export default withMT({
     },
     container: {
       center: true,
-      padding: '2rem',
+      padding: '1rem',
     },
     extend: {
       colors: {
         'colorPrimary': '#1e40af',
         'colorPrimaryHover': '#1e40af',
-        'colorBackground': '#f2f5f9',
+        'colorBackground': '#f0f8ff',
         'colorGray': 'B9B9B9',
-        // purple: {
-        //   950: '#24226D',
-        // },
       },
       fontFamily: {
         main: ["Montserrat", 'sans-serif'],

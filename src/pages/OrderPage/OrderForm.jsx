@@ -53,18 +53,21 @@ export default function OrderForm({
             label="Имя"
             value={firstName}
             onChange={handleFirstNameChange}
+            required
           />
           <Input
             size="md"
             label="Фамилия"
             value={lastName}
             onChange={handleLastNameChange}
+            required
           />
           <Input
             size="md"
             label="Номер телефона"
             value={phoneNumber}
             onChange={handlePhoneNumberChange}
+            required
           />
 
           <h2 className="pt-6 pb-2 text-2xl font-medium">Данные доставки</h2>
@@ -73,6 +76,7 @@ export default function OrderForm({
             label="Адрес доставки"
             value={address}
             onChange={handleAddressChange}
+            required
           />
           <Input
             size="md"

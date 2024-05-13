@@ -35,10 +35,8 @@ const ProductPage = observer(() => {
   });
   const [comments, setComments] = useState([]);
 
-  // console.log(productData.selectedProduct.product_images);
-  // console.log(productData.selectedProduct.url_main_image_product);
-
   useEffect(() => {
+    console.log(id);
     const fetchData = async () => {
       try {
         product.setIsLoading(true);
@@ -128,58 +126,67 @@ const ProductPage = observer(() => {
 
   return (
     <div className="">
-      <div className="container grid grid-cols-2 w-full gap-4 p-6">
-        <ProductImage
-          mainImageUrl={`${import.meta.env.VITE_APP_API_URL}/${productData.selectedProduct.url_main_image_product}`}
-          // additionalImages={`${import.meta.env.VITE_APP_API_URL}/${productData.selectedProduct.product_images}`}
-          additionalImages={productData.selectedProduct.product_images || []}
-        />
-        <Card className="col p-6 flex flex-col justify-between">
-          <div>
-            <ProductDetails
-              name={productData.selectedProduct.name_product}
-              article={productData.selectedProduct.article_product}
-              price={productData.selectedProduct.price_product}
-              rating={productData.selectedProduct.rating}
-            />
-            <Tabs value="specification">
-              <TabsHeader
-                className="rounded-none border-b border-blue-gray-50 bg-transparent p-0"
-                indicatorProps={{
-                  className:
-                    "bg-transparent border-b-2 border-gray-900 shadow-none rounded-none",
-                }}
+      <div className="container flex flex-col md:flex-row w-full gap-4 p-6">
+        <div className="md:w-full">
+          <ProductImage
+            mainImageUrl={`${import.meta.env.VITE_APP_API_URL}/${productData.selectedProduct.url_main_image_product}`}
+            additionalImages={productData.selectedProduct.product_images || []}
+          />
+        </div>
+        <div className="md:w-full">
+          <Card className="col p-6 flex flex-col justify-between">
+            <div>
+              <ProductDetails
+                name={productData.selectedProduct.name_product}
+                article={productData.selectedProduct.article_product}
+                price={productData.selectedProduct.price_product}
+                rating={productData.selectedProduct.rating}
+              />
+              <Tabs value="specification">
+                <TabsHeader
+                  className="rounded-none border-b border-blue-gray-50 bg-transparent p-0"
+                  indicatorProps={{
+                    className:
+                      "bg-transparent border-b-2 border-gray-900 shadow-none rounded-none",
+                  }}
+                >
+                  <Tab
+                    className="text-xl font-semibold"
+                    value="specification"
+                  >
+                    Характеристики
+                  </Tab>
+                  <Tab
+                    className="text-xl font-semibold"
+                    value="description"
+                  >
+                    Описание
+                  </Tab>
+                </TabsHeader>
+                <TabsBody>
+                  <TabPanel value="specification">
+                    <ProductSpecification
+                      specification={productData.specification}
+                      attributes={productData.attributes}
+                    />
+                  </TabPanel>
+                  <TabPanel value="description">
+                    <p>{productData.selectedProduct.description_product}</p>
+                  </TabPanel>
+                </TabsBody>
+              </Tabs>
+            </div>
+            <div className="flex justify-end">
+              <button
+                className={`${styles.product_button} ${productData.isProductInCart ? styles.product_in_cart : styles.product_add}`}
+                onClick={() => handleAddToCart(id, user.user.email_user)}
               >
-                <Tab className="text-xl font-semibold" value="specification">
-                  Характеристики
-                </Tab>
-                <Tab className="text-xl font-semibold" value="description">
-                  Описание
-                </Tab>
-              </TabsHeader>
-              <TabsBody>
-                <TabPanel value="specification">
-                  <ProductSpecification
-                    specification={productData.specification}
-                    attributes={productData.attributes}
-                  />
-                </TabPanel>
-                <TabPanel value="description">
-                  <p>{productData.selectedProduct.description_product}</p>
-                </TabPanel>
-              </TabsBody>
-            </Tabs>
-          </div>
-          <div className="flex justify-end">
-            <button
-              className={`${styles.product_button} ${productData.isProductInCart ? styles.product_in_cart : styles.product_add}`}
-              onClick={() => handleAddToCart(id, user.user.email_user)}
-            >
-              <img src={cart_logo} alt="Cart Logo" />
-              <p>{productData.isProductInCart ? "Перейти" : "В корзину"}</p>
-            </button>
-          </div>
-        </Card>
+                <img src={cart_logo} alt="Cart Logo" />
+                <p>{productData.isProductInCart ? "Перейти" : "В корзину"}</p>
+              </button>
+            </div>
+          </Card>
+        </div>
       </div>
       <SameProductSection
         id_category={productData.selectedProduct.id_category}

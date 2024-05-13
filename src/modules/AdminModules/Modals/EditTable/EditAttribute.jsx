@@ -12,7 +12,6 @@ import {
 import { observer } from "mobx-react";
 import { Context } from "@/main";
 import { fetchAttributeGroups } from "@/API/AttributeAPI";
-import { fetchAttributes } from "@/API/ProductAPI";
 
 const AttributeEditForm = observer(({ show, onHide, selectedAttribute }) => {
   const { attribute } = useContext(Context);

@@ -1,8 +1,9 @@
-import { Input } from "@material-tailwind/react";
+//search.jsx
+import { Input, Listbox } from "@material-tailwind/react";
 import styles from "./Search.module.scss";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { observer } from "mobx-react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Context } from "@/main";
 import { toJS } from "mobx";
 import { searchProduct } from "@/API/ProductAPI";
@@ -13,15 +14,21 @@ const Search = observer(() => {
   const { product } = useContext(Context);
   const [searchKeyword, setSearchKeyword] = useState("");
   const navigate = useNavigate();
-  const handleSearch = async (e) => {
-    e.preventDefault();
+  const [selectedProduct, setSelectedProduct] = useState("");
+
+  useEffect(() => {
+    if (searchKeyword.trim() !== "") {
+      handleSearch();
+    }
+  }, [searchKeyword]);
+
+  const handleSearch = async () => {
     if (searchKeyword.trim() === "") return;
 
     try {
       const data = await searchProduct(searchKeyword.trim());
-      console.log(data);
       product.setSearchProduct(data);
-      navigate(CATALOG_ROUTE);
+      product.setSearchQuery(searchKeyword);
     } catch (error) {
       console.error("Ошибка при поиске товаров:", error);
     }
@@ -29,34 +36,37 @@ const Search = observer(() => {
 
   return (
     <>
-      <form className={styles.form_search} onSubmit={handleSearch}>
-        <Input
-          label="Поиск"
-          onChange={(e) => setSearchKeyword(e.target.value)}
-          icon={<MagnifyingGlassIcon className="h-5 w-5" />}
-        />
+      <form
+        className={styles.form_search}
+        onSubmit={(e) => {
+          e.preventDefault();
+          navigate(CATALOG_ROUTE);
+        }}
+      >
+        <div className="relative">
+          <Input
+            label="Поиск"
+            onChange={(e) => {
+              setSearchKeyword(e.target.value);
+              handleSearch();
+            }}
+            icon={
+              searchKeyword === "" ? (
+                <MagnifyingGlassIcon className="h-5 w-5" />
+              ) : null
+            } // Если searchKeyword пуст, отобразите лупу
+            value={searchKeyword}
+          />
+          {searchKeyword && ( // Если searchKeyword не пуст, отобразите крестик
+            <XMarkIcon
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer h-6 w-6 text-gray-400"
+              onClick={() => setSearchKeyword("")} // При клике очистите searchKeyword
+            />
+          )}
+        </div>
       </form>
     </>
   );
 });
 
 export default Search;
-
-{
-  /* <div className={styles.search_svg}>
-              <svg
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                />
-              </svg>
-            </div> */
-}

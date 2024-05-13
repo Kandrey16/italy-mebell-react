@@ -1,5 +1,5 @@
 header {
-  @apply container flex justify-between items-center p-2;
+  @apply w-full bg-gray-100/50 shadow-lg;
 
   h1 {
     @apply flex-none text-3xl lg:text-4xl  flex-shrink-0 cursor-pointer;
@@ -12,7 +12,7 @@ header {
       @apply flex-shrink-0 text-right flex flex-col items-end;
 
       h4 {
-        @apply text-xl leading-tight;
+        @apply text-xl leading-tight hover:text-blue-500 transition-colors duration-300;
       }
 
       span {
@@ -29,17 +29,3 @@ header {
     @apply min-w-10 h-full aspect-square;
   }
 }
-
-/* @media only screen and (max-width: 1024px) {
-  header {
-    @apply flex flex-col;
-  }
-
-  .header_main {
-    @apply invisible;
-  }
-
-  .header_burger {
-    @apply flex;
-  }
-} */

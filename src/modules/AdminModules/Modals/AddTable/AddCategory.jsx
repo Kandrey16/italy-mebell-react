@@ -39,7 +39,8 @@ const CategoryAddForm = observer(({ show, onHide }) => {
               <Input
                 size="lg"
                 value={value}
-                lavel="Название"
+                label="Название"
+                required
                 onChange={(e) => setValue(e.target.value)}
               />
             </div>

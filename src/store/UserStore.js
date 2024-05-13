@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx"
-import { changePassword, updateUserProfile } from "@/API/UserAPI"
+import { changePassword, updateUserProfile, sendResetPasswordCode as apiSendResetPasswordCode, resetPassword as apiResetPassword} from "@/API/UserAPI"
 
 export default class UserStore {
     constructor() {
@@ -41,6 +41,28 @@ export default class UserStore {
             this.setUser(updatedUser)
         } catch (error) {
             console.error("Ошибка при изменении пароля: ", error);
+            throw error;
+        }
+    }
+
+    async sendResetPasswordCode(email_user) {
+        try {
+            console.log('Отправка кода подтверждения для:', email_user);
+            await apiSendResetPasswordCode(email_user);
+            console.log('Код подтверждения отправлен успешно');
+        } catch (error) {
+            console.error("Ошибка при отправке кода подтверждения: ", error);
+            throw error;
+        }
+    }
+    
+    async resetPassword(email_user, code, new_password, confirm_password) {
+        try {
+            console.log('Попытка смены пароля для:', email_user);
+            await apiResetPassword(email_user, code, new_password, confirm_password);
+            console.log('Пароль успешно сброшен');
+        } catch (error) {
+            console.error("Ошибка при смене пароля: ", error);
             throw error;
         }
     }

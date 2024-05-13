@@ -61,6 +61,7 @@ const AttributeGroupAddForm = observer(({ show, onHide }) => {
                 setValue(e.target.value);
                 if (isSubmitted) validateInput();
               }}
+              label="Название"
               placeholder="Введите название группы"
               required
               error={isSubmitted && error}

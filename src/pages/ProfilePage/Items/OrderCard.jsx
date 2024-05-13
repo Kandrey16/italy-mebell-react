@@ -30,6 +30,11 @@ const OrderCard = ({ data, isAdmin }) => {
   const email = data.order_address.email_user;
   const order_data = order.orders;
   const status_data = order.order_status;
+  const payment_data = order.payment_method;
+
+  console.log("Заказ", order);
+  console.log("Оплата", payment_data);
+  console.log("Выбранный", selectedOrder);
 
   useEffect(() => {
     fetchOneUser(email).then(setUserData);
@@ -45,6 +50,12 @@ const OrderCard = ({ data, isAdmin }) => {
       .catch((error) => {
         console.error("Ошибка при загрузке статусов:", error);
       });
+    order
+      .fetchPaymentMethods()
+      .then(() => {})
+      .catch((error) => {
+        console.error("Ошибка при загрузке статусов:", error);
+      });
   }, [order]);
 
   const getStatusNameById = (statusId) => {
@@ -52,6 +63,13 @@ const OrderCard = ({ data, isAdmin }) => {
       (status) => status.id_order_status === statusId
     );
     return status ? status.name_order_status : "Статус не установлен";
+  };
+
+  const getPaymentMethodNameBySelectedOrder = (methodId) => {
+    const method = payment_data.find(
+      (method) => method.id_payment_method === methodId
+    );
+    return method ? method.name_payment_method : "Метод не установлен";
   };
 
   const handleEdit = (orderItem) => {
@@ -80,7 +98,7 @@ const OrderCard = ({ data, isAdmin }) => {
       if (!contentType) {
         throw new Error("Content type header not found in response");
       }
-      const blob = new Blob([response], { // Pass the response directly to the Blob constructor
+      const blob = new Blob([response], {
         type: contentType,
       });
       const url = window.URL.createObjectURL(blob);
@@ -94,28 +112,6 @@ const OrderCard = ({ data, isAdmin }) => {
       console.error("Ошибка при экспорте данных:", error);
     }
   };
-
-  // const handleOpenStatusDialog = (data) => {
-  //   setIsStatusDialogOpen(true);
-  //   setSelectedOrder(data);
-  // };
-
-  // const handleCloseStatusDialog = () => {
-  //   setIsStatusDialogOpen(false);
-  //   setSelectedOrder(null);
-  // };
-
-  // const updateOrderStatus = () => {
-  //   updateOrder(data.id_order, selectedStatus)
-  //     .then(() => {
-  //       fetchOrderStatuses().then((data) => {
-  //         order.setOrderStatuses(data); // Обновление статусов заказа
-  //       });
-  //     })
-  //     .catch((error) => {
-  //       console.error("Ошибка при обновлении статуса заказа:", error);
-  //     });
-  // };
 
   return (
     <>
@@ -228,6 +224,12 @@ const OrderCard = ({ data, isAdmin }) => {
                   {new Date(selectedOrder.date_order).toLocaleDateString()}
                 </p>
                 <p>Стоимость заказа: {selectedOrder.price_order} ₽</p>
+                <p>
+                  Метод оплаты:{" "}
+                  {getPaymentMethodNameBySelectedOrder(
+                    selectedOrder.id_payment_method
+                  )}
+                </p>
               </div>
               <div>
                 <h3 className="text-lg font-bold">Адрес доставки:</h3>

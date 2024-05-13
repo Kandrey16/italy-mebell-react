@@ -17,12 +17,6 @@ const AttributeGroupTable = observer(() => {
   useEffect(() => {
     attribute
       .fetchAttributeGroups()
-      // .then(() => {
-      //   console.log(
-      //     "Группы атрибутов после загрузки: ",
-      //     attribute.attributeGroups
-      //   ); 
-      // })
       .catch((error) => {
         console.error("Ошибка при загрузке групп атрибутов:", error);
       });
