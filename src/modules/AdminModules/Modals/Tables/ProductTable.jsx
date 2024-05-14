@@ -17,11 +17,10 @@ const TABLE_HEAD = [
   "Количество",
   "Доступность",
   "Рейтинг",
-  "Коллекция",
   "Атрибуты",
   "Группы атрибутов",
   "Характеристики",
-  "",
+  "Изображения",
   "",
   "",
 ];
@@ -75,6 +74,7 @@ const ProductTable = observer(() => {
                       "createdAt",
                       "updatedAt",
                       "id_category",
+                      "id_collection",
                     ]}
                     handleEdit={() => handleEdit(product)} // изменено
                     handleDelete={() => handleDelete(product.id_product)} // метод удаления

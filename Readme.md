@@ -7,15 +7,6 @@
 
 Рефакторинг:
 SCSS:
-Убрать полоску 
-Смена обычных alert на компонент библиотеки
-
-
-
-
-
-
-
 
 
 CREATE TABLE IF NOT EXISTS public.order_history

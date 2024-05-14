@@ -32,10 +32,6 @@ const OrderCard = ({ data, isAdmin }) => {
   const status_data = order.order_status;
   const payment_data = order.payment_method;
 
-  console.log("Заказ", order);
-  console.log("Оплата", payment_data);
-  console.log("Выбранный", selectedOrder);
-
   useEffect(() => {
     fetchOneUser(email).then(setUserData);
     order
